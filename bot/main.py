@@ -208,9 +208,12 @@ async def handle_ticker_message(update: Update, context: ContextTypes.DEFAULT_TY
         volume=stock.volume,
         pe_ratio=stock.pe_ratio,
         spread_pct=stock.spread_pct,
-        change_7d=None,   # Price history endpoint unavailable
-        change_30d=None,  # Price history endpoint unavailable
-        change_90d=None,  # Price history endpoint unavailable
+        high=stock.high,
+        low=stock.low,
+        prev_close=stock.prev_close,
+        high_52w=stock.high_52w,
+        low_52w=stock.low_52w,
+        price_position_52w=stock.price_position_52w,
         sentiment_score=sentiment,
         mention_count_24h=velocity_data["count_24h"],
         mention_velocity=velocity_data["velocity"],
