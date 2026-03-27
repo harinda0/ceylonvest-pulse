@@ -6,7 +6,7 @@ from io import BytesIO
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from utils.card_generator import generate_main_card, generate_fundamentals_card, generate_technicals_card
+from utils.card_generator import generate_main_card, generate_fundamentals_card, generate_company_info_card, generate_technicals_card
 
 
 def test_main_card_full_data():
@@ -102,6 +102,56 @@ def test_fundamentals_card_foreign_pct_without_local():
         pb_ratio=None, div_yield=None,
         div_ex_date=None, foreign_pct=5.3,
         local_pct=None, foreign_net=None, broker_coverage=None,
+    )
+    assert isinstance(buf, BytesIO)
+    assert len(buf.getvalue()) > 0
+
+
+def test_company_info_card_full_data():
+    """Company info card should generate with all data sources."""
+    buf = generate_company_info_card(
+        ticker="KPHL", company_name="Kapruka Holdings", sector="Consumer",
+        market_cap=3.95e9, shares_outstanding=164130360, par_value=1.0,
+        beta_aspi=0.19, beta_spsl=0.01,
+        high_52w=36.0, low_52w=7.1, price_position_52w=58.9, last_price=24.1,
+        foreign_pct=None,
+        directors=["A. Herath", "T. Herath", "T. Subasinghe"],
+        business_summary="E-commerce, online retail, and delivery services in Sri Lanka.",
+        auditors="KPMG",
+        eps=2.26, nav=22.40, pe=8.2, pb=0.83,
+        div_yield=3.2, dps=0.50, fundamentals_period="2025-Q3",
+    )
+    assert isinstance(buf, BytesIO)
+    assert len(buf.getvalue()) > 0
+
+
+def test_company_info_card_api_only():
+    """Company info card with only CSE API data (no fundamentals.json)."""
+    buf = generate_company_info_card(
+        ticker="COMB", company_name="Commercial Bank", sector="Banking",
+        market_cap=150e9, shares_outstanding=1540928679, par_value=1.0,
+        beta_aspi=1.2, beta_spsl=1.1,
+        high_52w=120.0, low_52w=80.0, price_position_52w=45.0, last_price=98.0,
+        foreign_pct=25.3,
+        directors=None, business_summary=None, auditors=None,
+        eps=None, nav=None, pe=None, pb=None,
+        div_yield=None, dps=None, fundamentals_period=None,
+    )
+    assert isinstance(buf, BytesIO)
+    assert len(buf.getvalue()) > 0
+
+
+def test_company_info_card_minimal():
+    """Company info card with minimal data should not crash."""
+    buf = generate_company_info_card(
+        ticker="TEST", company_name="", sector="",
+        market_cap=None, shares_outstanding=None, par_value=None,
+        beta_aspi=None, beta_spsl=None,
+        high_52w=None, low_52w=None, price_position_52w=None, last_price=None,
+        foreign_pct=None,
+        directors=None, business_summary=None, auditors=None,
+        eps=None, nav=None, pe=None, pb=None,
+        div_yield=None, dps=None, fundamentals_period=None,
     )
     assert isinstance(buf, BytesIO)
     assert len(buf.getvalue()) > 0

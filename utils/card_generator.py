@@ -373,6 +373,202 @@ def generate_main_card(
 # Fundamentals card
 # ==========================================================================
 
+def generate_company_info_card(
+    ticker: str,
+    company_name: str,
+    sector: str,
+    # CSE API data (always available)
+    market_cap: float | None,
+    shares_outstanding: int | None,
+    par_value: float | None,
+    beta_aspi: float | None,
+    beta_spsl: float | None,
+    high_52w: float | None,
+    low_52w: float | None,
+    price_position_52w: float | None,
+    last_price: float | None,
+    foreign_pct: float | None,
+    # From companyProfile endpoint
+    directors: list[str] | None,
+    business_summary: str | None,
+    auditors: str | None,
+    # From fundamentals.json (manually curated)
+    eps: float | None,
+    nav: float | None,
+    pe: float | None,
+    pb: float | None,
+    div_yield: float | None,
+    dps: float | None,
+    fundamentals_period: str | None,
+) -> BytesIO:
+    WIDTH = 800
+    PAD = 30
+    INNER = WIDTH - 2 * PAD
+    SECTION_GAP = 16
+    BOX_H = 62
+
+    # Calculate height dynamically based on content
+    HEIGHT = 80  # header + padding
+    HEIGHT += BOX_H + 10 + BOX_H + SECTION_GAP  # market data 2x2
+    HEIGHT += BOX_H + SECTION_GAP  # beta row
+    HEIGHT += 56 + SECTION_GAP  # 52-week range bar
+    if any(v is not None for v in [eps, nav, pe, pb, div_yield, dps]):
+        HEIGHT += 22 + BOX_H + 10 + BOX_H + SECTION_GAP  # fundamentals section
+    if directors:
+        dir_lines = min(len(directors), 5)
+        HEIGHT += 22 + 20 * dir_lines + SECTION_GAP
+    if business_summary:
+        # Wrap summary text
+        wrapped = _wrap_text(business_summary, FONT_SMALL, INNER - 28)
+        HEIGHT += 22 + 20 * len(wrapped) + SECTION_GAP
+    HEIGHT += 40  # footer
+
+    img = Image.new("RGB", (WIDTH, HEIGHT), BG)
+    draw = ImageDraw.Draw(img)
+    y = 24
+
+    _draw_header(draw, y, WIDTH, PAD, ticker, "COMPANY INFO", company_name)
+    y += 30 + SECTION_GAP
+
+    # --- SECTION: Market Data (from CSE API) ---
+    box_w = (INNER - 8) // 2
+    _draw_metric(draw, PAD, y, box_w, BOX_H, "MARKET CAP",
+                 _format_num(market_cap, prefix="LKR ") if market_cap else "N/A")
+    _draw_metric(draw, PAD + box_w + 8, y, box_w, BOX_H, "SHARES OUT",
+                 _format_num(shares_outstanding) if shares_outstanding else "N/A")
+    y += BOX_H + 10
+    _draw_metric(draw, PAD, y, box_w, BOX_H, "PAR VALUE",
+                 f"LKR {par_value:.2f}" if par_value else "N/A")
+    _draw_metric(draw, PAD + box_w + 8, y, box_w, BOX_H, "SECTOR",
+                 sector or "N/A", value_color=BLUE)
+    y += BOX_H + SECTION_GAP
+
+    # Beta row
+    box_w3 = (INNER - 16) // 3
+    _draw_metric(draw, PAD, y, box_w3, BOX_H, "BETA (ASPI)",
+                 f"{beta_aspi:.2f}" if beta_aspi else "N/A")
+    _draw_metric(draw, PAD + box_w3 + 8, y, box_w3, BOX_H, "BETA (S&P SL20)",
+                 f"{beta_spsl:.2f}" if beta_spsl else "N/A")
+    foreign_val = f"{foreign_pct:.1f}%" if foreign_pct else "N/A"
+    _draw_metric(draw, PAD + 2 * (box_w3 + 8), y, box_w3, BOX_H, "FOREIGN %",
+                 foreign_val, value_color=BLUE if foreign_pct else TEXT_MUTED)
+    y += BOX_H + SECTION_GAP
+
+    # 52-week range bar
+    _rounded_rect(draw, (PAD, y, WIDTH - PAD, y + 56), BG_SURFACE, radius=8)
+    draw.text((PAD + 14, y + 8), "52-WEEK RANGE", fill=TEXT_MUTED, font=FONT_LABEL)
+    bar_y = y + 32
+    bar_x = PAD + 14
+    bar_w = INNER - 28
+    # Background bar
+    _rounded_rect(draw, (bar_x, bar_y, bar_x + bar_w, bar_y + 8), BG_ACCENT, radius=4)
+    # Position marker
+    if price_position_52w is not None:
+        pos_x = bar_x + int(bar_w * price_position_52w / 100)
+        # Filled portion
+        bar_color = GREEN if price_position_52w < 50 else AMBER if price_position_52w < 80 else RED
+        _rounded_rect(draw, (bar_x, bar_y, pos_x, bar_y + 8), bar_color, radius=4)
+        # Triangle marker
+        draw.polygon([(pos_x, bar_y - 4), (pos_x - 4, bar_y - 10), (pos_x + 4, bar_y - 10)],
+                     fill=TEXT_PRIMARY)
+    low_text = f"LKR {low_52w:.1f}" if low_52w else "?"
+    high_text = f"LKR {high_52w:.1f}" if high_52w else "?"
+    draw.text((bar_x, bar_y + 12), low_text, fill=TEXT_MUTED, font=FONT_TINY)
+    draw.text((bar_x + bar_w, bar_y + 12), high_text, fill=TEXT_MUTED,
+              font=FONT_TINY, anchor="rt")
+    if price_position_52w is not None:
+        pct_text = f"{price_position_52w:.0f}%"
+        pos_x = bar_x + int(bar_w * price_position_52w / 100)
+        draw.text((pos_x, bar_y + 12), pct_text, fill=TEXT_SECONDARY,
+                  font=FONT_TINY, anchor="mt")
+    y += 56 + SECTION_GAP
+
+    # --- SECTION: Fundamentals (from JSON file) ---
+    has_fundamentals = any(v is not None for v in [eps, nav, pe, pb, div_yield, dps])
+    if has_fundamentals:
+        period_label = f"  ({fundamentals_period} data)" if fundamentals_period else ""
+        draw.text((PAD, y), f"FUNDAMENTALS{period_label}",
+                  fill=TEXT_MUTED, font=FONT_LABEL)
+        y += 22
+        box_w = (INNER - 16) // 3
+        _draw_metric(draw, PAD, y, box_w, BOX_H, "EPS",
+                     f"LKR {eps:.2f}" if eps else "N/A")
+        _draw_metric(draw, PAD + box_w + 8, y, box_w, BOX_H, "NAV / SHARE",
+                     f"LKR {nav:.2f}" if nav else "N/A")
+        _draw_metric(draw, PAD + 2 * (box_w + 8), y, box_w, BOX_H, "P/E RATIO",
+                     f"{pe:.1f}x" if pe else "N/A",
+                     GREEN if pe and pe < 15 else AMBER if pe and pe < 25 else TEXT_PRIMARY)
+        y += BOX_H + 10
+        _draw_metric(draw, PAD, y, box_w, BOX_H, "P/B RATIO",
+                     f"{pb:.2f}x" if pb else "N/A",
+                     GREEN if pb and pb < 1 else TEXT_PRIMARY)
+        _draw_metric(draw, PAD + box_w + 8, y, box_w, BOX_H, "DIV YIELD",
+                     f"{div_yield:.1f}%" if div_yield else "N/A",
+                     GREEN if div_yield and div_yield > 2 else TEXT_PRIMARY)
+        _draw_metric(draw, PAD + 2 * (box_w + 8), y, box_w, BOX_H, "DPS",
+                     f"LKR {dps:.2f}" if dps else "N/A")
+        y += BOX_H + SECTION_GAP
+
+    # --- SECTION: Directors ---
+    if directors:
+        draw.text((PAD, y), "BOARD OF DIRECTORS", fill=TEXT_MUTED, font=FONT_LABEL)
+        y += 22
+        for name in directors[:5]:
+            draw.text((PAD + 14, y), name, fill=TEXT_SECONDARY, font=FONT_SMALL)
+            y += 20
+        if len(directors) > 5:
+            draw.text((PAD + 14, y), f"+ {len(directors) - 5} more",
+                      fill=TEXT_DIM, font=FONT_TINY)
+            y += 20
+        y += SECTION_GAP - 10
+
+    # --- SECTION: Business Summary ---
+    if business_summary:
+        draw.text((PAD, y), "BUSINESS SUMMARY", fill=TEXT_MUTED, font=FONT_LABEL)
+        y += 22
+        wrapped = _wrap_text(business_summary, FONT_SMALL, INNER - 28)
+        for line in wrapped:
+            draw.text((PAD + 14, y), line, fill=TEXT_MUTED, font=FONT_SMALL)
+            y += 20
+        y += SECTION_GAP - 10
+
+    # Footer
+    _draw_footer(draw, y, WIDTH, PAD)
+
+    # Crop to actual height
+    actual_h = y + 34
+    if actual_h < HEIGHT:
+        img = img.crop((0, 0, WIDTH, actual_h))
+
+    buf = BytesIO()
+    img.save(buf, format="PNG", quality=95)
+    buf.seek(0)
+    return buf
+
+
+def _wrap_text(text: str, font, max_width: int) -> list[str]:
+    """Wrap text to fit within max_width pixels."""
+    words = text.split()
+    lines = []
+    current = ""
+    for word in words:
+        test = f"{current} {word}".strip()
+        try:
+            w = font.getlength(test)
+        except AttributeError:
+            w = len(test) * 8  # fallback
+        if w <= max_width:
+            current = test
+        else:
+            if current:
+                lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+    return lines[:6]  # max 6 lines
+
+
+# Keep old name as alias for backward compatibility in tests
 def generate_fundamentals_card(
     ticker: str,
     eps: float | None,
@@ -386,83 +582,32 @@ def generate_fundamentals_card(
     foreign_net: str | None,
     broker_coverage: str | None,
 ) -> BytesIO:
-    WIDTH = 800
-    PAD = 30
-    INNER = WIDTH - 2 * PAD
-    SECTION_GAP = 20
-    BOX_H = 62
-
-    has_data = any(v is not None for v in [eps, book_value, nav, pb_ratio,
-                                            div_yield, foreign_pct])
-    if not has_data:
-        return _generate_coming_soon_card(ticker, "FUNDAMENTALS",
-            "Fundamentals data coming soon\n\n"
-            "We're building the data source for EPS,\n"
-            "book value, NAV, P/B, and dividend yield.\n\n"
-            "This will be available once we connect\n"
-            "to CSE quarterly filings.")
-
-    HEIGHT = 480
-    img = Image.new("RGB", (WIDTH, HEIGHT), BG)
-    draw = ImageDraw.Draw(img)
-    y = 24
-
-    _draw_header(draw, y, WIDTH, PAD, ticker, "FUNDAMENTALS")
-    y += 30 + SECTION_GAP
-
-    # 2x2 grid
-    box_w = (INNER - 8) // 2
-    _draw_metric(draw, PAD, y, box_w, BOX_H, "EPS (TTM)",
-                 f"LKR {eps:.2f}" if eps else "N/A")
-    _draw_metric(draw, PAD+box_w+8, y, box_w, BOX_H, "BOOK VALUE",
-                 f"LKR {book_value:.2f}" if book_value else "N/A")
-    y += BOX_H + 10
-    _draw_metric(draw, PAD, y, box_w, BOX_H, "NAV / SHARE",
-                 f"LKR {nav:.2f}" if nav else "N/A")
-    _draw_metric(draw, PAD+box_w+8, y, box_w, BOX_H, "P/B RATIO",
-                 f"{pb_ratio:.2f}x" if pb_ratio else "N/A",
-                 GREEN if pb_ratio and pb_ratio < 1 else TEXT_PRIMARY)
-    y += BOX_H + SECTION_GAP
-
-    # Dividend row
-    _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+BOX_H), BG_SURFACE, radius=8)
-    draw.text((PAD+14, y+12), "DIV YIELD", fill=TEXT_MUTED, font=FONT_LABEL)
-    draw.text((PAD+14, y+34), f"{div_yield:.1f}%" if div_yield else "N/A",
-              fill=GREEN if div_yield and div_yield > 2 else TEXT_PRIMARY, font=FONT_VALUE)
-    draw.text((WIDTH-PAD-14, y+12), "NEXT EX-DATE", fill=TEXT_MUTED,
-              font=FONT_LABEL, anchor="rt")
-    draw.text((WIDTH-PAD-14, y+34), div_ex_date or "N/A",
-              fill=TEXT_PRIMARY, font=FONT_VALUE, anchor="rt")
-    y += BOX_H + SECTION_GAP
-
-    # Foreign/local bar
-    _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+72), BG_SURFACE, radius=8)
-    draw.text((PAD+14, y+12), "FOREIGN / LOCAL RATIO", fill=TEXT_MUTED, font=FONT_LABEL)
-    bar_y = y + 36
-    bar_w = INNER - 160
-    _rounded_rect(draw, (PAD+14, bar_y, PAD+14+bar_w, bar_y+8), BG_ACCENT, radius=4)
-    if foreign_pct:
-        f_w = int(bar_w * foreign_pct / 100)
-        _rounded_rect(draw, (PAD+14, bar_y, PAD+14+f_w, bar_y+8), BLUE, radius=4)
-        _rounded_rect(draw, (PAD+14+f_w, bar_y, PAD+14+bar_w, bar_y+8), GREEN, radius=4)
-    if foreign_pct and local_pct:
-        ratio_text = f"{foreign_pct:.0f}% / {local_pct:.0f}%"
-    elif foreign_pct:
-        ratio_text = f"{foreign_pct:.0f}% foreign"
-    else:
-        ratio_text = "N/A"
-    draw.text((WIDTH-PAD-14, bar_y+1), ratio_text, fill=TEXT_MUTED, font=FONT_SMALL, anchor="rt")
-    if foreign_net:
-        draw.text((PAD+14, bar_y+16), foreign_net, fill=TEXT_MUTED, font=FONT_TINY)
-    y += 80
-
-    # Footer
-    _draw_footer(draw, y, WIDTH, PAD)
-
-    buf = BytesIO()
-    img.save(buf, format="PNG", quality=95)
-    buf.seek(0)
-    return buf
+    """Legacy wrapper — redirects to generate_company_info_card."""
+    return generate_company_info_card(
+        ticker=ticker,
+        company_name="",
+        sector="",
+        market_cap=None,
+        shares_outstanding=None,
+        par_value=None,
+        beta_aspi=None,
+        beta_spsl=None,
+        high_52w=None,
+        low_52w=None,
+        price_position_52w=None,
+        last_price=None,
+        foreign_pct=foreign_pct,
+        directors=None,
+        business_summary=None,
+        auditors=None,
+        eps=eps,
+        nav=nav,
+        pe=None,
+        pb=pb_ratio,
+        div_yield=div_yield,
+        dps=None,
+        fundamentals_period=None,
+    )
 
 
 def _generate_coming_soon_card(ticker: str, section: str, message: str) -> BytesIO:

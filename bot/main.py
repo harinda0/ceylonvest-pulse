@@ -29,7 +29,7 @@ from services.pulse_db import (
     remove_watchlist,
     get_watchlist,
 )
-from utils.card_generator import generate_main_card, generate_fundamentals_card, generate_technicals_card
+from utils.card_generator import generate_main_card, generate_company_info_card, generate_technicals_card
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -227,7 +227,7 @@ async def _send_ticker_card(update: Update, ticker: str):
     # Inline keyboard for detail cards + TradingView chart
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("Fundamentals", callback_data=f"fund_{ticker}"),
+            InlineKeyboardButton("Company Info", callback_data=f"fund_{ticker}"),
             InlineKeyboardButton("Technicals", callback_data=f"tech_{ticker}"),
         ],
         [
@@ -416,28 +416,68 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def send_fundamentals_card(query, ticker: str):
-    """Generate and send the fundamentals detail card."""
+    """Generate and send the company info detail card."""
+    from services.cse_api import fetch_company_profile, get_fundamentals_json
+
     cse_symbol = get_cse_symbol(ticker)
     sector = get_sector(ticker)
     company_name = get_company_name(ticker)
 
     stock = get_stock_data(ticker, cse_symbol, sector, company_name)
     if not stock:
-        await query.message.reply_text("Could not fetch fundamentals data.")
+        await query.message.reply_text("Could not fetch company data.")
         return
 
-    card_buf = generate_fundamentals_card(
+    # Fetch company profile (directors, business summary)
+    profile = fetch_company_profile(cse_symbol)
+    directors = None
+    business_summary = None
+    auditors = None
+    if profile:
+        # Extract director names
+        raw_dirs = profile.get("infoCompanyDirector", [])
+        if raw_dirs:
+            directors = []
+            for d in raw_dirs:
+                first = (d.get("firstName") or "").strip()
+                last = (d.get("lastName") or "").strip()
+                directors.append(f"{first} {last}".strip())
+        # Business summary
+        summaries = profile.get("infoCompanyBusinessSummary", [])
+        if summaries and summaries[0].get("body"):
+            business_summary = summaries[0]["body"].strip()
+        # Auditors
+        com_info = profile.get("reqComSumInfo", [])
+        if com_info:
+            auditors = com_info[0].get("auditors")
+
+    # Load manually-curated fundamentals from JSON
+    fund = get_fundamentals_json(ticker)
+
+    card_buf = generate_company_info_card(
         ticker=ticker,
-        eps=stock.eps,
-        book_value=stock.book_value,
-        nav=stock.nav,
-        pb_ratio=stock.pb_ratio,
-        div_yield=stock.div_yield,
-        div_ex_date=None,  # TODO: scrape from CSE announcements
+        company_name=company_name,
+        sector=sector,
+        market_cap=stock.market_cap,
+        shares_outstanding=stock.shares_outstanding,
+        par_value=stock.par_value,
+        beta_aspi=stock.beta_aspi,
+        beta_spsl=stock.beta_spsl,
+        high_52w=stock.high_52w,
+        low_52w=stock.low_52w,
+        price_position_52w=stock.price_position_52w,
+        last_price=stock.last_price,
         foreign_pct=stock.foreign_pct,
-        local_pct=None,  # Not available from current API response
-        foreign_net=None,  # TODO: calculate from daily data
-        broker_coverage=None,  # TODO: scrape from broker sites
+        directors=directors,
+        business_summary=business_summary,
+        auditors=auditors,
+        eps=fund.get("eps") if fund else None,
+        nav=fund.get("nav") if fund else None,
+        pe=fund.get("pe") if fund else None,
+        pb=fund.get("pb") if fund else None,
+        div_yield=fund.get("div_yield") if fund else None,
+        dps=fund.get("dps") if fund else None,
+        fundamentals_period=fund.get("updated") if fund else None,
     )
 
     await query.message.reply_photo(photo=card_buf)

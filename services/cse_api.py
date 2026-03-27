@@ -7,6 +7,7 @@ These are reverse-engineered endpoints used by cse.lk — no API key needed.
 import requests
 from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
+from pathlib import Path
 import threading
 import time as _time
 import logging
@@ -177,6 +178,42 @@ def fetch_company_info(cse_symbol: str) -> dict | None:
         return resp.json()
     except Exception as e:
         logger.error(f"Error fetching {cse_symbol}: {e}")
+        return None
+
+
+def fetch_company_profile(cse_symbol: str) -> dict | None:
+    """
+    Fetch company profile from CSE API.
+    Returns directors, business summary, auditors, sector, etc.
+    """
+    try:
+        resp = requests.post(
+            f"{BASE_URL}companyProfile",
+            data={"symbol": cse_symbol},
+            headers=HEADERS,
+            timeout=10,
+        )
+        resp.raise_for_status()
+        if "application/json" not in resp.headers.get("Content-Type", ""):
+            return None
+        return resp.json()
+    except Exception as e:
+        logger.error(f"Error fetching profile {cse_symbol}: {e}")
+        return None
+
+
+def get_fundamentals_json(ticker: str) -> dict | None:
+    """
+    Load manually-curated fundamental data from data/fundamentals.json.
+    Returns dict with eps, nav, pe, pb, div_yield, dps, updated — or None.
+    """
+    import json
+    json_path = Path(__file__).parent.parent / "data" / "fundamentals.json"
+    try:
+        with open(json_path, "r") as f:
+            data = json.load(f)
+        return data.get(ticker)
+    except Exception:
         return None
 
 
