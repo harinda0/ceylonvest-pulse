@@ -18,7 +18,7 @@ from telegram.ext import (
     ContextTypes,
 )
 
-from utils.ticker_map import resolve_ticker, resolve_input, get_cse_symbol, get_sector, get_company_name, TICKER_TO_CSE
+from utils.ticker_map import resolve_ticker, resolve_input, check_delisted, get_cse_symbol, get_sector, get_company_name, TICKER_TO_CSE
 from services.cse_api import get_stock_data, compute_support_resistance, clear_cache
 from services.pulse_db import (
     get_mention_velocity,
@@ -266,6 +266,13 @@ async def pulse_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await send_director_summary(update, result["director"])
         return
 
+    if result["type"] == "delisted":
+        await update.message.reply_text(
+            f"{result['ticker']} ({result['name']}) is no longer traded on the CSE.\n"
+            f"{result['note']}"
+        )
+        return
+
     ticker = result.get("ticker") if result["type"] == "ticker" else None
     if not ticker:
         await update.message.reply_text(
@@ -311,6 +318,14 @@ async def handle_ticker_message(update: Update, context: ContextTypes.DEFAULT_TY
     if result["type"] == "director":
         director = result["director"]
         await send_director_summary(update, director)
+        return
+
+    # Delisted stock — show helpful message
+    if result["type"] == "delisted":
+        await update.message.reply_text(
+            f"{result['ticker']} ({result['name']}) is no longer traded on the CSE.\n"
+            f"{result['note']}"
+        )
         return
 
     ticker = result.get("ticker") if result["type"] == "ticker" else None
@@ -500,12 +515,14 @@ async def handle_new_group(update: Update, context: ContextTypes.DEFAULT_TYPE):
     welcome = (
         "Hey! I'm CeylonVest Pulse — your AI-powered CSE market intelligence assistant.\n\n"
         "Here's what I can do:\n\n"
-        "/p KPHL — Get live price, market data & sentiment for any CSE stock\n\n"
-        "/p dhammika perera — See a director's full portfolio with live prices\n\n"
-        "/market — Today's market summary\n\n"
+        "/p [ticker] — Get live price, market data & sentiment for any CSE stock "
+        "(e.g. /p JKH, /p LOLC, /p KPHL)\n\n"
+        "/p [name] — Search by company or director name "
+        "(e.g. /p kapruka, /p dhammika perera, /p john keells)\n\n"
+        "/market — Market summary with ASPI & index data\n\n"
         "/watchlist — Track your favorite stocks\n\n"
-        "I cover all stocks listed on the Colombo Stock Exchange.\n\n"
-        "Try it now — type /p JKH"
+        "I cover all 289 stocks on the Colombo Stock Exchange.\n\n"
+        "Try it now — /p JKH"
     )
 
     chat_id = update.my_chat_member.chat.id

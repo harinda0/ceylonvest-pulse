@@ -202,15 +202,61 @@ def fetch_price_history(cse_symbol: str) -> list | None:
 
 
 def fetch_market_summary() -> dict | None:
-    """Fetch overall market (ASPI, S&P SL20) summary."""
+    """
+    Fetch overall market summary including ASPI, S&P SL20, and sector indices.
+    Uses POST /api/allSectors which returns all 22 indices (20 sectors + ASI + S&P SL20).
+    Also fetches trade summary from POST /api/marketSummery for volume/turnover.
+    """
     try:
-        resp = requests.get(
-            f"{BASE_URL}marketSummery",
+        # Sector indices (includes ASPI and S&P SL20)
+        resp = requests.post(
+            f"{BASE_URL}allSectors",
             headers=HEADERS,
             timeout=10,
         )
         resp.raise_for_status()
-        return resp.json()
+        sectors = resp.json()
+        if not isinstance(sectors, list):
+            logger.warning("Unexpected allSectors response type")
+            return None
+
+        # Extract ASPI and S&P SL20 (last two items by convention)
+        main_indices = []
+        sector_indices = []
+        for s in sectors:
+            symbol = s.get("symbol", "")
+            entry = {
+                "indexName": s.get("indexName", s.get("name", "")),
+                "indexValue": s.get("indexValue", 0),
+                "change": s.get("change", 0),
+                "changePercentage": s.get("percentage", 0),
+            }
+            if symbol in ("ASI", "S&P SL20"):
+                main_indices.append(entry)
+            else:
+                sector_indices.append(entry)
+
+        # Trade summary (volume, turnover)
+        trade_data = {}
+        try:
+            resp2 = requests.post(
+                f"{BASE_URL}marketSummery",
+                headers=HEADERS,
+                timeout=10,
+            )
+            if resp2.status_code == 200:
+                trade_data = resp2.json()
+        except Exception:
+            pass
+
+        return {
+            "marketSummary": main_indices,
+            "sectorSummary": sector_indices,
+            "tradeVolume": trade_data.get("tradeVolume", 0),
+            "shareVolume": trade_data.get("shareVolume", 0),
+            "trades": trade_data.get("trades", 0),
+        }
+
     except Exception as e:
         logger.error(f"Error fetching market summary: {e}")
         return None

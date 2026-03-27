@@ -6,7 +6,7 @@ from pathlib import Path
 # Ensure project root is on path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from utils.ticker_map import resolve_ticker, resolve_input, get_cse_symbol, get_sector, get_company_name, TICKER_TO_CSE, ALIASES
+from utils.ticker_map import resolve_ticker, resolve_input, check_delisted, get_cse_symbol, get_sector, get_company_name, TICKER_TO_CSE, ALIASES, DELISTED
 
 
 def test_exact_ticker_resolution():
@@ -98,6 +98,45 @@ def test_all_aliases_map_to_valid_tickers():
     """Every alias should map to a ticker that exists in TICKER_TO_CSE."""
     for alias, ticker in ALIASES.items():
         assert ticker in TICKER_TO_CSE, f"Alias '{alias}' maps to unknown ticker '{ticker}'"
+
+
+def test_delisted_not_in_active_tickers():
+    """Delisted stocks should NOT appear in TICKER_TO_CSE."""
+    for ticker in DELISTED:
+        assert ticker not in TICKER_TO_CSE, f"Delisted ticker '{ticker}' still in TICKER_TO_CSE"
+
+
+def test_check_delisted_by_ticker():
+    """Direct ticker lookup for delisted stocks."""
+    result = check_delisted("EXPO")
+    assert result is not None
+    assert result["ticker"] == "EXPO"
+    assert result["name"] == "Expolanka Holdings"
+    assert "delisted" in result["note"].lower() or "private" in result["note"].lower()
+
+
+def test_check_delisted_by_alias():
+    """Alias lookup for delisted stocks."""
+    result = check_delisted("expolanka")
+    assert result is not None
+    assert result["ticker"] == "EXPO"
+
+
+def test_check_delisted_active_stock_returns_none():
+    """Active stocks should not be flagged as delisted."""
+    assert check_delisted("KPHL") is None
+    assert check_delisted("JKH") is None
+
+
+def test_resolve_input_delisted():
+    """resolve_input should return delisted type for known delisted stocks."""
+    result = resolve_input("EXPO")
+    assert result["type"] == "delisted"
+    assert result["ticker"] == "EXPO"
+
+    result = resolve_input("nestle")
+    assert result["type"] == "delisted"
+    assert result["ticker"] == "NEST"
 
 
 if __name__ == "__main__":

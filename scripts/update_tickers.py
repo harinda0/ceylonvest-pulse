@@ -1,10 +1,16 @@
 """
-Fetch all CSE-listed companies from the tradeSummary API and generate
-updated TICKER_TO_CSE, ALIASES, and SECTORS entries for ticker_map.py.
+Fetch all currently listed CSE companies from the tradeSummary API and
+update ticker_map.py with only actively trading stocks.
+
+This script:
+1. Fetches the FULL list of currently listed companies from CSE
+2. Only includes stocks that are actively trading (N0000 voting shares)
+3. Removes any delisted stocks from TICKER_TO_CSE, ALIASES, SECTORS
+4. Preserves the DELISTED dict and hand-curated aliases
 
 Usage:
-    python scripts/expand_ticker_map.py          # preview changes
-    python scripts/expand_ticker_map.py --apply   # write to ticker_map.py
+    python scripts/update_tickers.py          # preview changes
+    python scripts/update_tickers.py --apply   # write to ticker_map.py
 """
 
 import re
@@ -70,14 +76,12 @@ PRESERVED_ALIASES = {
     "dialog": "DIAL", "dialog axiata": "DIAL",
     "ceylon tobacco": "CTC", "tobacco": "CTC",
     "lolc": "LOLC", "lolc holdings": "LOLC",
-    # EXPO (Expolanka) — delisted from CSE
     "kapruka": "KPHL", "kapruka holdings": "KPHL", "kaphruka": "KPHL",
     "dipped": "DIPD", "dipped products": "DIPD",
     "hayleys": "HAYC", "hayleys fabric": "HAYC",
     "tokyo cement": "TKYO", "tokyo": "TKYO",
     "lanka ioc": "LIOC", "ioc": "LIOC",
     "cargills": "CARG", "cargills ceylon": "CARG",
-    # NEST (Nestle Lanka) — delisted from CSE
     "watawala": "WATA", "watawala plantations": "WATA",
     "aluminium": "ALUM", "alumex": "ALUM",
     "taj lanka": "TJL",
@@ -119,7 +123,6 @@ def guess_sector(ticker: str, name: str) -> str:
 def clean_name(raw_name: str) -> str:
     """Clean CSE company name for alias generation."""
     name = raw_name.strip()
-    # Remove common suffixes
     for suffix in [" PLC", " LIMITED", " LTD", " (NON-VOTING)", " (NON VOTING)",
                    " - NON VOTING", " - NON-VOTING"]:
         name = name.replace(suffix, "").replace(suffix.lower(), "")
@@ -142,8 +145,6 @@ def generate_aliases(ticker: str, full_name: str) -> dict[str, str]:
     # 3. If name has multiple words, try abbreviation-style aliases
     words = lower_name.split()
     if len(words) >= 2:
-        # "ceylon tobacco company" -> "ceylon tobacco"
-        # Only first two words if >2 words
         if len(words) > 2:
             aliases[" ".join(words[:2])] = ticker
 
@@ -162,20 +163,21 @@ def fetch_all_companies() -> list[dict]:
     return data.get("reqTradeSummery", [])
 
 
-def build_maps(companies: list[dict]) -> tuple[dict, dict, dict]:
+def build_maps(companies: list[dict]) -> tuple[dict, dict, dict, dict]:
     """
-    Build TICKER_TO_CSE, ALIASES, and SECTORS dicts from raw API data.
+    Build TICKER_TO_CSE, ALIASES, SECTORS, and COMPANY_NAMES dicts.
     Only includes N0000 (voting) shares — X0000 (non-voting) are skipped.
+    Returns: (ticker_to_cse, aliases, sectors, company_names)
     """
     ticker_to_cse = {}
-    aliases = dict(PRESERVED_ALIASES)  # Start with hand-curated aliases
+    aliases = dict(PRESERVED_ALIASES)
     sectors = {}
+    company_names = {}
 
     for co in companies:
         symbol = co.get("symbol", "")
         name = co.get("name", "")
 
-        # Skip non-voting shares
         if ".X0000" in symbol:
             continue
         if not symbol.endswith(".N0000"):
@@ -187,44 +189,29 @@ def build_maps(companies: list[dict]) -> tuple[dict, dict, dict]:
 
         ticker_to_cse[ticker] = symbol
         sectors[ticker] = guess_sector(ticker, name)
+        company_names[ticker] = clean_name(name) or name
 
-        # Generate aliases (don't overwrite preserved ones)
         new_aliases = generate_aliases(ticker, name)
         for alias, t in new_aliases.items():
             if alias not in aliases:
                 aliases[alias] = t
 
-    # Sort everything
     ticker_to_cse = dict(sorted(ticker_to_cse.items()))
     aliases = dict(sorted(aliases.items()))
     sectors = dict(sorted(sectors.items()))
+    company_names = dict(sorted(company_names.items()))
 
-    return ticker_to_cse, aliases, sectors
-
-
-def format_ticker_to_cse(d: dict) -> str:
-    """Format TICKER_TO_CSE dict as Python source code."""
-    lines = ["TICKER_TO_CSE = {"]
-    for ticker, symbol in d.items():
-        lines.append(f'    "{ticker}": "{symbol}",')
-    lines.append("}")
-    return "\n".join(lines)
+    return ticker_to_cse, aliases, sectors, company_names
 
 
-def format_aliases(d: dict) -> str:
-    """Format ALIASES dict as Python source code."""
-    lines = ["ALIASES = {"]
-    for alias, ticker in d.items():
-        lines.append(f'    "{alias}": "{ticker}",')
-    lines.append("}")
-    return "\n".join(lines)
-
-
-def format_sectors(d: dict) -> str:
-    """Format SECTORS dict as Python source code."""
-    lines = ["SECTORS = {"]
-    for ticker, sector in d.items():
-        lines.append(f'    "{ticker}": "{sector}",')
+def format_dict(name: str, d: dict, value_quote: bool = True) -> str:
+    """Format a dict as Python source code."""
+    lines = [f"{name} = {{"]
+    for k, v in d.items():
+        if value_quote:
+            lines.append(f'    "{k}": "{v}",')
+        else:
+            lines.append(f'    "{k}": {v},')
     lines.append("}")
     return "\n".join(lines)
 
@@ -236,35 +223,34 @@ def main():
     companies = fetch_all_companies()
     print(f"  Got {len(companies)} securities from CSE API")
 
-    ticker_to_cse, aliases, sectors = build_maps(companies)
+    ticker_to_cse, aliases, sectors, company_names = build_maps(companies)
 
     n_tickers = len(ticker_to_cse)
     n_aliases = len(aliases)
-    n_sectors = len(sectors)
-    print(f"  Generated: {n_tickers} tickers, {n_aliases} aliases, {n_sectors} sectors")
+    print(f"  Generated: {n_tickers} tickers, {n_aliases} aliases, {len(sectors)} sectors")
 
     if not apply:
         print("\n--- Preview (first 10 tickers) ---")
         for i, (k, v) in enumerate(ticker_to_cse.items()):
             if i >= 10:
                 break
-            name = next((co["name"] for co in companies if co.get("symbol") == v), "?")
-            print(f"  {k:6s} -> {v:15s}  {name}")
+            name = company_names.get(k, "?")
+            sector = sectors.get(k, "?")
+            print(f"  {k:6s} -> {v:15s}  [{sector}] {name}")
         print(f"  ... and {n_tickers - 10} more")
         print(f"\nRun with --apply to write to utils/ticker_map.py")
         return
 
-    # Read the existing file
     import pathlib
     ticker_map_path = pathlib.Path(__file__).parent.parent / "utils" / "ticker_map.py"
     original = ticker_map_path.read_text(encoding="utf-8")
 
-    # Replace the three dicts
-    new_ticker_to_cse = format_ticker_to_cse(ticker_to_cse)
-    new_aliases = format_aliases(aliases)
-    new_sectors = format_sectors(sectors)
+    # Build replacement blocks
+    new_ticker_to_cse = format_dict("TICKER_TO_CSE", ticker_to_cse)
+    new_aliases = format_dict("ALIASES", aliases)
+    new_sectors = format_dict("SECTORS", sectors)
 
-    # Use regex to replace each dict block (anchored to line start)
+    # Replace each dict block using regex (anchored to line start to avoid _DELISTED_ALIASES)
     result = re.sub(
         r"^TICKER_TO_CSE = \{[^}]*\}",
         new_ticker_to_cse,
@@ -286,7 +272,7 @@ def main():
 
     ticker_map_path.write_text(result, encoding="utf-8")
     print(f"\n  Written to {ticker_map_path}")
-    print(f"  {n_tickers} tickers, {n_aliases} aliases, {n_sectors} sectors")
+    print(f"  {n_tickers} tickers, {n_aliases} aliases, {len(sectors)} sectors")
 
 
 if __name__ == "__main__":

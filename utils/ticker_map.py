@@ -3,8 +3,7 @@ CSE Ticker Alias Map
 Maps common names, abbreviations, and variations to official CSE ticker symbols.
 The CSE API uses the format "SYMBOL.N0000" internally.
 
-Add more tickers as needed — this is a starter set of ~50 popular stocks.
-Run `python -m utils.ticker_map update` to auto-populate from CSE API.
+Auto-populated from CSE API via: python scripts/update_tickers.py --apply
 """
 
 # Official ticker -> CSE API symbol mapping
@@ -279,7 +278,7 @@ TICKER_TO_CSE = {
 }
 
 # Alias -> official ticker mapping
-# Maps common names, abbreviations, typos, Sinhala/Tamil references
+# Maps common names, abbreviations, typos
 ALIASES = {
     "aaf": "AAF",
     "aaic": "AAIC",
@@ -1249,12 +1248,30 @@ SECTORS = {
     "YORK": "Diversified",
 }
 
+# Delisted stocks -- ticker -> (company_name, delisting_note)
+# If a user searches for a delisted stock, we show a helpful message instead of "not found"
+DELISTED = {
+    "EXPO": ("Expolanka Holdings", "Taken private and delisted from the CSE in 2024."),
+    "NEST": ("Nestle Lanka", "Delisted from the CSE after a buyout in 2024."),
+    "SFL": ("Softlogic Finance", "Rebranded as CRL (Capital Alliance). Use CRL instead."),
+    "AINS": ("Alliance Insurance", "Rebranded as ALLI (Alliance Finance). Use ALLI instead."),
+}
+
+# Aliases for delisted stocks (so users can find them by name too)
+_DELISTED_ALIASES = {
+    "expo": "EXPO", "expolanka": "EXPO", "expolanka holdings": "EXPO",
+    "nest": "NEST", "nestle": "NEST", "nestle lanka": "NEST",
+    "sfl": "SFL",
+    "ains": "AINS", "alliance insurance": "AINS",
+}
+
 
 def resolve_ticker(text: str) -> str | None:
     """
     Resolve user input to an official CSE ticker.
     Handles: exact tickers, company names, common aliases, misspellings.
     Does NOT check director names — use resolve_input() for that.
+    Does NOT check delisted stocks — use check_delisted() for that.
     Returns the official ticker string or None if not found.
     """
     cleaned = text.strip().upper()
@@ -1281,15 +1298,44 @@ def resolve_ticker(text: str) -> str | None:
     return None
 
 
+def check_delisted(text: str) -> dict | None:
+    """
+    Check if user input matches a delisted stock.
+    Returns {"ticker": str, "name": str, "note": str} or None.
+    """
+    cleaned = text.strip().upper()
+    lower = text.strip().lower()
+
+    # Direct ticker match
+    if cleaned in DELISTED:
+        name, note = DELISTED[cleaned]
+        return {"ticker": cleaned, "name": name, "note": note}
+
+    # Alias match
+    if lower in _DELISTED_ALIASES:
+        ticker = _DELISTED_ALIASES[lower]
+        name, note = DELISTED[ticker]
+        return {"ticker": ticker, "name": name, "note": note}
+
+    return None
+
+
 def resolve_input(text: str) -> dict:
     """
-    Resolve user input to either a single ticker or a director's portfolio.
+    Resolve user input to either a single ticker, a director's portfolio,
+    or a delisted stock.
     Returns:
         {"type": "ticker", "ticker": str} — single stock match
         {"type": "director", "director": dict} — director with multiple tickers
+        {"type": "delisted", "ticker": str, "name": str, "note": str} — delisted stock
         {"type": "none"} — no match found
     """
-    # First try as a ticker (exact or alias)
+    # Check delisted stocks first (before partial matching picks up false positives)
+    delisted = check_delisted(text)
+    if delisted:
+        return {"type": "delisted", **delisted}
+
+    # Try as a ticker (exact or alias)
     ticker = resolve_ticker(text)
     if ticker:
         return {"type": "ticker", "ticker": ticker}
