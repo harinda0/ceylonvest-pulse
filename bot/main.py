@@ -484,6 +484,12 @@ def main():
     from apscheduler.triggers.cron import CronTrigger
     from apscheduler.triggers.interval import IntervalTrigger
     from services.news_scraper import scrape as scrape_news
+    from services.sentiment_scorer import score_pending
+
+    def scrape_and_score():
+        """Run RSS scrape then score any new unscored mentions."""
+        scrape_news()
+        score_pending()
 
     scheduler = BackgroundScheduler()
     scheduler.add_job(
@@ -493,18 +499,18 @@ def main():
         name="Clear stock data cache before market open",
     )
     scheduler.add_job(
-        scrape_news,
+        scrape_and_score,
         IntervalTrigger(minutes=30),
-        id="rss_news_scraper",
-        name="Scrape RSS news feeds for ticker mentions",
+        id="rss_scrape_and_score",
+        name="Scrape RSS feeds then score sentiment",
     )
     scheduler.start()
 
-    # Run initial scrape on startup
+    # Run initial scrape + score on startup
     try:
-        scrape_news()
+        scrape_and_score()
     except Exception as e:
-        logger.error(f"Initial news scrape failed: {e}")
+        logger.error(f"Initial scrape/score failed: {e}")
 
     logger.info("CeylonVest Pulse bot starting...")
     app.run_polling()

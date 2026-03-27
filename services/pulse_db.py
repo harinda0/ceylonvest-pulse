@@ -281,6 +281,34 @@ def get_watchlist(user_id: int) -> list[str]:
         conn.close()
 
 
+def get_unscored_mentions(limit: int = 50) -> list[dict]:
+    """Get mentions that haven't been sentiment-scored yet."""
+    conn = get_db()
+    try:
+        rows = conn.execute(
+            "SELECT id, ticker, source, source_name, content "
+            "FROM mentions WHERE sentiment_score IS NULL AND content IS NOT NULL "
+            "ORDER BY created_at DESC LIMIT ?",
+            (limit,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
+def update_mention_sentiment(mention_id: int, sentiment_score: float):
+    """Update the sentiment score for a specific mention."""
+    conn = get_db()
+    try:
+        conn.execute(
+            "UPDATE mentions SET sentiment_score = ? WHERE id = ?",
+            (sentiment_score, mention_id),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
 def url_already_scraped(url: str) -> bool:
     """Check if a URL has already been processed by a scraper."""
     conn = get_db()
