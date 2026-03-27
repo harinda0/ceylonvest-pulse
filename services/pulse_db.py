@@ -336,5 +336,64 @@ def mark_url_scraped(url: str, source_name: str = None):
         conn.close()
 
 
+def get_top_sentiment_movers(hours: int = 24, limit: int = 5) -> list[dict]:
+    """
+    Get tickers with the strongest sentiment (positive and negative) over the last N hours.
+    Returns: [{"ticker": str, "avg_score": float, "count": int}, ...]
+    sorted by absolute score descending — strongest signals first.
+    """
+    conn = get_db()
+    try:
+        cutoff = (datetime.utcnow() - timedelta(hours=hours)).isoformat()
+        rows = conn.execute(
+            "SELECT ticker, AVG(sentiment_score) as avg_score, COUNT(*) as cnt "
+            "FROM mentions WHERE created_at > ? AND sentiment_score IS NOT NULL "
+            "GROUP BY ticker HAVING cnt >= 2 "
+            "ORDER BY ABS(AVG(sentiment_score)) DESC LIMIT ?",
+            (cutoff, limit),
+        ).fetchall()
+        return [{"ticker": r["ticker"], "avg_score": round(r["avg_score"], 2), "count": r["cnt"]} for r in rows]
+    finally:
+        conn.close()
+
+
+def get_most_mentioned(hours: int = 24, limit: int = 5) -> list[dict]:
+    """
+    Get the most mentioned tickers over the last N hours.
+    Returns: [{"ticker": str, "count": int}, ...] sorted by count descending.
+    """
+    conn = get_db()
+    try:
+        cutoff = (datetime.utcnow() - timedelta(hours=hours)).isoformat()
+        rows = conn.execute(
+            "SELECT ticker, COUNT(*) as cnt "
+            "FROM mentions WHERE created_at > ? "
+            "GROUP BY ticker ORDER BY cnt DESC LIMIT ?",
+            (cutoff, limit),
+        ).fetchall()
+        return [{"ticker": r["ticker"], "count": r["cnt"]} for r in rows]
+    finally:
+        conn.close()
+
+
+def get_recent_headlines(hours: int = 24, limit: int = 10) -> list[dict]:
+    """
+    Get recent RSS headlines with their sentiment scores.
+    Returns: [{"ticker": str, "source_name": str, "content": str, "sentiment_score": float|None}, ...]
+    """
+    conn = get_db()
+    try:
+        cutoff = (datetime.utcnow() - timedelta(hours=hours)).isoformat()
+        rows = conn.execute(
+            "SELECT ticker, source_name, content, sentiment_score "
+            "FROM mentions WHERE source = 'rss' AND created_at > ? "
+            "ORDER BY created_at DESC LIMIT ?",
+            (cutoff, limit),
+        ).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
 # Initialize on import
 init_db()

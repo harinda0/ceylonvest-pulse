@@ -484,12 +484,31 @@ def main():
     from apscheduler.triggers.cron import CronTrigger
     from apscheduler.triggers.interval import IntervalTrigger
     from services.news_scraper import scrape as scrape_news
+    from services.twitter_scraper import scrape as scrape_twitter
     from services.sentiment_scorer import score_pending
+    from services.morning_brief import send_morning_brief
 
     def scrape_and_score():
-        """Run RSS scrape then score any new unscored mentions."""
+        """Run all scrapers then score any new unscored mentions."""
         scrape_news()
+        try:
+            scrape_twitter()
+        except Exception as e:
+            logger.error(f"Twitter scrape failed: {e}")
         score_pending()
+
+    import asyncio
+
+    def _send_brief_sync():
+        """Wrapper to run the async morning brief from the sync scheduler."""
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                asyncio.ensure_future(send_morning_brief(app.bot))
+            else:
+                loop.run_until_complete(send_morning_brief(app.bot))
+        except RuntimeError:
+            asyncio.run(send_morning_brief(app.bot))
 
     scheduler = BackgroundScheduler()
     scheduler.add_job(
@@ -503,6 +522,12 @@ def main():
         IntervalTrigger(minutes=30),
         id="rss_scrape_and_score",
         name="Scrape RSS feeds then score sentiment",
+    )
+    scheduler.add_job(
+        _send_brief_sync,
+        CronTrigger(hour=3, minute=0, timezone="UTC"),  # 8:30 AM SLT = 3:00 AM UTC
+        id="morning_brief",
+        name="Send morning brief to free channel",
     )
     scheduler.start()
 
