@@ -479,9 +479,11 @@ def main():
     # Message handler — catch all text, try to resolve as ticker
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_ticker_message))
 
-    # Schedule daily cache clear at 9:15 AM SLT (3:45 AM UTC)
+    # Schedule background jobs
     from apscheduler.schedulers.background import BackgroundScheduler
     from apscheduler.triggers.cron import CronTrigger
+    from apscheduler.triggers.interval import IntervalTrigger
+    from services.news_scraper import scrape as scrape_news
 
     scheduler = BackgroundScheduler()
     scheduler.add_job(
@@ -490,7 +492,19 @@ def main():
         id="daily_cache_clear",
         name="Clear stock data cache before market open",
     )
+    scheduler.add_job(
+        scrape_news,
+        IntervalTrigger(minutes=30),
+        id="rss_news_scraper",
+        name="Scrape RSS news feeds for ticker mentions",
+    )
     scheduler.start()
+
+    # Run initial scrape on startup
+    try:
+        scrape_news()
+    except Exception as e:
+        logger.error(f"Initial news scrape failed: {e}")
 
     logger.info("CeylonVest Pulse bot starting...")
     app.run_polling()

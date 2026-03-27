@@ -55,6 +55,12 @@ def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (user_id, ticker)
             );
+
+            CREATE TABLE IF NOT EXISTS scraped_urls (
+                url TEXT PRIMARY KEY,
+                source_name TEXT,
+                scraped_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
         """)
         conn.commit()
     finally:
@@ -271,6 +277,33 @@ def get_watchlist(user_id: int) -> list[str]:
             (user_id,),
         ).fetchall()
         return [r["ticker"] for r in rows]
+    finally:
+        conn.close()
+
+
+def url_already_scraped(url: str) -> bool:
+    """Check if a URL has already been processed by a scraper."""
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT 1 FROM scraped_urls WHERE url = ?", (url,)
+        ).fetchone()
+        return row is not None
+    finally:
+        conn.close()
+
+
+def mark_url_scraped(url: str, source_name: str = None):
+    """Mark a URL as processed so it won't be scraped again."""
+    url = url[:500] if url else ""
+    source_name = source_name[:200] if source_name else None
+    conn = get_db()
+    try:
+        conn.execute(
+            "INSERT OR IGNORE INTO scraped_urls (url, source_name) VALUES (?, ?)",
+            (url, source_name),
+        )
+        conn.commit()
     finally:
         conn.close()
 
