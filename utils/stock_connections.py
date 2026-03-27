@@ -95,12 +95,7 @@ DIRECTOR_MAP: dict[str, dict] = {
         "tickers": ["CTC", "SAMP"],
         "note": "President's Counsel, sits on multiple blue-chip boards.",
     },
-    "dimantha seneviratne": {
-        "name": "Dimantha Seneviratne",
-        "title": "Group CEO, Expolanka Holdings",
-        "tickers": ["EXPO"],
-        "note": "Heads Sri Lanka's largest logistics company.",
-    },
+    # Dimantha Seneviratne — Expolanka (EXPO) delisted from CSE
     "deshamanya d.h.s. jayawardena": {
         "name": "D.H.S. Jayawardena",
         "title": "Founder, Stassen Group",
@@ -110,7 +105,7 @@ DIRECTOR_MAP: dict[str, dict] = {
     "ajith de silva": {
         "name": "Ajith de Silva",
         "title": "Director, Multiple companies",
-        "tickers": ["CINS", "AINS"],
+        "tickers": ["CINS", "ALLI"],
         "note": "Insurance sector figure, Ceylinco group connections.",
     },
     "rajan asirwatham": {
@@ -152,9 +147,9 @@ DIRECTOR_MAP: dict[str, dict] = {
     "mahesh amalean": {
         "name": "Mahesh Amalean",
         "title": "Co-founder, MAS Holdings",
-        "tickers": ["EXPO"],
+        "tickers": [],
         "note": "Apparel sector titan, MAS Holdings (unlisted). "
-                "Connected to EXPO via apparel logistics.",
+                "Expolanka (EXPO) delisted.",
     },
     "jan pieris": {
         "name": "Jan Pieris",
@@ -412,15 +407,7 @@ KEYWORD_MAP: dict[str, dict[str, list[str]]] = {
         "policy": ["excise duty", "tobacco tax", "sin tax",
                    "health regulation", "cigarette tax", "budget"],
     },
-    "NEST": {
-        "direct": ["nestle", "nestle lanka", "nescafe", "maggi", "milo",
-                    "nestomalt"],
-        "sector": ["consumer", "FMCG", "food and beverage"],
-        "supply_chain": ["dairy", "milk powder", "coffee", "noodles",
-                         "consumer goods", "infant nutrition"],
-        "macro": ["consumer spending", "inflation", "food prices"],
-        "policy": ["import duty", "food safety", "price control"],
-    },
+    # NEST (Nestle Lanka) — delisted from CSE, keywords removed
     "CARG": {
         "direct": ["cargills", "cargills ceylon", "cargills food city",
                     "cargills quality foods", "kotmale", "KFC sri lanka",
@@ -470,20 +457,7 @@ KEYWORD_MAP: dict[str, dict[str, list[str]]] = {
     },
 
     # --- EXPORT / LOGISTICS ---
-    "EXPO": {
-        "direct": ["expolanka", "expolanka holdings", "expo freight",
-                    "classic travel", "metro recycling"],
-        "sector": ["logistics", "freight", "export services"],
-        "supply_chain": ["air freight", "sea freight", "shipping",
-                         "supply chain", "apparel logistics", "3PL",
-                         "warehouse", "container"],
-        "macro": ["global trade", "shipping rates", "export growth",
-                  "freight demand", "US consumer demand", "EU trade",
-                  "suez canal", "red sea", "container shortage"],
-        "policy": ["export incentive", "free trade agreement", "FTA",
-                   "customs regulation", "trade policy", "GSP plus",
-                   "import export policy"],
-    },
+    # EXPO (Expolanka) — delisted from CSE, keywords removed
 
     # --- RUBBER / MANUFACTURING ---
     "DIPD": {
@@ -584,7 +558,7 @@ KEYWORD_MAP: dict[str, dict[str, list[str]]] = {
     },
 
     # --- CONSTRUCTION / INFRASTRUCTURE ---
-    "AAF": {
+    "AEL": {
         "direct": ["access engineering", "access engineering PLC"],
         "sector": ["construction", "infrastructure", "engineering"],
         "supply_chain": ["road construction", "bridge", "highway",
@@ -606,7 +580,7 @@ KEYWORD_MAP: dict[str, dict[str, list[str]]] = {
     },
 
     # --- INSURANCE ---
-    "AINS": {
+    "ALLI": {
         "direct": ["allianz insurance", "allianz lanka"],
         "sector": ["insurance", "financial services"],
         "supply_chain": ["motor insurance", "life insurance",
@@ -643,7 +617,7 @@ KEYWORD_MAP: dict[str, dict[str, list[str]]] = {
         "macro": ["interest rate", "property market", "housing demand"],
         "policy": ["CBSL rate", "housing policy", "SME lending"],
     },
-    "SFL": {
+    "CRL": {
         "direct": ["softlogic finance", "softlogic"],
         "sector": ["finance", "leasing"],
         "supply_chain": ["vehicle leasing", "hire purchase"],
@@ -687,7 +661,7 @@ SECTOR_THEMES: dict[str, dict] = {
         "keywords": ["interest rate", "CBSL rate", "SDFR", "SLFR", "SRR",
                      "monetary policy", "rate cut", "rate hike",
                      "policy rate", "standing deposit", "standing lending"],
-        "tickers": ["COMB", "SAMP", "HNB", "LFIN", "SFL", "LOLC",
+        "tickers": ["COMB", "SAMP", "HNB", "LFIN", "CRL", "LOLC",
                     "AAF", "CFVF", "LDEV"],
         "impact": "Rate cuts are bullish for banks (wider NIM) and finance "
                   "companies (cheaper funding). Rate hikes tighten lending.",
@@ -714,9 +688,9 @@ SECTOR_THEMES: dict[str, dict] = {
                      "housing", "real estate", "infrastructure",
                      "highway", "megaproject", "building permits",
                      "apartment", "condominium"],
-        "tickers": ["TKYO", "TILE", "RCL", "ALUM", "AAF"],
+        "tickers": ["TKYO", "TILE", "RCL", "ALUM", "AEL"],
         "impact": "Construction boom drives cement, tiles, aluminium demand. "
-                  "Government infrastructure spending benefits AAF directly.",
+                  "Government infrastructure spending benefits AEL directly.",
     },
     "tea_plantation": {
         "keywords": ["tea price", "tea auction", "colombo tea auction",
@@ -741,8 +715,8 @@ SECTOR_THEMES: dict[str, dict] = {
                      "depreciation", "appreciation", "forex reserves",
                      "balance of payments", "current account",
                      "remittances", "worker remittances"],
-        "tickers": ["EXPO", "LIOC", "COMB", "SAMP", "HNB", "DIPD", "WATA"],
-        "impact": "Rupee depreciation benefits exporters (EXPO, DIPD, WATA) "
+        "tickers": ["LIOC", "COMB", "SAMP", "HNB", "DIPD", "WATA"],
+        "impact": "Rupee depreciation benefits exporters (DIPD, WATA) "
                   "but hurts importers (LIOC). Banks affected via forex trading "
                   "and revaluation gains/losses.",
     },
@@ -750,7 +724,7 @@ SECTOR_THEMES: dict[str, dict] = {
         "keywords": ["consumer spending", "retail sales", "inflation",
                      "CPI", "cost of living", "food prices",
                      "household spending", "discretionary spending"],
-        "tickers": ["CTC", "NEST", "CARG", "DIST", "CCS", "KPHL", "RCL"],
+        "tickers": ["CTC", "GRAN", "CARG", "DIST", "CCS", "KPHL", "RCL"],
         "impact": "Higher consumer spending lifts FMCG and retail. High "
                   "inflation squeezes volumes but can boost nominal revenue.",
     },
@@ -758,7 +732,7 @@ SECTOR_THEMES: dict[str, dict] = {
         "keywords": ["vehicle import", "vehicle tax", "motor car",
                      "vehicle permit", "import duty vehicle",
                      "EV policy", "electric vehicle", "hybrid"],
-        "tickers": ["LFIN", "SFL", "AINS", "CINS"],
+        "tickers": ["LFIN", "CRL", "ALLI", "CINS"],
         "impact": "Vehicle import liberalization drives leasing demand and "
                   "motor insurance premiums. Import restrictions reduce both.",
     },
@@ -767,18 +741,18 @@ SECTOR_THEMES: dict[str, dict] = {
                      "iran tension", "china", "india", "US",
                      "trade war", "global recession", "middle east",
                      "ukraine", "russia"],
-        "tickers": ["LIOC", "EXPO", "COMB", "SAMP", "HNB"],
-        "impact": "Geopolitical tensions disrupt supply chains (EXPO), spike "
-                  "oil prices (LIOC), and create forex/credit uncertainty (banks).",
+        "tickers": ["LIOC", "COMB", "SAMP", "HNB"],
+        "impact": "Geopolitical tensions spike oil prices (LIOC) and "
+                  "create forex/credit uncertainty (banks).",
     },
     "infrastructure": {
         "keywords": ["infrastructure", "port", "airport", "highway",
                      "railway", "bridge", "road construction",
                      "government capex", "ADB", "World Bank",
                      "Chinese loan", "port city"],
-        "tickers": ["JKH", "AAF", "TKYO", "SPEN"],
+        "tickers": ["JKH", "AEL", "TKYO", "SPEN"],
         "impact": "Government infrastructure spending directly benefits "
-                  "construction (AAF, TKYO) and port operators (JKH, SPEN).",
+                  "construction (AEL, TKYO) and port operators (JKH, SPEN).",
     },
     "IMF_fiscal": {
         "keywords": ["IMF", "fiscal policy", "government budget",
@@ -793,7 +767,7 @@ SECTOR_THEMES: dict[str, dict] = {
         "keywords": ["healthcare", "hospital", "pharmaceutical",
                      "drug import", "health policy", "epidemic",
                      "pandemic", "dengue", "vaccination"],
-        "tickers": ["DIPD", "SINS", "AINS", "CINS"],
+        "tickers": ["DIPD", "SINS", "ALLI", "CINS"],
         "impact": "Health crises drive PPE/glove demand (DIPD), healthcare "
                   "spending (SINS). Insurance claims rise during epidemics.",
     },
