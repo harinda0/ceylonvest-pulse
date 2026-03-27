@@ -4,6 +4,7 @@ Paste a ticker, get instant market intelligence.
 """
 
 import os
+import time
 import logging
 from dotenv import load_dotenv
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -16,7 +17,7 @@ from telegram.ext import (
     ContextTypes,
 )
 
-from utils.ticker_map import resolve_ticker, resolve_input, get_cse_symbol, get_sector, get_company_name
+from utils.ticker_map import resolve_ticker, resolve_input, get_cse_symbol, get_sector, get_company_name, TICKER_TO_CSE
 from services.cse_api import get_stock_data, compute_support_resistance, clear_cache
 from services.pulse_db import (
     get_mention_velocity,
@@ -32,6 +33,25 @@ from utils.card_generator import generate_main_card, generate_fundamentals_card,
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("pulse")
+
+# --- Rate limiting: max 5 requests per user per 60 seconds ---
+_user_timestamps: dict[int, list[float]] = {}
+RATE_LIMIT_MAX = 5
+RATE_LIMIT_WINDOW = 60  # seconds
+
+
+def _is_rate_limited(user_id: int) -> bool:
+    """Check if a user has exceeded the rate limit. Returns True if blocked."""
+    now = time.time()
+    timestamps = _user_timestamps.get(user_id, [])
+    # Prune old timestamps outside the window
+    timestamps = [t for t in timestamps if now - t < RATE_LIMIT_WINDOW]
+    if len(timestamps) >= RATE_LIMIT_MAX:
+        _user_timestamps[user_id] = timestamps
+        return True
+    timestamps.append(now)
+    _user_timestamps[user_id] = timestamps
+    return False
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -148,6 +168,11 @@ async def handle_ticker_message(update: Update, context: ContextTypes.DEFAULT_TY
 
     # Skip if it looks like a command or is too long
     if text.startswith("/") or len(text) > 50:
+        return
+
+    # Rate limiting
+    if _is_rate_limited(update.effective_user.id):
+        await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
         return
 
     result = resolve_input(text)
@@ -293,7 +318,13 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     action = parts[0]
     ticker = parts[1] if len(parts) > 1 else None
 
-    if not ticker:
+    if not ticker or ticker not in TICKER_TO_CSE:
+        await query.answer("Invalid ticker.")
+        return
+
+    # Rate limiting on callbacks too
+    if _is_rate_limited(query.from_user.id):
+        await query.answer("Too many requests. Please wait.")
         return
 
     if action == "fund":

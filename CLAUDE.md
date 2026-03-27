@@ -138,10 +138,36 @@ Build a retrieval-augmented generation (RAG) system over CSE annual reports:
 
 This is Phase 2. Phase 1 priorities remain: deploy to Railway, build scrapers (RSS, X, FB), sentiment scoring, morning brief, and real-time alerts.
 
+## Context management
+Between major features, use /clear to reset context. When working on scraper code, focus only on services/. When working on cards, focus only on utils/card_generator.py. Don't try to hold the entire project in context at once. Each subdirectory has its own CLAUDE.md with conventions specific to that area.
+
+## Git workflow
+- All new features should be built on feature branches, not main
+- Branch naming: `feat/description`, `fix/description`, `chore/description`
+- Pre-commit hook runs `py_compile` on all changed .py files
+- Never commit .env, API keys, database files, or test images
+- Merge to main only when feature is tested and working
+
+## Testing
+- Tests are in `tests/` — run with `PYTHONPATH=. python -m pytest tests/ -v`
+- CSE API tests use mocks (never hit live API in tests)
+- Card tests verify generation doesn't crash with missing/None data
+- All ticker map aliases must point to valid tickers (tested automatically)
+
+## Custom commands
+- `/new-scraper <source>` — scaffold a new data source scraper
+- `/new-card <name>` — scaffold a new Pillow card type
+- `/test-ticker <ticker>` — fetch live data and generate all cards
+- `/deploy` — commit, push, and verify Railway deployment
+
 ## Coding conventions
 - Python 3.11+ with type hints
 - Async where possible (the TG bot is fully async)
 - All scrapers should be fault-tolerant — wrap external calls in try/except, log errors, never crash the bot
+- Use `logger.error()` for errors, never `print()` — bare prints bypass log level control
+- Use `try/finally` for database connections to prevent leaks
+- Validate external API responses (check types, Content-Type header) before using
+- Rate limit all user-facing handlers (current: 5 req/user/60s)
 - Use the existing patterns in pulse_db.py for database operations
 - Card images use the dark theme palette defined in card_generator.py
 - Environment variables for all secrets (never hardcode)

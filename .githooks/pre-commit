@@ -1,0 +1,40 @@
+#!/bin/bash
+# Pre-commit hook: syntax check all changed .py files
+
+echo "Running Python syntax check..."
+
+# Get staged .py files
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$')
+
+if [ -z "$FILES" ]; then
+    exit 0
+fi
+
+FAILED=0
+
+for f in $FILES; do
+    python -m py_compile "$f" 2>&1
+    if [ $? -ne 0 ]; then
+        echo "SYNTAX ERROR in $f"
+        FAILED=1
+    fi
+done
+
+# Check for .env or credential files
+SECRETS=$(git diff --cached --name-only | grep -E '\.env$|credentials|secret|\.key$')
+if [ -n "$SECRETS" ]; then
+    echo ""
+    echo "BLOCKED: Refusing to commit potential secret files:"
+    echo "$SECRETS"
+    echo "If intentional, use git commit --no-verify"
+    exit 1
+fi
+
+if [ $FAILED -ne 0 ]; then
+    echo ""
+    echo "BLOCKED: Fix syntax errors before committing."
+    exit 1
+fi
+
+echo "Syntax check passed."
+exit 0

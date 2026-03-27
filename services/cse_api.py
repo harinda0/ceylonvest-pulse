@@ -171,9 +171,12 @@ def fetch_company_info(cse_symbol: str) -> dict | None:
             timeout=10,
         )
         resp.raise_for_status()
+        if "application/json" not in resp.headers.get("Content-Type", ""):
+            logger.warning(f"Non-JSON response from CSE API for {cse_symbol}")
+            return None
         return resp.json()
     except Exception as e:
-        print(f"[CSE API] Error fetching {cse_symbol}: {e}")
+        logger.error(f"Error fetching {cse_symbol}: {e}")
         return None
 
 
@@ -194,7 +197,7 @@ def fetch_price_history(cse_symbol: str) -> list | None:
         data = resp.json()
         return data if isinstance(data, list) else data.get("priceHistory", [])
     except Exception as e:
-        print(f"[CSE API] Error fetching price history {cse_symbol}: {e}")
+        logger.error(f"Error fetching price history {cse_symbol}: {e}")
         return None
 
 
@@ -209,7 +212,7 @@ def fetch_market_summary() -> dict | None:
         resp.raise_for_status()
         return resp.json()
     except Exception as e:
-        print(f"[CSE API] Error fetching market summary: {e}")
+        logger.error(f"Error fetching market summary: {e}")
         return None
 
 
@@ -233,8 +236,13 @@ def get_stock_data(ticker: str, cse_symbol: str, sector: str, company_name: str)
     if not info:
         return None
 
-    sym = info.get("reqSymbolInfo", {})
-    beta = info.get("reqSymbolBetaInfo", {})
+    sym = info.get("reqSymbolInfo")
+    if not isinstance(sym, dict):
+        logger.warning(f"Unexpected reqSymbolInfo type for {cse_symbol}: {type(sym)}")
+        return None
+    beta = info.get("reqSymbolBetaInfo")
+    if not isinstance(beta, dict):
+        beta = {}
 
     stock = StockData(
         ticker=ticker,

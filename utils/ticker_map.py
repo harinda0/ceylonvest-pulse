@@ -233,6 +233,9 @@ def resolve_ticker(text: str) -> str | None:
     """
     cleaned = text.strip().upper()
 
+    if not cleaned:
+        return None
+
     # Direct ticker match
     if cleaned in TICKER_TO_CSE:
         return cleaned
@@ -243,9 +246,11 @@ def resolve_ticker(text: str) -> str | None:
         return ALIASES[lower]
 
     # Partial match — check if input is contained in any alias
-    for alias, ticker in ALIASES.items():
-        if lower in alias or alias in lower:
-            return ticker
+    # Require at least 3 chars to prevent false positives
+    if len(lower) >= 3:
+        for alias, ticker in ALIASES.items():
+            if lower in alias or alias in lower:
+                return ticker
 
     return None
 
