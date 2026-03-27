@@ -36,6 +36,10 @@ FEEDS = [
         "name": "NewsWire",
         "url": "https://www.newswire.lk/feed",
     },
+    {
+        "name": "Lanka Biz Online",
+        "url": "https://www.lankabusinessonline.com/feed/",
+    },
 ]
 
 
