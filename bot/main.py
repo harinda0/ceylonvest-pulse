@@ -13,6 +13,7 @@ from telegram.ext import (
     CommandHandler,
     MessageHandler,
     CallbackQueryHandler,
+    ChatMemberHandler,
     filters,
     ContextTypes,
 )
@@ -40,6 +41,12 @@ RATE_LIMIT_MAX = 5
 RATE_LIMIT_WINDOW = 60  # seconds
 
 
+def _get_admin_id() -> int | None:
+    """Get the admin Telegram user ID from env."""
+    val = os.getenv("ADMIN_TELEGRAM_ID")
+    return int(val) if val else None
+
+
 def _is_rate_limited(user_id: int) -> bool:
     """Check if a user has exceeded the rate limit. Returns True if blocked."""
     now = time.time()
@@ -65,10 +72,11 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "  john keells\n"
         "  combank\n\n"
         "Commands:\n"
+        "/p TICKER — Look up any stock or director (works in groups)\n"
+        "/market — Today's market summary\n"
         "/watchlist — View your watchlist\n"
         "/addwatch TICKER — Add to watchlist\n"
         "/removewatch TICKER — Remove from watchlist\n"
-        "/market — Today's market summary\n"
         "/help — Show this message"
     )
     await update.message.reply_text(welcome)
@@ -159,44 +167,14 @@ async def removewatch_command(update: Update, context: ContextTypes.DEFAULT_TYPE
     await update.message.reply_text(f"Removed {ticker} from your watchlist.")
 
 
-async def handle_ticker_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def _send_ticker_card(update: Update, ticker: str):
     """
-    Handle any text message — try to resolve it as a ticker or director name.
-    This is the core interaction: paste ticker -> get card.
+    Shared helper: fetch data and send the main card with inline buttons.
+    Used by both the plain text handler and /p command.
     """
-    text = update.message.text.strip()
-
-    # Skip if it looks like a command or is too long
-    if text.startswith("/") or len(text) > 50:
-        return
-
-    # Rate limiting
-    if _is_rate_limited(update.effective_user.id):
-        await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
-        return
-
-    result = resolve_input(text)
-
-    # Director match — show summary of their holdings
-    if result["type"] == "director":
-        director = result["director"]
-        await send_director_summary(update, director)
-        return
-
-    ticker = result.get("ticker") if result["type"] == "ticker" else None
-    if not ticker:
-        # Don't respond to random messages — only respond if it kinda looks like a ticker
-        if len(text) <= 6 and text.isalpha():
-            await update.message.reply_text(
-                f"Ticker '{text.upper()}' not found.\n"
-                "Try the full company name (e.g., 'kapruka') or check the ticker code."
-            )
-        return
-
     # Show typing indicator
     await update.message.chat.send_action("upload_photo")
 
-    # Fetch stock data
     cse_symbol = get_cse_symbol(ticker)
     sector = get_sector(ticker)
     company_name = get_company_name(ticker)
@@ -246,7 +224,7 @@ async def handle_ticker_message(update: Update, context: ContextTypes.DEFAULT_TY
         pump_alert_text=pump_text,
     )
 
-    # Inline keyboard for detail cards
+    # Inline keyboard for detail cards + TradingView chart
     keyboard = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("Fundamentals", callback_data=f"fund_{ticker}"),
@@ -257,6 +235,9 @@ async def handle_ticker_message(update: Update, context: ContextTypes.DEFAULT_TY
             InlineKeyboardButton("Sentiment", callback_data=f"sent_{ticker}"),
         ],
         [
+            InlineKeyboardButton(
+                "Chart", url=f"https://www.tradingview.com/chart/?symbol=COSE:{ticker}"
+            ),
             InlineKeyboardButton("Add to watchlist", callback_data=f"watch_{ticker}"),
         ],
     ])
@@ -265,6 +246,84 @@ async def handle_ticker_message(update: Update, context: ContextTypes.DEFAULT_TY
         photo=card_buf,
         reply_markup=keyboard,
     )
+
+
+async def pulse_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /p and /pulse — command-based ticker lookup for groups."""
+    if not context.args:
+        await update.message.reply_text("Usage: /p KPHL or /p dhammika perera")
+        return
+
+    # Rate limiting
+    if _is_rate_limited(update.effective_user.id):
+        await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
+        return
+
+    query = " ".join(context.args)
+    result = resolve_input(query)
+
+    if result["type"] == "director":
+        await send_director_summary(update, result["director"])
+        return
+
+    ticker = result.get("ticker") if result["type"] == "ticker" else None
+    if not ticker:
+        await update.message.reply_text(
+            f"'{query}' not found.\n"
+            "Try a CSE ticker (e.g., /p KPHL) or company name (e.g., /p kapruka)."
+        )
+        return
+
+    await _send_ticker_card(update, ticker)
+
+
+async def brief_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /brief — admin-only, generate and send the morning brief here."""
+    admin_id = _get_admin_id()
+    if not admin_id or update.effective_user.id != admin_id:
+        await update.message.reply_text("This command is admin-only.")
+        return
+
+    from services.morning_brief import generate_brief
+    brief = generate_brief()
+    await update.message.reply_text(brief)
+
+
+async def handle_ticker_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Handle any text message — try to resolve it as a ticker or director name.
+    This is the core interaction: paste ticker -> get card.
+    """
+    text = update.message.text.strip()
+
+    # Skip if it looks like a command or is too long
+    if text.startswith("/") or len(text) > 50:
+        return
+
+    # Rate limiting
+    if _is_rate_limited(update.effective_user.id):
+        await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
+        return
+
+    result = resolve_input(text)
+
+    # Director match — show summary of their holdings
+    if result["type"] == "director":
+        director = result["director"]
+        await send_director_summary(update, director)
+        return
+
+    ticker = result.get("ticker") if result["type"] == "ticker" else None
+    if not ticker:
+        # Don't respond to random messages — only respond if it kinda looks like a ticker
+        if len(text) <= 6 and text.isalpha():
+            await update.message.reply_text(
+                f"Ticker '{text.upper()}' not found.\n"
+                "Try the full company name (e.g., 'kapruka') or check the ticker code."
+            )
+        return
+
+    await _send_ticker_card(update, ticker)
 
 
 async def send_director_summary(update: Update, director: dict):
@@ -424,6 +483,38 @@ async def send_insiders_text(query, ticker: str):
     await query.message.reply_text(text)
 
 
+async def handle_new_group(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Send welcome message when the bot is added to a new group."""
+    if update.my_chat_member is None:
+        return
+
+    new_status = update.my_chat_member.new_chat_member.status
+    old_status = update.my_chat_member.old_chat_member.status
+
+    # Only fire when transitioning into a group (member/admin) from non-member
+    if new_status not in ("member", "administrator"):
+        return
+    if old_status in ("member", "administrator"):
+        return
+
+    welcome = (
+        "Hey! I'm CeylonVest Pulse — your AI-powered CSE market intelligence assistant.\n\n"
+        "Here's what I can do:\n\n"
+        "/p KPHL — Get live price, market data & sentiment for any CSE stock\n\n"
+        "/p dhammika perera — See a director's full portfolio with live prices\n\n"
+        "/market — Today's market summary\n\n"
+        "/watchlist — Track your favorite stocks\n\n"
+        "I cover all stocks listed on the Colombo Stock Exchange.\n\n"
+        "Try it now — type /p JKH"
+    )
+
+    chat_id = update.my_chat_member.chat.id
+    try:
+        await context.bot.send_message(chat_id=chat_id, text=welcome)
+    except Exception as e:
+        logger.error(f"Failed to send group welcome to {chat_id}: {e}")
+
+
 async def send_sentiment_text(query, ticker: str):
     """Send sentiment deep dive as text."""
     velocity = get_mention_velocity(ticker)
@@ -472,6 +563,11 @@ def main():
     app.add_handler(CommandHandler("watchlist", watchlist_command))
     app.add_handler(CommandHandler("addwatch", addwatch_command))
     app.add_handler(CommandHandler("removewatch", removewatch_command))
+    app.add_handler(CommandHandler(["p", "pulse"], pulse_command))
+    app.add_handler(CommandHandler("brief", brief_command))
+
+    # Group welcome when bot is added
+    app.add_handler(ChatMemberHandler(handle_new_group, ChatMemberHandler.MY_CHAT_MEMBER))
 
     # Callback handler for inline buttons
     app.add_handler(CallbackQueryHandler(handle_callback))
