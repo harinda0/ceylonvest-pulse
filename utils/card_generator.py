@@ -1,6 +1,7 @@
 """
 CeylonVest Pulse Card Generator
 Premium fintech-style ticker cards with Inter font family.
+Sized at 800px wide for optimal mobile readability on Telegram.
 """
 
 from PIL import Image, ImageDraw, ImageFont
@@ -32,18 +33,18 @@ def _font(name: str, size: int) -> ImageFont.FreeTypeFont:
     return ImageFont.load_default()
 
 
-# Typography scale
-FONT_BRAND    = _font("Inter-Bold.ttf", 11)
-FONT_TICKER   = _font("InterDisplay-Bold.ttf", 26)
-FONT_COMPANY  = _font("Inter-Regular.ttf", 13)
-FONT_PRICE    = _font("InterDisplay-Bold.ttf", 34)
-FONT_CHANGE   = _font("Inter-SemiBold.ttf", 15)
-FONT_LABEL    = _font("Inter-Medium.ttf", 11)
-FONT_VALUE    = _font("Inter-SemiBold.ttf", 15)
-FONT_SECTION  = _font("Inter-SemiBold.ttf", 12)
-FONT_SMALL    = _font("Inter-Regular.ttf", 11)
-FONT_TINY     = _font("Inter-Regular.ttf", 10)
-FONT_ALERT    = _font("Inter-SemiBold.ttf", 12)
+# Typography scale — sized for 800px card width
+FONT_BRAND    = _font("Inter-Bold.ttf", 16)
+FONT_TICKER   = _font("InterDisplay-Bold.ttf", 36)
+FONT_COMPANY  = _font("Inter-Regular.ttf", 20)
+FONT_PRICE    = _font("InterDisplay-Bold.ttf", 42)
+FONT_CHANGE   = _font("Inter-SemiBold.ttf", 22)
+FONT_LABEL    = _font("Inter-Medium.ttf", 16)
+FONT_VALUE    = _font("Inter-SemiBold.ttf", 22)
+FONT_SECTION  = _font("Inter-SemiBold.ttf", 18)
+FONT_SMALL    = _font("Inter-Regular.ttf", 16)
+FONT_TINY     = _font("Inter-Regular.ttf", 15)
+FONT_ALERT    = _font("Inter-SemiBold.ttf", 18)
 
 
 # ==========================================================================
@@ -77,7 +78,7 @@ ALERT_BG     = (55, 22, 25)
 # Drawing helpers
 # ==========================================================================
 
-def _rounded_rect(draw, xy, fill, radius=8, outline=None):
+def _rounded_rect(draw, xy, fill, radius=10, outline=None):
     draw.rounded_rectangle(xy, radius=radius, fill=fill, outline=outline)
 
 
@@ -109,22 +110,23 @@ def _format_num(n, prefix="", suffix=""):
 
 
 def _draw_metric(draw, x, y, w, h, label, value, value_color=TEXT_PRIMARY):
-    _rounded_rect(draw, (x, y, x+w, y+h), BG_SURFACE, radius=6)
-    draw.text((x + 10, y + 8), label, fill=TEXT_MUTED, font=FONT_LABEL)
-    draw.text((x + 10, y + 24), value, fill=value_color, font=FONT_VALUE)
+    """Draw a metric box with label + value. Generous internal padding."""
+    _rounded_rect(draw, (x, y, x+w, y+h), BG_SURFACE, radius=8)
+    draw.text((x + 14, y + 12), label, fill=TEXT_MUTED, font=FONT_LABEL)
+    draw.text((x + 14, y + 34), value, fill=value_color, font=FONT_VALUE)
 
 
 def _draw_sparkline(draw, x, y, w, h, points, color):
     if not points or len(points) < 2:
         return
-    _rounded_rect(draw, (x, y, x+w, y+h), BG_ACCENT, radius=4)
+    _rounded_rect(draw, (x, y, x+w, y+h), BG_ACCENT, radius=6)
     values = [(lo + hi) / 2 for lo, hi in points if lo and hi]
     if len(values) < 2:
         return
     v_min = min(values) * 0.998
     v_max = max(values) * 1.002
     v_range = v_max - v_min if v_max > v_min else 1
-    pad_x, pad_y = 6, 6
+    pad_x, pad_y = 10, 10
     chart_w = w - 2 * pad_x
     chart_h = h - 2 * pad_y
     line_points = []
@@ -146,22 +148,22 @@ def _draw_sparkline(draw, x, y, w, h, points, color):
             draw.line([(cx, cy), (cx, bottom)], fill=dim, width=1)
     draw.line(line_points, fill=color, width=2, joint="curve")
     ex, ey = line_points[-1]
-    draw.ellipse((ex-3, ey-3, ex+3, ey+3), fill=color)
-    draw.ellipse((ex-5, ey-5, ex+5, ey+5), outline=color, width=1)
+    draw.ellipse((ex-4, ey-4, ex+4, ey+4), fill=color)
+    draw.ellipse((ex-6, ey-6, ex+6, ey+6), outline=color, width=1)
 
 
 def _draw_divider(draw, x, y, w, style="line"):
     if style == "line":
         draw.line([(x, y), (x + w, y)], fill=BORDER, width=1)
     elif style == "dots":
-        for dx in range(0, w, 8):
-            draw.ellipse((x+dx, y, x+dx+2, y+2), fill=BORDER)
+        for dx in range(0, w, 10):
+            draw.ellipse((x+dx, y, x+dx+3, y+3), fill=BORDER)
 
 
 def _draw_footer(draw, y, width, pad):
     inner = width - 2 * pad
     _draw_divider(draw, pad, y, inner, style="dots")
-    y += 8
+    y += 12
     draw.text((pad, y), "ceylonvest.com", fill=TEXT_DIM, font=FONT_TINY)
     draw.text((width - pad, y), "AI-powered market intelligence",
               fill=TEXT_DIM, font=FONT_TINY, anchor="rt")
@@ -169,11 +171,11 @@ def _draw_footer(draw, y, width, pad):
 
 def _draw_header(draw, y, width, pad, ticker, section_name, company_name=None):
     """Draw the standard card header: brand accent bar + section title."""
-    draw.rectangle([(0, 0), (width, 3)], fill=BRAND_ACCENT)
+    draw.rectangle([(0, 0), (width, 4)], fill=BRAND_ACCENT)
     draw.text((pad, y), f"{ticker} {section_name}", fill=TEXT_DIM, font=FONT_BRAND)
     if company_name:
         hw = draw.textlength(f"{ticker} {section_name}  ", font=FONT_BRAND)
-        draw.text((pad + hw, y), company_name, fill=TEXT_DIM, font=FONT_TINY)
+        draw.text((pad + hw, y + 1), company_name, fill=TEXT_DIM, font=FONT_TINY)
 
 
 # ==========================================================================
@@ -204,43 +206,52 @@ def generate_main_card(
     is_pump_alert: bool = False,
     pump_alert_text: str = "",
 ) -> BytesIO:
-    WIDTH = 520
-    PAD = 20
+    WIDTH = 800
+    PAD = 30
     INNER = WIDTH - 2 * PAD
+    SECTION_GAP = 20  # vertical gap between sections
     has_pe = pe_ratio is not None
     has_sparkline = sparkline_points and len(sparkline_points) >= 2
 
     # Calculate height
-    h = 18 + 20 + 8 + 34 + 8 + 44 + 14 + 54  # header through metrics
+    h = 24                    # top padding
+    h += 30                   # brand bar
+    h += SECTION_GAP
+    h += 48                   # ticker + company
+    h += 12
+    h += 52                   # price + change pill
+    h += SECTION_GAP
+    h += 66                   # metric boxes
     if has_sparkline:
-        h += 12 + 70
-    h += 14
+        h += SECTION_GAP + 90
+    h += SECTION_GAP
     if price_position_52w is not None:
-        h += 34 + 10
-    h += 1 + 12 + 68  # divider + sentiment
+        h += 50 + SECTION_GAP
+    h += 1 + SECTION_GAP      # divider
+    h += 100                   # sentiment section
     if is_pump_alert:
-        h += 10 + 42
-    h += 12 + 16 + 14  # footer
+        h += SECTION_GAP + 52
+    h += SECTION_GAP + 24 + 16  # footer
 
     img = Image.new("RGB", (WIDTH, h), BG)
     draw = ImageDraw.Draw(img)
-    y = 18
+    y = 24
 
     # Brand bar
-    draw.rectangle([(0, 0), (WIDTH, 3)], fill=BRAND_ACCENT)
+    draw.rectangle([(0, 0), (WIDTH, 4)], fill=BRAND_ACCENT)
     draw.text((PAD, y), "CEYLONVEST PULSE", fill=TEXT_DIM, font=FONT_BRAND)
     sector_text = sector.upper()
     stw = draw.textlength(sector_text, font=FONT_TINY)
-    pill_x = WIDTH - PAD - stw - 16
-    _rounded_rect(draw, (pill_x, y-2, WIDTH-PAD, y+15), BG_SURFACE, radius=8, outline=BORDER)
-    draw.text((pill_x + 8, y), sector_text, fill=TEXT_SECONDARY, font=FONT_TINY)
-    y += 24
+    pill_x = WIDTH - PAD - stw - 22
+    _rounded_rect(draw, (pill_x, y-3, WIDTH-PAD, y+20), BG_SURFACE, radius=10, outline=BORDER)
+    draw.text((pill_x + 11, y), sector_text, fill=TEXT_SECONDARY, font=FONT_TINY)
+    y += 30 + SECTION_GAP
 
     # Ticker + company
     draw.text((PAD, y), ticker, fill=TEXT_PRIMARY, font=FONT_TICKER)
     tw = draw.textlength(ticker, font=FONT_TICKER)
-    draw.text((PAD + tw + 10, y + 10), company_name, fill=TEXT_MUTED, font=FONT_COMPANY)
-    y += 38
+    draw.text((PAD + tw + 14, y + 14), company_name, fill=TEXT_MUTED, font=FONT_COMPANY)
+    y += 48 + 12
 
     # Price + change pill
     price_str = f"LKR {last_price:,.2f}"
@@ -249,52 +260,58 @@ def generate_main_card(
     sign = "+" if change >= 0 else ""
     pill_text = f"{sign}{change:.2f}  {sign}{change_pct:.2f}%"
     ptw = draw.textlength(pill_text, font=FONT_CHANGE)
-    cpx = PAD + pw + 14
-    _rounded_rect(draw, (cpx, y+8, cpx+ptw+16, y+30), _change_bg(change), radius=6)
-    draw.text((cpx + 8, y + 10), pill_text, fill=_change_color(change), font=FONT_CHANGE)
-    y += 48
+    cpx = PAD + pw + 20
+    _rounded_rect(draw, (cpx, y+10, cpx+ptw+24, y+38), _change_bg(change), radius=8)
+    draw.text((cpx + 12, y + 12), pill_text, fill=_change_color(change), font=FONT_CHANGE)
+    y += 52 + SECTION_GAP
 
-    # Metric boxes
+    # Metric boxes — taller with more internal padding
+    BOX_H = 62
     if has_pe:
-        box_w = (INNER - 18) // 4
+        box_w = (INNER - 24) // 4
+        gap = 8
         metrics = [("MKT CAP", _format_num(market_cap)), ("VOLUME", _format_num(volume)),
                    ("P/E", f"{pe_ratio:.1f}x"), ("SPREAD", f"{spread_pct:.1f}%" if spread_pct else "N/A")]
     else:
-        box_w = (INNER - 12) // 3
+        box_w = (INNER - 16) // 3
+        gap = 8
         metrics = [("MKT CAP", _format_num(market_cap)), ("VOLUME", _format_num(volume)),
                    ("SPREAD", f"{spread_pct:.1f}%" if spread_pct else "N/A")]
     for i, (lbl, val) in enumerate(metrics):
-        _draw_metric(draw, PAD + i*(box_w+6), y, box_w, 48, lbl, val)
-    y += 58
+        _draw_metric(draw, PAD + i*(box_w+gap), y, box_w, BOX_H, lbl, val)
+    y += BOX_H + 4
 
     # Sparkline
     if has_sparkline:
-        draw.text((PAD, y-2), "PRICE TREND", fill=TEXT_MUTED, font=FONT_LABEL)
-        draw.text((WIDTH-PAD, y-2), f"Today: {low:.1f} – {high:.1f}",
+        y += SECTION_GAP
+        draw.text((PAD, y), "PRICE TREND", fill=TEXT_MUTED, font=FONT_LABEL)
+        draw.text((WIDTH-PAD, y), f"Today: {low:.1f} – {high:.1f}",
                   fill=TEXT_MUTED, font=FONT_TINY, anchor="rt")
-        y += 14
-        _draw_sparkline(draw, PAD, y, INNER, 60, sparkline_points,
+        y += 22
+        _draw_sparkline(draw, PAD, y, INNER, 80, sparkline_points,
                        GREEN if change >= 0 else RED)
-        y += 66
+        y += 84
 
     # 52-week range
     if price_position_52w is not None:
+        y += SECTION_GAP
         draw.text((PAD, y), "52-WEEK RANGE", fill=TEXT_MUTED, font=FONT_LABEL)
         draw.text((WIDTH-PAD, y), f"{price_position_52w:.0f}%",
                   fill=TEXT_SECONDARY, font=FONT_LABEL, anchor="rt")
-        y += 16
-        _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+6), BG_ACCENT, radius=3)
-        fill_w = max(6, int(INNER * price_position_52w / 100))
+        y += 22
+        _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+8), BG_ACCENT, radius=4)
+        fill_w = max(8, int(INNER * price_position_52w / 100))
         bar_c = GREEN if price_position_52w > 50 else AMBER if price_position_52w > 25 else RED
-        _rounded_rect(draw, (PAD, y, PAD+fill_w, y+6), bar_c, radius=3)
-        y += 9
+        _rounded_rect(draw, (PAD, y, PAD+fill_w, y+8), bar_c, radius=4)
+        y += 12
         draw.text((PAD, y), f"{low_52w:.1f}", fill=TEXT_DIM, font=FONT_TINY)
         draw.text((WIDTH-PAD, y), f"{high_52w:.1f}", fill=TEXT_DIM, font=FONT_TINY, anchor="rt")
-        y += 14
+        y += 20
 
     # Divider
+    y += SECTION_GAP // 2
     _draw_divider(draw, PAD, y, INNER)
-    y += 14
+    y += SECTION_GAP
 
     # Sentiment
     draw.text((PAD, y), "PULSE SENTIMENT", fill=TEXT_MUTED, font=FONT_LABEL)
@@ -302,48 +319,48 @@ def generate_main_card(
         sc = GREEN if sentiment_score > 0.1 else RED if sentiment_score < -0.1 else AMBER
         score_str = f"{sentiment_score:+.2f}"
         stw = draw.textlength(score_str, font=FONT_VALUE)
-        sx = WIDTH - PAD - stw - 12
+        sx = WIDTH - PAD - stw - 18
         sbg = GREEN_DIM if sentiment_score > 0.1 else RED_DIM if sentiment_score < -0.1 else BG_SURFACE
-        _rounded_rect(draw, (sx, y-2, WIDTH-PAD, y+16), sbg, radius=6)
-        draw.text((sx + 6, y), score_str, fill=sc, font=FONT_VALUE)
-    y += 22
+        _rounded_rect(draw, (sx, y-3, WIDTH-PAD, y+22), sbg, radius=8)
+        draw.text((sx + 9, y), score_str, fill=sc, font=FONT_VALUE)
+    y += 30
     bar_w = INNER
-    _rounded_rect(draw, (PAD, y, PAD+bar_w, y+4), BG_ACCENT, radius=2)
+    _rounded_rect(draw, (PAD, y, PAD+bar_w, y+6), BG_ACCENT, radius=3)
     if sentiment_score is not None:
         fill_pct = (sentiment_score + 1) / 2
-        fill_w = max(4, int(bar_w * fill_pct))
+        fill_w = max(6, int(bar_w * fill_pct))
         sc = GREEN if sentiment_score > 0.1 else RED if sentiment_score < -0.1 else AMBER
-        _rounded_rect(draw, (PAD, y, PAD+fill_w, y+4), sc, radius=2)
-    y += 12
+        _rounded_rect(draw, (PAD, y, PAD+fill_w, y+6), sc, radius=3)
+    y += 18
 
     mc_str = str(mention_count_24h)
     draw.text((PAD, y), mc_str, fill=TEXT_PRIMARY, font=FONT_VALUE)
     mcw = draw.textlength(mc_str, font=FONT_VALUE)
-    draw.text((PAD+mcw+4, y+3), "mentions 24h", fill=TEXT_MUTED, font=FONT_TINY)
+    draw.text((PAD+mcw+6, y+4), "mentions 24h", fill=TEXT_MUTED, font=FONT_SMALL)
     vel_str = f"{mention_velocity:.1f}x"
     vel_c = AMBER if mention_velocity >= 3 else TEXT_PRIMARY
     mid = PAD + INNER // 2
     draw.text((mid, y), vel_str, fill=vel_c, font=FONT_VALUE)
     vw = draw.textlength(vel_str, font=FONT_VALUE)
-    draw.text((mid+vw+4, y+3), "vs avg", fill=TEXT_MUTED, font=FONT_TINY)
-    draw.text((WIDTH-PAD, y+3), f"prev {prev_close:.2f}", fill=TEXT_DIM,
-              font=FONT_TINY, anchor="rt")
-    y += 24
+    draw.text((mid+vw+6, y+4), "vs avg", fill=TEXT_MUTED, font=FONT_SMALL)
+    draw.text((WIDTH-PAD, y+4), f"prev {prev_close:.2f}", fill=TEXT_DIM,
+              font=FONT_SMALL, anchor="rt")
+    y += 30
 
     # Pump alert
     if is_pump_alert:
-        y += 4
-        _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+36), ALERT_BG, radius=6, outline=RED)
-        draw.ellipse((PAD+12, y+14, PAD+18, y+20), fill=RED)
-        draw.text((PAD+24, y+10), "PUMP ALERT", fill=RED, font=FONT_ALERT)
+        y += SECTION_GAP // 2
+        _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+48), ALERT_BG, radius=8, outline=RED)
+        draw.ellipse((PAD+16, y+19, PAD+24, y+27), fill=RED)
+        draw.text((PAD+32, y+13), "PUMP ALERT", fill=RED, font=FONT_ALERT)
         atw = draw.textlength("PUMP ALERT  ", font=FONT_ALERT)
-        draw.text((PAD+24+atw, y+11),
+        draw.text((PAD+32+atw, y+15),
                   pump_alert_text or "High velocity, concentrated sources",
                   fill=TEXT_SECONDARY, font=FONT_SMALL)
-        y += 42
+        y += 52
 
     # Footer
-    y += 4
+    y += SECTION_GAP // 2
     _draw_footer(draw, y, WIDTH, PAD)
 
     buf = BytesIO()
@@ -369,9 +386,11 @@ def generate_fundamentals_card(
     foreign_net: str | None,
     broker_coverage: str | None,
 ) -> BytesIO:
-    WIDTH = 520
-    PAD = 20
+    WIDTH = 800
+    PAD = 30
     INNER = WIDTH - 2 * PAD
+    SECTION_GAP = 20
+    BOX_H = 62
 
     has_data = any(v is not None for v in [eps, book_value, nav, pb_ratio,
                                             div_yield, foreign_pct])
@@ -383,59 +402,59 @@ def generate_fundamentals_card(
             "This will be available once we connect\n"
             "to CSE quarterly filings.")
 
-    HEIGHT = 340
+    HEIGHT = 480
     img = Image.new("RGB", (WIDTH, HEIGHT), BG)
     draw = ImageDraw.Draw(img)
-    y = 18
+    y = 24
 
     _draw_header(draw, y, WIDTH, PAD, ticker, "FUNDAMENTALS")
-    y += 28
+    y += 30 + SECTION_GAP
 
     # 2x2 grid
-    box_w = (INNER - 6) // 2
-    _draw_metric(draw, PAD, y, box_w, 48, "EPS (TTM)",
+    box_w = (INNER - 8) // 2
+    _draw_metric(draw, PAD, y, box_w, BOX_H, "EPS (TTM)",
                  f"LKR {eps:.2f}" if eps else "N/A")
-    _draw_metric(draw, PAD+box_w+6, y, box_w, 48, "BOOK VALUE",
+    _draw_metric(draw, PAD+box_w+8, y, box_w, BOX_H, "BOOK VALUE",
                  f"LKR {book_value:.2f}" if book_value else "N/A")
-    y += 56
-    _draw_metric(draw, PAD, y, box_w, 48, "NAV / SHARE",
+    y += BOX_H + 10
+    _draw_metric(draw, PAD, y, box_w, BOX_H, "NAV / SHARE",
                  f"LKR {nav:.2f}" if nav else "N/A")
-    _draw_metric(draw, PAD+box_w+6, y, box_w, 48, "P/B RATIO",
+    _draw_metric(draw, PAD+box_w+8, y, box_w, BOX_H, "P/B RATIO",
                  f"{pb_ratio:.2f}x" if pb_ratio else "N/A",
                  GREEN if pb_ratio and pb_ratio < 1 else TEXT_PRIMARY)
-    y += 56
+    y += BOX_H + SECTION_GAP
 
     # Dividend row
-    _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+48), BG_SURFACE, radius=6)
-    draw.text((PAD+10, y+8), "DIV YIELD", fill=TEXT_MUTED, font=FONT_LABEL)
-    draw.text((PAD+10, y+24), f"{div_yield:.1f}%" if div_yield else "N/A",
+    _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+BOX_H), BG_SURFACE, radius=8)
+    draw.text((PAD+14, y+12), "DIV YIELD", fill=TEXT_MUTED, font=FONT_LABEL)
+    draw.text((PAD+14, y+34), f"{div_yield:.1f}%" if div_yield else "N/A",
               fill=GREEN if div_yield and div_yield > 2 else TEXT_PRIMARY, font=FONT_VALUE)
-    draw.text((WIDTH-PAD-10, y+8), "NEXT EX-DATE", fill=TEXT_MUTED,
+    draw.text((WIDTH-PAD-14, y+12), "NEXT EX-DATE", fill=TEXT_MUTED,
               font=FONT_LABEL, anchor="rt")
-    draw.text((WIDTH-PAD-10, y+24), div_ex_date or "N/A",
+    draw.text((WIDTH-PAD-14, y+34), div_ex_date or "N/A",
               fill=TEXT_PRIMARY, font=FONT_VALUE, anchor="rt")
-    y += 56
+    y += BOX_H + SECTION_GAP
 
     # Foreign/local bar
-    _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+56), BG_SURFACE, radius=6)
-    draw.text((PAD+10, y+8), "FOREIGN / LOCAL RATIO", fill=TEXT_MUTED, font=FONT_LABEL)
-    bar_y = y + 26
-    bar_w = INNER - 100
-    _rounded_rect(draw, (PAD+10, bar_y, PAD+10+bar_w, bar_y+6), BG_ACCENT, radius=3)
+    _rounded_rect(draw, (PAD, y, WIDTH-PAD, y+72), BG_SURFACE, radius=8)
+    draw.text((PAD+14, y+12), "FOREIGN / LOCAL RATIO", fill=TEXT_MUTED, font=FONT_LABEL)
+    bar_y = y + 36
+    bar_w = INNER - 160
+    _rounded_rect(draw, (PAD+14, bar_y, PAD+14+bar_w, bar_y+8), BG_ACCENT, radius=4)
     if foreign_pct:
         f_w = int(bar_w * foreign_pct / 100)
-        _rounded_rect(draw, (PAD+10, bar_y, PAD+10+f_w, bar_y+6), BLUE, radius=3)
-        _rounded_rect(draw, (PAD+10+f_w, bar_y, PAD+10+bar_w, bar_y+6), GREEN, radius=3)
+        _rounded_rect(draw, (PAD+14, bar_y, PAD+14+f_w, bar_y+8), BLUE, radius=4)
+        _rounded_rect(draw, (PAD+14+f_w, bar_y, PAD+14+bar_w, bar_y+8), GREEN, radius=4)
     if foreign_pct and local_pct:
         ratio_text = f"{foreign_pct:.0f}% / {local_pct:.0f}%"
     elif foreign_pct:
         ratio_text = f"{foreign_pct:.0f}% foreign"
     else:
         ratio_text = "N/A"
-    draw.text((WIDTH-PAD-10, bar_y), ratio_text, fill=TEXT_MUTED, font=FONT_SMALL, anchor="rt")
+    draw.text((WIDTH-PAD-14, bar_y+1), ratio_text, fill=TEXT_MUTED, font=FONT_SMALL, anchor="rt")
     if foreign_net:
-        draw.text((PAD+10, bar_y+14), foreign_net, fill=TEXT_MUTED, font=FONT_TINY)
-    y += 64
+        draw.text((PAD+14, bar_y+16), foreign_net, fill=TEXT_MUTED, font=FONT_TINY)
+    y += 80
 
     # Footer
     _draw_footer(draw, y, WIDTH, PAD)
@@ -447,24 +466,24 @@ def generate_fundamentals_card(
 
 
 def _generate_coming_soon_card(ticker: str, section: str, message: str) -> BytesIO:
-    WIDTH = 520
-    PAD = 20
-    HEIGHT = 200
+    WIDTH = 800
+    PAD = 30
+    HEIGHT = 300
 
     img = Image.new("RGB", (WIDTH, HEIGHT), BG)
     draw = ImageDraw.Draw(img)
-    y = 18
+    y = 24
 
     _draw_header(draw, y, WIDTH, PAD, ticker, section)
-    y += 36
+    y += 44
 
-    _rounded_rect(draw, (PAD, y, WIDTH-PAD, HEIGHT-32), BG_SURFACE, radius=8)
+    _rounded_rect(draw, (PAD, y, WIDTH-PAD, HEIGHT-40), BG_SURFACE, radius=10)
     for i, line in enumerate(message.split("\n")):
         color = TEXT_SECONDARY if i == 0 else TEXT_MUTED
         font = FONT_SECTION if i == 0 else FONT_SMALL
-        draw.text((PAD + 16, y + 12 + i * 20), line, fill=color, font=font)
+        draw.text((PAD + 24, y + 18 + i * 28), line, fill=color, font=font)
 
-    _draw_footer(draw, HEIGHT - 26, WIDTH, PAD)
+    _draw_footer(draw, HEIGHT - 34, WIDTH, PAD)
 
     buf = BytesIO()
     img.save(buf, format="PNG", quality=95)
@@ -502,9 +521,11 @@ def generate_technicals_card(
     price_position_52w: float | None,
     spread_pct: float | None,
 ) -> BytesIO:
-    WIDTH = 520
-    PAD = 20
+    WIDTH = 800
+    PAD = 30
     INNER = WIDTH - 2 * PAD
+    SECTION_GAP = 20
+    BOX_H = 62
 
     # Count valid range rows
     ranges = [
@@ -518,26 +539,28 @@ def generate_technicals_card(
                     if lo and hi and lo > 0 and hi > 0]
 
     # Calculate height
-    h = 18          # top pad
-    h += 22         # header
-    h += 44         # price
-    h += 6
-    h += 16         # "PRICE RANGES" label
-    h += len(valid_ranges) * 28 + 8
-    h += 56         # support/resistance
-    h += 8
-    h += 56         # metrics row
+    h = 24                          # top padding
+    h += 30                         # header
+    h += SECTION_GAP
+    h += 52                         # price
+    h += SECTION_GAP
+    h += 22                         # "PRICE RANGES" label
+    h += len(valid_ranges) * 36 + 12
+    h += SECTION_GAP
+    h += BOX_H                      # support/resistance
+    h += SECTION_GAP
+    h += BOX_H                      # metrics row
     if price_position_52w is not None:
-        h += 8 + 34
-    h += 12 + 16 + 14  # footer
+        h += SECTION_GAP + 46
+    h += SECTION_GAP + 24 + 16      # footer
 
     img = Image.new("RGB", (WIDTH, h), BG)
     draw = ImageDraw.Draw(img)
-    y = 18
+    y = 24
 
     # Header
     _draw_header(draw, y, WIDTH, PAD, ticker, "TECHNICALS", company_name)
-    y += 26
+    y += 30 + SECTION_GAP
 
     # Price + change pill
     price_str = f"LKR {last_price:,.2f}"
@@ -546,59 +569,59 @@ def generate_technicals_card(
     sign = "+" if change >= 0 else ""
     pill_text = f"{sign}{change:.2f}  {sign}{change_pct:.2f}%"
     ptw = draw.textlength(pill_text, font=FONT_CHANGE)
-    cpx = PAD + pw + 14
-    _rounded_rect(draw, (cpx, y+8, cpx+ptw+16, y+30), _change_bg(change), radius=6)
-    draw.text((cpx + 8, y + 10), pill_text, fill=_change_color(change), font=FONT_CHANGE)
-    y += 48
+    cpx = PAD + pw + 20
+    _rounded_rect(draw, (cpx, y+10, cpx+ptw+24, y+38), _change_bg(change), radius=8)
+    draw.text((cpx + 12, y + 12), pill_text, fill=_change_color(change), font=FONT_CHANGE)
+    y += 52 + SECTION_GAP
 
     # Range rows
     draw.text((PAD, y), "PRICE RANGES", fill=TEXT_MUTED, font=FONT_LABEL)
-    y += 18
+    y += 24
 
-    label_w = 40
-    bar_start = PAD + label_w + 8
-    bar_end = WIDTH - PAD - 70
+    label_w = 60
+    low_val_w = 80
+    bar_start = PAD + label_w + low_val_w + 12
+    bar_end = WIDTH - PAD - 100
     bar_w = bar_end - bar_start
 
     for label, r_low, r_high in valid_ranges:
-        draw.text((PAD, y + 4), label, fill=TEXT_MUTED, font=FONT_SMALL)
-        draw.text((bar_start - 4, y + 4), f"{r_low:.1f}",
-                  fill=TEXT_MUTED, font=FONT_SMALL, anchor="rt")
+        draw.text((PAD, y + 6), label, fill=TEXT_MUTED, font=FONT_SMALL)
+        draw.text((PAD + label_w + low_val_w, y + 6), f"{r_low:.1f}",
+                  fill=TEXT_DIM, font=FONT_SMALL, anchor="rt")
 
-        bar_y = y + 8
-        _rounded_rect(draw, (bar_start, bar_y, bar_start+bar_w, bar_y+6), BG_ACCENT, radius=3)
+        bar_y = y + 12
+        _rounded_rect(draw, (bar_start, bar_y, bar_start+bar_w, bar_y+8), BG_ACCENT, radius=4)
 
         bar_color = GREEN if change >= 0 else RED
         if r_high > r_low and r_low <= last_price <= r_high:
             pos = (last_price - r_low) / (r_high - r_low)
-            fill_w = max(4, int(bar_w * pos))
-            _rounded_rect(draw, (bar_start, bar_y, bar_start+fill_w, bar_y+6), bar_color, radius=3)
+            fill_w = max(6, int(bar_w * pos))
+            _rounded_rect(draw, (bar_start, bar_y, bar_start+fill_w, bar_y+8), bar_color, radius=4)
             dot_x = bar_start + fill_w
-            draw.ellipse((dot_x-3, bar_y-1, dot_x+3, bar_y+7), fill=TEXT_PRIMARY)
+            draw.ellipse((dot_x-4, bar_y-2, dot_x+4, bar_y+10), fill=TEXT_PRIMARY)
         elif last_price > r_high:
-            _rounded_rect(draw, (bar_start, bar_y, bar_start+bar_w, bar_y+6), GREEN, radius=3)
+            _rounded_rect(draw, (bar_start, bar_y, bar_start+bar_w, bar_y+8), GREEN, radius=4)
         elif last_price < r_low:
-            _rounded_rect(draw, (bar_start, bar_y, bar_start+4, bar_y+6), RED, radius=3)
+            _rounded_rect(draw, (bar_start, bar_y, bar_start+6, bar_y+8), RED, radius=4)
 
-        draw.text((bar_start + bar_w + 6, y + 4), f"{r_high:.1f}",
+        draw.text((bar_start + bar_w + 10, y + 6), f"{r_high:.1f}",
                   fill=TEXT_MUTED, font=FONT_SMALL)
-        y += 28
+        y += 36
 
-    y += 4
+    y += 8 + SECTION_GAP // 2
 
     # Support / Resistance
-    box_w = (INNER - 6) // 2
+    box_w = (INNER - 8) // 2
     s_text = f"LKR {support:.2f}" if support else "N/A"
     s_color = GREEN if support and last_price > support else TEXT_PRIMARY
-    _draw_metric(draw, PAD, y, box_w, 48, "SUPPORT (MTD LOW)", s_text, s_color)
+    _draw_metric(draw, PAD, y, box_w, BOX_H, "SUPPORT (MTD LOW)", s_text, s_color)
 
     r_text = f"LKR {resistance:.2f}" if resistance else "N/A"
     r_color = RED if resistance and last_price < resistance else TEXT_PRIMARY
-    _draw_metric(draw, PAD+box_w+6, y, box_w, 48, "RESISTANCE (MTD HIGH)", r_text, r_color)
-    y += 56
+    _draw_metric(draw, PAD+box_w+8, y, box_w, BOX_H, "RESISTANCE (MTD HIGH)", r_text, r_color)
+    y += BOX_H + SECTION_GAP
 
     # Beta + volume metrics
-    y += 4
     metrics = []
     if beta_aspi is not None:
         metrics.append(("BETA (ASPI)", f"{beta_aspi:.2f}",
@@ -613,25 +636,27 @@ def generate_technicals_card(
 
     visible = metrics[:4]
     if visible:
-        m_box_w = (INNER - 6 * (len(visible) - 1)) // len(visible)
+        m_gap = 8
+        m_box_w = (INNER - m_gap * (len(visible) - 1)) // len(visible)
         for i, (m_lbl, m_val, m_clr) in enumerate(visible):
-            _draw_metric(draw, PAD + i*(m_box_w+6), y, m_box_w, 48, m_lbl, m_val, m_clr)
-    y += 56
+            _draw_metric(draw, PAD + i*(m_box_w+m_gap), y, m_box_w, BOX_H, m_lbl, m_val, m_clr)
+    y += BOX_H
 
     # 52W position bar
     if price_position_52w is not None:
+        y += SECTION_GAP
         draw.text((PAD, y), "52-WEEK POSITION", fill=TEXT_MUTED, font=FONT_LABEL)
         draw.text((WIDTH-PAD, y), f"{price_position_52w:.0f}%",
                   fill=TEXT_SECONDARY, font=FONT_LABEL, anchor="rt")
-        y += 16
-        _rounded_rect(draw, (PAD, y, PAD+INNER, y+8), BG_ACCENT, radius=4)
-        fill_w = max(6, int(INNER * price_position_52w / 100))
+        y += 22
+        _rounded_rect(draw, (PAD, y, PAD+INNER, y+10), BG_ACCENT, radius=5)
+        fill_w = max(8, int(INNER * price_position_52w / 100))
         bar_c = GREEN if price_position_52w > 50 else AMBER if price_position_52w > 25 else RED
-        _rounded_rect(draw, (PAD, y, PAD+fill_w, y+8), bar_c, radius=4)
-        y += 16
+        _rounded_rect(draw, (PAD, y, PAD+fill_w, y+10), bar_c, radius=5)
+        y += 18
 
     # Footer
-    y += 4
+    y += SECTION_GAP // 2
     _draw_footer(draw, y, WIDTH, PAD)
 
     buf = BytesIO()
