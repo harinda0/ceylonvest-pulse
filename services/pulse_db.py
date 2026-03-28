@@ -86,6 +86,16 @@ def add_mention(ticker: str, source: str, source_name: str = None,
         conn.close()
 
 
+def get_total_mentions() -> int:
+    """Count all mentions in the database."""
+    conn = get_db()
+    try:
+        row = conn.execute("SELECT COUNT(*) as cnt FROM mentions").fetchone()
+        return row["cnt"] if row else 0
+    finally:
+        conn.close()
+
+
 def get_mention_count(ticker: str, hours: int = 24) -> int:
     """Count mentions of a ticker in the last N hours."""
     conn = get_db()

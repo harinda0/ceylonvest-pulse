@@ -1,188 +1,144 @@
 """Tests for the morning brief generator."""
 
 import pytest
-from unittest.mock import patch, MagicMock, AsyncMock
+from unittest.mock import patch, AsyncMock
+from io import BytesIO
 from services.morning_brief import (
     generate_brief,
+    generate_brief_image,
     send_morning_brief,
-    _sentiment_bar,
-    _format_market_section,
-    _format_sentiment_section,
-    _format_buzz_section,
-    _format_alerts_section,
-    _format_headlines_section,
+    _collect_market_data,
+    _collect_movers,
+    _count_data_points,
 )
 
 
-class TestSentimentBar:
-    def test_strong_bullish(self):
-        assert _sentiment_bar(0.8) == "++++"
+# --- Data quality gate tests ---
 
-    def test_moderate_bullish(self):
-        assert _sentiment_bar(0.3) == "+++"
+class TestCountDataPoints:
+    def test_empty(self):
+        assert _count_data_points(None, [], [], []) == 0
 
-    def test_slight_bullish(self):
-        assert _sentiment_bar(0.1) == "++"
+    def test_market_only(self):
+        market = {"aspi": {"value": 1}, "snp": {"value": 2}, "turnover": 1e9}
+        assert _count_data_points(market, [], [], []) == 3
 
-    def test_neutral(self):
-        assert _sentiment_bar(0.0) == "~"
+    def test_with_movers(self):
+        market = {"aspi": {"value": 1}}
+        movers = [{"ticker": "JKH", "score": 0.5, "count": 5, "name": "JKH"}]
+        assert _count_data_points(market, movers, [], []) == 2
 
-    def test_slight_bearish(self):
-        assert _sentiment_bar(-0.1) == "--"
-
-    def test_moderate_bearish(self):
-        assert _sentiment_bar(-0.3) == "---"
-
-    def test_strong_bearish(self):
-        assert _sentiment_bar(-0.8) == "----"
-
-
-class TestFormatMarketSection:
-    @patch("services.morning_brief.fetch_market_summary")
-    def test_with_data(self, mock_fetch):
-        mock_fetch.return_value = {
-            "aspi": {"value": 12500.50, "change": 45.20, "percentage": 0.36},
-            "snp": {"value": 4100.00, "change": -12.30, "percentage": -0.30},
-            "trade": [[{"marketTurnover": 2.5e9, "marketTrades": 20000, "volumeOfTurnOverNumber": 1.2e8}]],
-            "status": {"status": "Market Closed"},
-        }
-        result = _format_market_section()
-        assert "ASPI" in result
-        assert "12,500.50" in result
-        assert "S&P SL20" in result
-
-    @patch("services.morning_brief.fetch_market_summary", return_value=None)
-    def test_no_data(self, mock_fetch):
-        result = _format_market_section()
-        assert "unavailable" in result
+    def test_all_sections(self):
+        market = {"aspi": {"value": 1}, "snp": {"value": 2}}
+        movers = [{"ticker": "JKH"}]
+        alerts = [{"type": "spike"}]
+        headlines = [{"headline": "test"}]
+        assert _count_data_points(market, movers, alerts, headlines) == 5
 
 
-class TestFormatSentimentSection:
-    @patch("services.morning_brief.get_top_sentiment_movers")
-    def test_with_movers(self, mock_movers):
-        mock_movers.return_value = [
-            {"ticker": "JKH", "avg_score": 0.65, "count": 5},
-            {"ticker": "COMB", "avg_score": -0.40, "count": 3},
-        ]
-        result = _format_sentiment_section()
-        assert "JKH" in result
-        assert "Bullish" in result
-        assert "COMB" in result
-        assert "Bearish" in result
+class TestGenerateBriefImage:
+    @patch("services.morning_brief.get_total_mentions", return_value=2)
+    def test_skips_low_mentions(self, mock_total):
+        """Should return None if DB has < 5 mentions."""
+        result = generate_brief_image()
+        assert result is None
 
-    @patch("services.morning_brief.get_top_sentiment_movers", return_value=[])
-    def test_no_data(self, mock_movers):
-        result = _format_sentiment_section()
-        assert "No sentiment data" in result
+    @patch("services.morning_brief._collect_headlines", return_value=[])
+    @patch("services.morning_brief._collect_alerts", return_value=[])
+    @patch("services.morning_brief._collect_movers", return_value=[])
+    @patch("services.morning_brief._collect_market_data", return_value=None)
+    @patch("services.morning_brief.get_total_mentions", return_value=100)
+    def test_skips_insufficient_data(self, *mocks):
+        """Should return None if < 3 data points."""
+        result = generate_brief_image()
+        assert result is None
 
+    @patch("services.morning_brief._collect_headlines", return_value=[])
+    @patch("services.morning_brief._collect_alerts", return_value=[])
+    @patch("services.morning_brief._collect_movers", return_value=[
+        {"ticker": "JKH", "name": "John Keells", "score": 0.5, "count": 8},
+    ])
+    @patch("services.morning_brief._collect_market_data", return_value={
+        "aspi": {"value": 21000.0, "change": 45.0, "pct": 0.21},
+        "snp": {"value": 6000.0, "change": -10.0, "pct": -0.17},
+        "turnover": 2.5e9, "volume": 1.2e8, "trades": 20000,
+    })
+    @patch("services.morning_brief.get_total_mentions", return_value=100)
+    def test_generates_image(self, *mocks):
+        """Should generate a PNG image when enough data."""
+        result = generate_brief_image()
+        assert isinstance(result, BytesIO)
+        data = result.getvalue()
+        assert len(data) > 0
+        # PNG magic bytes
+        assert data[:4] == b'\x89PNG'
 
-class TestFormatBuzzSection:
-    @patch("services.morning_brief.get_most_mentioned")
-    def test_with_mentions(self, mock_mentioned):
-        mock_mentioned.return_value = [
-            {"ticker": "JKH", "count": 12},
-            {"ticker": "KPHL", "count": 8},
-        ]
-        result = _format_buzz_section()
-        assert "JKH" in result
-        assert "12 mentions" in result
-
-    @patch("services.morning_brief.get_most_mentioned", return_value=[])
-    def test_no_data(self, mock_mentioned):
-        result = _format_buzz_section()
-        assert "No mentions" in result
-
-
-class TestFormatAlertsSection:
-    @patch("services.morning_brief.get_mention_velocity")
-    @patch("services.morning_brief.get_most_mentioned")
-    def test_with_pump_alert(self, mock_mentioned, mock_velocity):
-        mock_mentioned.return_value = [{"ticker": "KPHL", "count": 20}]
-        mock_velocity.return_value = {
-            "count_24h": 20,
-            "avg_daily_30d": 2.0,
-            "velocity": 10.0,
-            "is_spike": True,
-            "is_pump_alert": True,
-            "concentration": {"max_pct": 80, "top_source": "x/@pumper"},
-        }
-        result = _format_alerts_section()
-        assert "PUMP ALERT" in result
-        assert "KPHL" in result
-
-    @patch("services.morning_brief.get_mention_velocity")
-    @patch("services.morning_brief.get_most_mentioned")
-    def test_with_spike(self, mock_mentioned, mock_velocity):
-        mock_mentioned.return_value = [{"ticker": "JKH", "count": 15}]
-        mock_velocity.return_value = {
-            "count_24h": 15,
-            "avg_daily_30d": 3.0,
-            "velocity": 5.0,
-            "is_spike": True,
-            "is_pump_alert": False,
-            "concentration": {"max_pct": 40, "top_source": "EconomyNext"},
-        }
-        result = _format_alerts_section()
-        assert "SPIKE" in result
-        assert "JKH" in result
-
-    @patch("services.morning_brief.get_most_mentioned", return_value=[])
-    def test_no_alerts(self, mock_mentioned):
-        result = _format_alerts_section()
-        assert "No unusual activity" in result
+    @patch("services.morning_brief._collect_headlines", return_value=[
+        {"ticker": "JKH", "source": "EconomyNext", "headline": "Record Q3 profit", "score": 0.72},
+    ])
+    @patch("services.morning_brief._collect_alerts", return_value=[
+        {"type": "pump", "ticker": "KPHL", "velocity": 8.0, "source": "x/@pumper", "pct": 80},
+    ])
+    @patch("services.morning_brief._collect_movers", return_value=[
+        {"ticker": "JKH", "name": "John Keells", "score": 0.65, "count": 5},
+        {"ticker": "COMB", "name": "Commercial Bank", "score": -0.40, "count": 3},
+    ])
+    @patch("services.morning_brief._collect_market_data", return_value={
+        "aspi": {"value": 21375.73, "change": -44.21, "pct": -0.21},
+        "snp": {"value": 5999.99, "change": -35.53, "pct": -0.59},
+        "turnover": 2.67e9, "volume": 1.45e8, "trades": 23796,
+    })
+    @patch("services.morning_brief.get_total_mentions", return_value=500)
+    def test_generates_full_image(self, *mocks):
+        """Should generate image with all sections populated."""
+        result = generate_brief_image()
+        assert isinstance(result, BytesIO)
+        assert len(result.getvalue()) > 1000  # reasonable PNG size
 
 
-class TestFormatHeadlinesSection:
-    @patch("services.morning_brief.get_recent_headlines")
-    def test_with_headlines(self, mock_headlines):
-        mock_headlines.return_value = [
-            {
-                "ticker": "JKH",
-                "source_name": "EconomyNext",
-                "content": "JKH reports record Q3 profit — Revenue up 15% year-on-year",
-                "sentiment_score": 0.72,
-            },
-        ]
-        result = _format_headlines_section()
-        assert "EconomyNext" in result
-        assert "JKH" in result
-        assert "+0.72" in result
-
-    @patch("services.morning_brief.get_recent_headlines", return_value=[])
-    def test_no_headlines(self, mock_headlines):
-        result = _format_headlines_section()
-        assert "No recent headlines" in result
-
+# --- Text brief tests (for /brief admin command) ---
 
 class TestGenerateBrief:
-    @patch("services.morning_brief._format_headlines_section", return_value="  headlines\n")
-    @patch("services.morning_brief._format_alerts_section", return_value="  No unusual activity detected.\n")
-    @patch("services.morning_brief._format_buzz_section", return_value="  JKH: 5 mentions\n")
-    @patch("services.morning_brief._format_sentiment_section", return_value="  JKH: +0.50\n")
-    @patch("services.morning_brief._format_market_section", return_value="  ASPI: 12,500\n")
-    def test_full_brief_structure(self, *mocks):
+    @patch("services.morning_brief._collect_headlines", return_value=[])
+    @patch("services.morning_brief._collect_movers", return_value=[])
+    @patch("services.morning_brief._collect_market_data", return_value={
+        "aspi": {"value": 12500.50, "change": 45.20, "pct": 0.36},
+        "snp": {"value": 4100.00, "change": -12.30, "pct": -0.30},
+        "turnover": 2.5e9,
+    })
+    def test_text_brief_structure(self, *mocks):
         brief = generate_brief()
         assert "CeylonVest Pulse" in brief
         assert "Morning Brief" in brief
-        assert "Market Snapshot" in brief
-        assert "Top Sentiment Movers" in brief
-        assert "Most Mentioned" in brief
-        assert "Alerts" in brief
-        assert "Key Headlines" in brief
+        assert "ASPI" in brief
+        assert "12,500.50" in brief
+        assert "S&P SL20" in brief
         assert "Not investment advice" in brief
 
+
+# --- Send tests ---
 
 class TestSendMorningBrief:
     @pytest.mark.asyncio
     @patch.dict("os.environ", {"PULSE_FREE_CHANNEL_ID": "-100123456"})
-    @patch("services.morning_brief.generate_brief", return_value="Test brief")
-    async def test_sends_to_channel(self, mock_brief):
+    @patch("services.morning_brief.generate_brief_image")
+    async def test_sends_image(self, mock_gen):
+        mock_gen.return_value = BytesIO(b"fake_png_data")
         bot = AsyncMock()
         result = await send_morning_brief(bot)
         assert result is True
-        bot.send_message.assert_called_once()
-        call_kwargs = bot.send_message.call_args
-        assert call_kwargs[1]["chat_id"] == "-100123456"
+        bot.send_photo.assert_called_once()
+        call_kwargs = bot.send_photo.call_args[1]
+        assert call_kwargs["chat_id"] == "-100123456"
+
+    @pytest.mark.asyncio
+    @patch.dict("os.environ", {"PULSE_FREE_CHANNEL_ID": "-100123456"})
+    @patch("services.morning_brief.generate_brief_image", return_value=None)
+    async def test_skips_when_no_data(self, mock_gen):
+        bot = AsyncMock()
+        result = await send_morning_brief(bot)
+        assert result is False
+        bot.send_photo.assert_not_called()
 
     @pytest.mark.asyncio
     @patch.dict("os.environ", {}, clear=True)
