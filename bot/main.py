@@ -95,33 +95,57 @@ async def market_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     data = fetch_market_summary()
     if not data:
-        await update.message.reply_text("Could not fetch market data. CSE may be closed.")
+        await update.message.reply_text("Could not fetch market data. Try again shortly.")
         return
 
-    # Format market summary
     text = "CSE Market Summary\n\n"
-    if "marketSummary" in data:
-        for idx in data["marketSummary"]:
-            name = idx.get("indexName", "")
-            value = idx.get("indexValue", 0)
-            change = idx.get("change", 0)
-            pct = idx.get("changePercentage", 0)
-            sign = "+" if change >= 0 else ""
-            arrow = "^" if change >= 0 else "v"
-            text += f"{arrow} {name}: {value:,.2f} ({sign}{change:,.2f} / {sign}{pct:.2f}%)\n"
 
-    # Trade volume/turnover
-    vol = data.get("shareVolume", 0)
-    trades = data.get("trades", 0)
-    if vol or trades:
+    # ASPI
+    aspi = data.get("aspi")
+    if aspi:
+        val = float(aspi.get("value", aspi.get("indexValue", 0)))
+        chg = float(aspi.get("change", 0))
+        pct = float(aspi.get("percentage", aspi.get("changePercentage", 0)))
+        sign = "+" if chg >= 0 else ""
+        text += f"ASPI: {val:,.2f} ({sign}{chg:,.2f} / {sign}{pct:.2f}%)\n"
+
+    # S&P SL20
+    snp = data.get("snp")
+    if snp:
+        val = float(snp.get("value", snp.get("indexValue", 0)))
+        chg = float(snp.get("change", 0))
+        pct = float(snp.get("percentage", snp.get("changePercentage", 0)))
+        sign = "+" if chg >= 0 else ""
+        text += f"S&P SL20: {val:,.2f} ({sign}{chg:,.2f} / {sign}{pct:.2f}%)\n"
+
+    # Trade summary
+    trade = data.get("trade")
+    if trade:
+        turnover = float(trade.get("turnover", trade.get("tradeVolume", 0)))
+        volume = float(trade.get("volume", trade.get("shareVolume", 0)))
+        trades = int(trade.get("trades", trade.get("noOfTrades", 0)))
         text += "\n"
-        if vol:
-            if vol >= 1e6:
-                text += f"Share Volume: {vol/1e6:.1f}M\n"
+        if turnover:
+            if turnover >= 1e9:
+                text += f"Turnover: LKR {turnover/1e9:.1f}B\n"
+            elif turnover >= 1e6:
+                text += f"Turnover: LKR {turnover/1e6:.1f}M\n"
             else:
-                text += f"Share Volume: {vol:,.0f}\n"
+                text += f"Turnover: LKR {turnover:,.0f}\n"
+        if volume:
+            if volume >= 1e6:
+                text += f"Volume: {volume/1e6:.1f}M shares\n"
+            else:
+                text += f"Volume: {volume:,.0f} shares\n"
         if trades:
-            text += f"Trades: {trades:,.0f}\n"
+            text += f"Trades: {trades:,}\n"
+
+    # Market status
+    status = data.get("status")
+    if status:
+        market_open = status.get("isOpen", status.get("marketOpen"))
+        if market_open is not None:
+            text += f"\nMarket Status: {'Open' if market_open else 'Closed'}\n"
 
     await update.message.reply_text(text)
 

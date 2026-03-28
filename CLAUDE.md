@@ -57,11 +57,16 @@ When a user pastes a ticker, the bot responds with a Pillow-generated PNG image 
 
 ### CSE API
 The CSE has no official API. We use reverse-engineered endpoints from cse.lk:
-- `POST https://www.cse.lk/api/companyInfoSummery` with `{"symbol": "KPHL.N0000"}` — **primary endpoint, working**
-- `POST https://www.cse.lk/api/tradeSummery` — **dead (404) as of March 2026**
-- `POST https://www.cse.lk/api/priceHistory` — **dead (404) as of March 2026**
-- `GET https://www.cse.lk/api/marketSummery` — working
-These endpoints require specific headers (see cse_api.py).
+- `POST /api/companyInfoSummery` with `{"symbol": "KPHL.N0000"}` — **primary stock data endpoint, working**
+- `POST /api/companyProfile` with `{"symbol": "KPHL.N0000"}` — **directors, business summary, auditors**
+- `POST /api/tradeSummary` — **lists all ~289 securities, working** (used by update_tickers.py)
+- `POST /api/aspiData` — **ASPI index value, change, percentage** (no body needed)
+- `POST /api/snpData` — **S&P SL20 index value, change, percentage** (no body needed)
+- `POST /api/dailyMarketSummery` — **turnover, volume, trades, market cap** (no body needed)
+- `POST /api/marketStatus` — **open/closed status** (no body needed)
+- `POST /api/allSectors` — **all 22 sector indices** (no body needed)
+- `POST /api/priceHistory` — **dead (404) as of March 2026**
+These endpoints require specific headers (see cse_api.py). No fundamentals (EPS, PE, NAV) are available from any CSE API endpoint.
 
 ### Caching
 Stock data from companyInfoSummery is cached in-memory:

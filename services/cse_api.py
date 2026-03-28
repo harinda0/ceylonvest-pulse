@@ -238,65 +238,62 @@ def fetch_price_history(cse_symbol: str) -> list | None:
         return None
 
 
+def _post_json(endpoint: str) -> dict | None:
+    """POST to a CSE API endpoint expecting JSON back, no body needed."""
+    json_headers = {
+        "User-Agent": HEADERS["User-Agent"],
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Origin": "https://www.cse.lk",
+        "Referer": "https://www.cse.lk/",
+    }
+    try:
+        resp = requests.post(f"{BASE_URL}{endpoint}", headers=json_headers, timeout=10)
+        resp.raise_for_status()
+        if "application/json" not in resp.headers.get("Content-Type", ""):
+            return None
+        return resp.json()
+    except Exception as e:
+        logger.error(f"Error fetching {endpoint}: {e}")
+        return None
+
+
 def fetch_market_summary() -> dict | None:
     """
-    Fetch overall market summary including ASPI, S&P SL20, and sector indices.
-    Uses POST /api/allSectors which returns all 22 indices (20 sectors + ASI + S&P SL20).
-    Also fetches trade summary from POST /api/marketSummery for volume/turnover.
+    Fetch overall market summary from 4 dedicated CSE API endpoints in parallel:
+    - POST /api/aspiData       → ASPI index value, change, percentage
+    - POST /api/snpData        → S&P SL20 index value, change, percentage
+    - POST /api/dailyMarketSummery → turnover, volume, trades, market cap
+    - POST /api/marketStatus   → open/closed status
+    Works 24/7 — returns last traded data even when market is closed.
     """
+    from concurrent.futures import ThreadPoolExecutor
+
+    endpoints = ["aspiData", "snpData", "dailyMarketSummery", "marketStatus"]
+    results = {}
+
     try:
-        # Sector indices (includes ASPI and S&P SL20)
-        resp = requests.post(
-            f"{BASE_URL}allSectors",
-            headers=HEADERS,
-            timeout=10,
-        )
-        resp.raise_for_status()
-        sectors = resp.json()
-        if not isinstance(sectors, list):
-            logger.warning("Unexpected allSectors response type")
-            return None
-
-        # Extract ASPI and S&P SL20 (last two items by convention)
-        main_indices = []
-        sector_indices = []
-        for s in sectors:
-            symbol = s.get("symbol", "")
-            entry = {
-                "indexName": s.get("indexName", s.get("name", "")),
-                "indexValue": s.get("indexValue", 0),
-                "change": s.get("change", 0),
-                "changePercentage": s.get("percentage", 0),
-            }
-            if symbol in ("ASI", "S&P SL20"):
-                main_indices.append(entry)
-            else:
-                sector_indices.append(entry)
-
-        # Trade summary (volume, turnover)
-        trade_data = {}
-        try:
-            resp2 = requests.post(
-                f"{BASE_URL}marketSummery",
-                headers=HEADERS,
-                timeout=10,
-            )
-            if resp2.status_code == 200:
-                trade_data = resp2.json()
-        except Exception:
-            pass
-
-        return {
-            "marketSummary": main_indices,
-            "sectorSummary": sector_indices,
-            "tradeVolume": trade_data.get("tradeVolume", 0),
-            "shareVolume": trade_data.get("shareVolume", 0),
-            "trades": trade_data.get("trades", 0),
-        }
-
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            futures = {ep: pool.submit(_post_json, ep) for ep in endpoints}
+            for ep, fut in futures.items():
+                results[ep] = fut.result()
     except Exception as e:
         logger.error(f"Error fetching market summary: {e}")
         return None
+
+    aspi = results.get("aspiData")
+    snp = results.get("snpData")
+
+    # Need at least one index to be useful
+    if not aspi and not snp:
+        return None
+
+    return {
+        "aspi": aspi,
+        "snp": snp,
+        "trade": results.get("dailyMarketSummery"),
+        "status": results.get("marketStatus"),
+    }
 
 
 def get_stock_data(ticker: str, cse_symbol: str, sector: str, company_name: str) -> StockData | None:
