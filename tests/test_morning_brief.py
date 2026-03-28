@@ -41,10 +41,10 @@ class TestFormatMarketSection:
     @patch("services.morning_brief.fetch_market_summary")
     def test_with_data(self, mock_fetch):
         mock_fetch.return_value = {
-            "marketSummary": [
-                {"indexName": "ASPI", "indexValue": 12500.50, "change": 45.20, "changePercentage": 0.36},
-                {"indexName": "S&P SL20", "indexValue": 4100.00, "change": -12.30, "changePercentage": -0.30},
-            ]
+            "aspi": {"value": 12500.50, "change": 45.20, "percentage": 0.36},
+            "snp": {"value": 4100.00, "change": -12.30, "percentage": -0.30},
+            "trade": [[{"marketTurnover": 2.5e9, "marketTrades": 20000, "volumeOfTurnOverNumber": 1.2e8}]],
+            "status": {"status": "Market Closed"},
         }
         result = _format_market_section()
         assert "ASPI" in result

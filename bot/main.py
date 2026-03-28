@@ -118,12 +118,13 @@ async def market_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         sign = "+" if chg >= 0 else ""
         text += f"S&P SL20: {val:,.2f} ({sign}{chg:,.2f} / {sign}{pct:.2f}%)\n"
 
-    # Trade summary
-    trade = data.get("trade")
-    if trade:
-        turnover = float(trade.get("turnover", trade.get("tradeVolume", 0)))
-        volume = float(trade.get("volume", trade.get("shareVolume", 0)))
-        trades = int(trade.get("trades", trade.get("noOfTrades", 0)))
+    # Trade summary (dailyMarketSummery returns list of lists)
+    trade_raw = data.get("trade")
+    if trade_raw and isinstance(trade_raw, list) and trade_raw and isinstance(trade_raw[0], list) and trade_raw[0]:
+        t = trade_raw[0][0]  # First entry of first list
+        turnover = float(t.get("marketTurnover", 0))
+        volume = float(t.get("volumeOfTurnOverNumber", 0))
+        trades = int(t.get("marketTrades", 0))
         text += "\n"
         if turnover:
             if turnover >= 1e9:
@@ -143,9 +144,9 @@ async def market_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Market status
     status = data.get("status")
     if status:
-        market_open = status.get("isOpen", status.get("marketOpen"))
-        if market_open is not None:
-            text += f"\nMarket Status: {'Open' if market_open else 'Closed'}\n"
+        status_text = status.get("status", "")
+        if status_text:
+            text += f"\nMarket Status: {status_text}\n"
 
     await update.message.reply_text(text)
 

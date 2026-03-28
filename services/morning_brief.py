@@ -49,17 +49,38 @@ def _sentiment_bar(score: float) -> str:
 def _format_market_section() -> str:
     """Section 1: Market indices snapshot."""
     data = fetch_market_summary()
-    if not data or "marketSummary" not in data:
+    if not data:
         return "Market data unavailable.\n"
 
     lines = []
-    for idx in data["marketSummary"]:
-        name = idx.get("indexName", "")
-        value = idx.get("indexValue", 0)
-        change = idx.get("change", 0)
-        pct = idx.get("changePercentage", 0)
-        sign = "+" if change >= 0 else ""
-        lines.append(f"  {name}: {value:,.2f} ({sign}{change:,.2f} / {sign}{pct:.2f}%)")
+
+    # ASPI
+    aspi = data.get("aspi")
+    if aspi:
+        val = float(aspi.get("value", aspi.get("indexValue", 0)))
+        chg = float(aspi.get("change", 0))
+        pct = float(aspi.get("percentage", aspi.get("changePercentage", 0)))
+        sign = "+" if chg >= 0 else ""
+        lines.append(f"  ASPI: {val:,.2f} ({sign}{chg:,.2f} / {sign}{pct:.2f}%)")
+
+    # S&P SL20
+    snp = data.get("snp")
+    if snp:
+        val = float(snp.get("value", snp.get("indexValue", 0)))
+        chg = float(snp.get("change", 0))
+        pct = float(snp.get("percentage", snp.get("changePercentage", 0)))
+        sign = "+" if chg >= 0 else ""
+        lines.append(f"  S&P SL20: {val:,.2f} ({sign}{chg:,.2f} / {sign}{pct:.2f}%)")
+
+    # Trade summary (dailyMarketSummery returns list of lists)
+    trade = data.get("trade")
+    if trade and isinstance(trade, list) and trade and isinstance(trade[0], list) and trade[0]:
+        t = trade[0][0]  # First entry of first list
+        turnover = float(t.get("marketTurnover", 0))
+        if turnover >= 1e9:
+            lines.append(f"  Turnover: LKR {turnover/1e9:.1f}B")
+        elif turnover >= 1e6:
+            lines.append(f"  Turnover: LKR {turnover/1e6:.1f}M")
 
     return "\n".join(lines) + "\n" if lines else "Market data unavailable.\n"
 
