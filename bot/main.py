@@ -625,7 +625,7 @@ async def send_sentiment_text(query, ticker: str):
     avg = get_avg_sentiment(ticker)
 
     text = f"{ticker} Sentiment Deep Dive\n\n"
-    text += f"Avg sentiment (24h): {avg if avg else 'No data'}\n"
+    text += f"Avg sentiment (24h): {avg:+.2f}\n" if avg is not None else "Avg sentiment (24h): No data\n"
     text += f"Mentions (24h): {velocity['count_24h']}\n"
     text += f"Velocity: {velocity['velocity']}x vs 30d avg\n\n"
 

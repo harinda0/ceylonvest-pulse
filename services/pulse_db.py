@@ -231,12 +231,17 @@ def get_avg_mentions_30d(ticker: str) -> float:
 def get_mention_velocity(ticker: str) -> dict:
     """
     Calculate mention velocity: current 24h count vs 30d daily average.
+
+    Minimum baseline: pump/spike alerts require avg_daily_30d >= 1.0.
+    This prevents false positives during the first few weeks when the
+    30-day baseline is near zero (any mention looks like a 30x spike).
+
     Returns: {
         "count_24h": int,
         "avg_daily_30d": float,
         "velocity": float (multiplier),
-        "is_spike": bool (>3x),
-        "is_pump_alert": bool (>3x AND concentrated)
+        "is_spike": bool (>3x AND baseline >= 1/day),
+        "is_pump_alert": bool (>3x AND baseline >= 1/day AND concentrated)
     }
     """
     count_24h = get_mention_count(ticker, hours=24)
@@ -245,12 +250,15 @@ def get_mention_velocity(ticker: str) -> dict:
     velocity = (count_24h / avg_30d) if avg_30d > 0 else 0
     concentration = get_source_concentration(ticker, hours=24)
 
+    # Need a meaningful baseline before flagging spikes/pumps
+    baseline_sufficient = avg_30d >= 1.0
+
     return {
         "count_24h": count_24h,
         "avg_daily_30d": round(avg_30d, 1),
         "velocity": round(velocity, 1),
-        "is_spike": velocity >= 3.0,
-        "is_pump_alert": velocity >= 3.0 and concentration.get("max_pct", 0) >= 60,
+        "is_spike": velocity >= 3.0 and baseline_sufficient,
+        "is_pump_alert": velocity >= 3.0 and baseline_sufficient and concentration.get("max_pct", 0) >= 60,
         "concentration": concentration,
     }
 
