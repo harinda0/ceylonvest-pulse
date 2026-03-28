@@ -841,6 +841,7 @@ def generate_report_card(
     ticker: str,
     report: dict,
     news_matches: list[dict] | None = None,
+    benchmarks: dict | None = None,
 ) -> BytesIO:
     """Generate an annual report summary card."""
     WIDTH = 800
@@ -856,11 +857,14 @@ def generate_report_card(
     risks = report.get("key_risks", [])
     outlook = report.get("chairman_outlook", "")
     updated = report.get("updated", "")
+    sector = report.get("sector", "")
 
     # Calculate height
     h = 24 + 50 + SECTION_GAP  # header
     h += BOX_H + 10 + BOX_H + SECTION_GAP  # financials 2x2
     h += BOX_H + SECTION_GAP  # ratios row
+    if benchmarks and benchmarks.get("metrics"):
+        h += 24  # benchmark annotation row
     if plans:
         h += 22 + len(plans[:4]) * 24 + SECTION_GAP
     if outlook:
@@ -937,7 +941,38 @@ def generate_report_card(
         dte_color = GREEN if dte < 0.5 else AMBER if dte < 1 else RED
     _draw_metric(draw, PAD + 2 * (box_w3 + 8), y, box_w3, BOX_H, "DEBT/EQUITY",
                  f"{dte:.2f}x" if dte is not None else "N/A", dte_color)
-    y += BOX_H + SECTION_GAP
+    y += BOX_H + 6
+
+    # Benchmark annotations below Row 3
+    if benchmarks and benchmarks.get("metrics"):
+        bm = benchmarks["metrics"]
+        sector_label = f"{sector} avg" if sector else "Sector avg"
+        anno_items = [
+            ("roe", roe, PAD, box_w3),
+            ("dividend_per_share", dps, PAD + box_w3 + 8, box_w3),
+            ("debt_to_equity", dte, PAD + 2 * (box_w3 + 8), box_w3),
+        ]
+        for metric_key, val, ax, aw in anno_items:
+            m = bm.get(metric_key)
+            if m and m.get("avg") is not None and m.get("count", 0) >= 2:
+                avg = m["avg"]
+                if metric_key == "roe":
+                    avg_text = f"{sector_label}: {avg:.1f}%"
+                elif metric_key == "debt_to_equity":
+                    avg_text = f"{sector_label}: {avg:.2f}x"
+                else:
+                    avg_text = f"{sector_label}: {avg:.2f}"
+                draw.text((ax + 14, y), avg_text, fill=TEXT_DIM, font=FONT_TINY)
+                if val is not None:
+                    higher_better = metric_key != "debt_to_equity"
+                    is_good = (val > avg) == higher_better
+                    icon = "+" if is_good else "-"
+                    icon_color = GREEN if is_good else RED
+                    tw = draw.textlength(avg_text, font=FONT_TINY)
+                    draw.text((ax + 14 + tw + 6, y), icon, fill=icon_color, font=FONT_TINY)
+        y += 18
+
+    y += SECTION_GAP - 6
 
     # Management plans
     if plans:
@@ -1147,6 +1182,193 @@ def generate_compare_card(
         y += ROW_H
 
     y += SECTION_GAP // 2
+    _draw_footer(draw, y, WIDTH, PAD)
+    actual_h = y + 34
+    img = img.crop((0, 0, WIDTH, actual_h))
+
+    buf = BytesIO()
+    img.save(buf, format="PNG", quality=95)
+    buf.seek(0)
+    return buf
+
+
+# ==========================================================================
+# Sector card
+# ==========================================================================
+
+def generate_sector_card(
+    sector: str,
+    companies: dict,  # {ticker: report_data}
+    benchmarks: dict,  # sector benchmark data
+) -> BytesIO:
+    """Generate a sector analysis card with benchmarks and company comparison."""
+    WIDTH = 800
+    PAD = 30
+    INNER = WIDTH - 2 * PAD
+    SECTION_GAP = 16
+    ROW_H = 36
+
+    bm = benchmarks.get("metrics", {})
+    n = benchmarks.get("company_count", len(companies))
+    tickers = list(companies.keys())
+
+    # Height calculation
+    h = 24 + 50 + SECTION_GAP  # header
+    h += 62 + 10 + 62 + SECTION_GAP  # benchmark summary (2 rows of 3 boxes)
+    h += 26  # table header
+    h += len(tickers) * ROW_H + SECTION_GAP  # company rows
+    h += 100  # best/worst section
+    h += 40  # footer
+
+    img = Image.new("RGB", (WIDTH, h), BG)
+    draw = ImageDraw.Draw(img)
+    y = 24
+
+    # Header
+    draw.rectangle([(0, 0), (WIDTH, 4)], fill=PURPLE)
+    draw.text((PAD, y), "SECTOR ANALYSIS", fill=TEXT_DIM, font=FONT_BRAND)
+    draw.text((WIDTH - PAD, y + 1), f"{n} companies", fill=TEXT_DIM, font=FONT_TINY, anchor="rt")
+    y += 26
+    draw.text((PAD, y), sector, fill=TEXT_PRIMARY, font=FONT_TICKER)
+    y += 32 + SECTION_GAP
+
+    # Benchmark boxes -- row 1: ROE, Revenue Growth, Profit Margin
+    box_w3 = (INNER - 16) // 3
+    BOX_H = 62
+    row1 = [
+        ("ROE", bm.get("roe"), "%"),
+        ("REVENUE GROWTH", bm.get("revenue_growth"), "%"),
+        ("PROFIT MARGIN", bm.get("profit_margin"), "%"),
+    ]
+    for i, (label, m, unit) in enumerate(row1):
+        x = PAD + i * (box_w3 + 8)
+        _rounded_rect(draw, (x, y, x + box_w3, y + BOX_H), BG_SURFACE, radius=8)
+        draw.text((x + 14, y + 8), f"AVG {label}", fill=TEXT_MUTED, font=FONT_LABEL)
+        if m and m.get("avg") is not None:
+            draw.text((x + 14, y + 30), f"{m['avg']:.1f}{unit}", fill=TEXT_PRIMARY, font=FONT_VALUE)
+            range_text = f"Range: {m['min']:.1f} to {m['max']:.1f}"
+            draw.text((x + 14, y + 48), range_text, fill=TEXT_DIM, font=FONT_TINY)
+        else:
+            draw.text((x + 14, y + 30), "N/A", fill=TEXT_MUTED, font=FONT_VALUE)
+    y += BOX_H + 10
+
+    # Row 2: EPS, D/E, DPS
+    row2 = [
+        ("EPS", bm.get("eps"), ""),
+        ("DEBT/EQUITY", bm.get("debt_to_equity"), "x"),
+        ("DPS", bm.get("dividend_per_share"), ""),
+    ]
+    for i, (label, m, unit) in enumerate(row2):
+        x = PAD + i * (box_w3 + 8)
+        _rounded_rect(draw, (x, y, x + box_w3, y + BOX_H), BG_SURFACE, radius=8)
+        draw.text((x + 14, y + 8), f"AVG {label}", fill=TEXT_MUTED, font=FONT_LABEL)
+        if m and m.get("avg") is not None:
+            fmt = f"{m['avg']:.2f}{unit}" if unit else f"LKR {m['avg']:.2f}"
+            draw.text((x + 14, y + 30), fmt, fill=TEXT_PRIMARY, font=FONT_VALUE)
+            if m.get("min") is not None:
+                range_text = f"Range: {m['min']:.2f} to {m['max']:.2f}"
+                draw.text((x + 14, y + 48), range_text, fill=TEXT_DIM, font=FONT_TINY)
+        else:
+            draw.text((x + 14, y + 30), "N/A", fill=TEXT_MUTED, font=FONT_VALUE)
+    y += BOX_H + SECTION_GAP
+
+    # Company comparison table
+    _draw_divider(draw, PAD, y, INNER)
+    y += 10
+
+    # Column positions
+    col_ticker = PAD + 10
+    col_name = PAD + 70
+    col_roe = PAD + INNER - 320
+    col_rev = PAD + INNER - 200
+    col_eps = PAD + INNER - 80
+
+    draw.text((col_ticker, y), "TICKER", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_roe, y), "ROE", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_rev, y), "REV GROWTH", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_eps, y), "EPS", fill=TEXT_DIM, font=FONT_LABEL)
+    y += 26
+
+    roe_avg = bm.get("roe", {}).get("avg")
+
+    for ticker in tickers:
+        data = companies[ticker]
+        fin = data.get("financials", {})
+
+        _rounded_rect(draw, (PAD, y, WIDTH - PAD, y + ROW_H - 2), BG_SURFACE, radius=4)
+
+        draw.text((col_ticker, y + 8), ticker, fill=TEXT_PRIMARY, font=FONT_SECTION)
+
+        # Company name (truncated)
+        name = data.get("company", "")
+        if len(name) > 22:
+            name = name[:19] + "..."
+        draw.text((col_name, y + 9), name, fill=TEXT_MUTED, font=FONT_TINY)
+
+        # ROE with color
+        roe = fin.get("roe")
+        if roe is not None:
+            roe_color = TEXT_PRIMARY
+            if roe_avg is not None:
+                roe_color = GREEN if roe > roe_avg else RED if roe < roe_avg * 0.7 else AMBER
+            draw.text((col_roe, y + 8), f"{roe:.1f}%", fill=roe_color, font=FONT_SECTION)
+        else:
+            draw.text((col_roe, y + 8), "N/A", fill=TEXT_DIM, font=FONT_SECTION)
+
+        # Revenue growth
+        rev = fin.get("revenue", {})
+        rev_yoy = rev.get("yoy_change") if isinstance(rev, dict) else None
+        if rev_yoy is not None:
+            sign = "+" if rev_yoy >= 0 else ""
+            color = GREEN if rev_yoy > 0 else RED
+            draw.text((col_rev, y + 8), f"{sign}{rev_yoy:.1f}%", fill=color, font=FONT_SECTION)
+        else:
+            draw.text((col_rev, y + 8), "N/A", fill=TEXT_DIM, font=FONT_SECTION)
+
+        # EPS
+        eps = fin.get("eps")
+        if eps is not None:
+            draw.text((col_eps, y + 8), f"{eps:.2f}", fill=TEXT_PRIMARY, font=FONT_SECTION)
+        else:
+            draw.text((col_eps, y + 8), "N/A", fill=TEXT_DIM, font=FONT_SECTION)
+
+        y += ROW_H
+
+    y += SECTION_GAP
+
+    # Best/worst performers
+    _draw_divider(draw, PAD, y, INNER)
+    y += 10
+    draw.text((PAD, y), "STANDOUT PERFORMERS", fill=TEXT_MUTED, font=FONT_LABEL)
+    y += 22
+
+    for metric_label, metric_key, fmt_fn, higher_is_better in [
+        ("ROE", "roe", lambda v: f"{v:.1f}%", True),
+        ("Rev Growth", "revenue_growth", lambda v: f"{v:+.1f}%", True),
+        ("EPS", "eps", lambda v: f"LKR {v:.2f}", True),
+    ]:
+        values = []
+        for t in tickers:
+            fin = companies[t].get("financials", {})
+            if metric_key == "revenue_growth":
+                rev = fin.get("revenue", {})
+                val = rev.get("yoy_change") if isinstance(rev, dict) else None
+            else:
+                val = fin.get(metric_key)
+            if val is not None:
+                values.append((t, val))
+        if len(values) >= 2:
+            best = max(values, key=lambda x: x[1]) if higher_is_better else min(values, key=lambda x: x[1])
+            worst = min(values, key=lambda x: x[1]) if higher_is_better else max(values, key=lambda x: x[1])
+            if best[0] != worst[0]:
+                draw.text((PAD + 8, y), f"Best {metric_label}:", fill=TEXT_MUTED, font=FONT_TINY)
+                draw.text((PAD + 130, y), f"{best[0]} ({fmt_fn(best[1])})", fill=GREEN, font=FONT_TINY)
+                draw.text((PAD + INNER // 2, y), f"Worst:", fill=TEXT_MUTED, font=FONT_TINY)
+                draw.text((PAD + INNER // 2 + 60, y), f"{worst[0]} ({fmt_fn(worst[1])})", fill=RED, font=FONT_TINY)
+                y += 22
+
+    # Footer
+    y += 8
     _draw_footer(draw, y, WIDTH, PAD)
     actual_h = y + 34
     img = img.crop((0, 0, WIDTH, actual_h))

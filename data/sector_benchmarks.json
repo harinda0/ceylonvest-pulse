@@ -1,0 +1,873 @@
+{
+  "Capital Goods": {
+    "company_count": 5,
+    "tickers": [
+      "JKH",
+      "RCL",
+      "ACL",
+      "DOCK",
+      "SIRA"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": -14.92,
+        "median": 12.18,
+        "min": -102,
+        "max": 17.96,
+        "count": 4
+      },
+      "eps": {
+        "avg": -10.57,
+        "median": 1.68,
+        "min": -38,
+        "max": 4.6,
+        "count": 3
+      },
+      "nav": {
+        "avg": 31.15,
+        "median": 38,
+        "min": 11.56,
+        "max": 43.9,
+        "count": 3
+      },
+      "dividend_per_share": {
+        "avg": 0.88,
+        "median": 0.88,
+        "min": 0.15,
+        "max": 1.6,
+        "count": 2
+      },
+      "debt_to_equity": {
+        "avg": 0.25,
+        "median": 0.25,
+        "min": 0.04,
+        "max": 0.47,
+        "count": 2
+      },
+      "revenue_growth": {
+        "avg": 4.76,
+        "median": 11,
+        "min": -28.3,
+        "max": 28.4,
+        "count": 5
+      },
+      "profit_margin": {
+        "avg": 4.89,
+        "median": 9.76,
+        "min": -11.62,
+        "max": 14.46,
+        "count": 5
+      }
+    }
+  },
+  "Retailing": {
+    "company_count": 3,
+    "tickers": [
+      "KPHL",
+      "SINS",
+      "DIMO"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 5.71,
+        "median": 5.71,
+        "min": -18,
+        "max": 29.42,
+        "count": 2
+      },
+      "eps": {
+        "avg": -44.81,
+        "median": -0.87,
+        "min": -137,
+        "max": 3.43,
+        "count": 3
+      },
+      "nav": {
+        "avg": 545.57,
+        "median": 13.67,
+        "min": 4.95,
+        "max": 1618.08,
+        "count": 3
+      },
+      "dividend_per_share": {
+        "avg": 0.98,
+        "median": 0.98,
+        "min": 0.98,
+        "max": 0.98,
+        "count": 1
+      },
+      "debt_to_equity": {
+        "avg": 20.73,
+        "median": 20.73,
+        "min": 4.86,
+        "max": 36.6,
+        "count": 2
+      },
+      "revenue_growth": {
+        "avg": 11.16,
+        "median": 14.9,
+        "min": -7.73,
+        "max": 26.3,
+        "count": 3
+      },
+      "profit_margin": {
+        "avg": -2.16,
+        "median": -2.61,
+        "min": -8.62,
+        "max": 4.74,
+        "count": 3
+      }
+    }
+  },
+  "Banks": {
+    "company_count": 5,
+    "tickers": [
+      "COMB",
+      "HNB",
+      "SEYB",
+      "SAMP",
+      "NDB"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 16.99,
+        "median": 17.93,
+        "min": 13.49,
+        "max": 19.51,
+        "count": 5
+      },
+      "eps": {
+        "avg": 37.2,
+        "median": 25.9,
+        "min": 19.05,
+        "max": 79.44,
+        "count": 5
+      },
+      "nav": {
+        "avg": 230.79,
+        "median": 198.3,
+        "min": 128.87,
+        "max": 472.74,
+        "count": 5
+      },
+      "dividend_per_share": {
+        "avg": 11.2,
+        "median": 10.4,
+        "min": 4.0,
+        "max": 20.0,
+        "count": 4
+      },
+      "debt_to_equity": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "revenue_growth": {
+        "avg": 14.84,
+        "median": 12.0,
+        "min": -1.19,
+        "max": 32.92,
+        "count": 5
+      },
+      "profit_margin": {
+        "avg": 14.62,
+        "median": 13.81,
+        "min": 11.24,
+        "max": 18.65,
+        "count": 5
+      }
+    }
+  },
+  "Consumer Durables & Apparel": {
+    "company_count": 1,
+    "tickers": [
+      "TJL"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 9.1,
+        "median": 9.1,
+        "min": 9.1,
+        "max": 9.1,
+        "count": 1
+      },
+      "eps": {
+        "avg": 3.88,
+        "median": 3.88,
+        "min": 3.88,
+        "max": 3.88,
+        "count": 1
+      },
+      "nav": {
+        "avg": 43.7,
+        "median": 43.7,
+        "min": 43.7,
+        "max": 43.7,
+        "count": 1
+      },
+      "dividend_per_share": {
+        "avg": 2.35,
+        "median": 2.35,
+        "min": 2.35,
+        "max": 2.35,
+        "count": 1
+      },
+      "debt_to_equity": {
+        "avg": 0.24,
+        "median": 0.24,
+        "min": 0.24,
+        "max": 0.24,
+        "count": 1
+      },
+      "revenue_growth": {
+        "avg": 10.0,
+        "median": 10,
+        "min": 10,
+        "max": 10,
+        "count": 1
+      },
+      "profit_margin": {
+        "avg": 4.17,
+        "median": 4.17,
+        "min": 4.17,
+        "max": 4.17,
+        "count": 1
+      }
+    }
+  },
+  "Materials": {
+    "company_count": 1,
+    "tickers": [
+      "ACME"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "eps": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "nav": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "dividend_per_share": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "debt_to_equity": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "revenue_growth": {
+        "avg": 8.2,
+        "median": 8.2,
+        "min": 8.2,
+        "max": 8.2,
+        "count": 1
+      },
+      "profit_margin": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      }
+    }
+  },
+  "Food Beverage & Tobacco": {
+    "company_count": 3,
+    "tickers": [
+      "RAL",
+      "LMF",
+      "HVA"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 3.5,
+        "median": 3.5,
+        "min": 3.5,
+        "max": 3.5,
+        "count": 1
+      },
+      "eps": {
+        "avg": 2.51,
+        "median": 2.51,
+        "min": 2.51,
+        "max": 2.51,
+        "count": 1
+      },
+      "nav": {
+        "avg": 72.27,
+        "median": 72.27,
+        "min": 72.27,
+        "max": 72.27,
+        "count": 1
+      },
+      "dividend_per_share": {
+        "avg": 0.63,
+        "median": 0.63,
+        "min": 0.63,
+        "max": 0.63,
+        "count": 1
+      },
+      "debt_to_equity": {
+        "avg": 11.9,
+        "median": 11.9,
+        "min": 11.9,
+        "max": 11.9,
+        "count": 1
+      },
+      "revenue_growth": {
+        "avg": 21.56,
+        "median": 21.56,
+        "min": 13.43,
+        "max": 29.7,
+        "count": 2
+      },
+      "profit_margin": {
+        "avg": 0.96,
+        "median": 0.96,
+        "min": -3.39,
+        "max": 5.31,
+        "count": 2
+      }
+    }
+  },
+  "Real Estate (6010)": {
+    "company_count": 1,
+    "tickers": [
+      "PLR"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 12.0,
+        "median": 12.0,
+        "min": 12.0,
+        "max": 12.0,
+        "count": 1
+      },
+      "eps": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "nav": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "dividend_per_share": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "debt_to_equity": {
+        "avg": 0.08,
+        "median": 0.08,
+        "min": 0.08,
+        "max": 0.08,
+        "count": 1
+      },
+      "revenue_growth": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "profit_margin": {
+        "avg": 14.9,
+        "median": 14.9,
+        "min": 14.9,
+        "max": 14.9,
+        "count": 1
+      }
+    }
+  },
+  "Energy": {
+    "company_count": 1,
+    "tickers": [
+      "LIOC"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 13.0,
+        "median": 13,
+        "min": 13,
+        "max": 13,
+        "count": 1
+      },
+      "eps": {
+        "avg": 20.94,
+        "median": 20.94,
+        "min": 20.94,
+        "max": 20.94,
+        "count": 1
+      },
+      "nav": {
+        "avg": 155.3,
+        "median": 155.3,
+        "min": 155.3,
+        "max": 155.3,
+        "count": 1
+      },
+      "dividend_per_share": {
+        "avg": 5.0,
+        "median": 5,
+        "min": 5,
+        "max": 5,
+        "count": 1
+      },
+      "debt_to_equity": {
+        "avg": 9.0,
+        "median": 9,
+        "min": 9,
+        "max": 9,
+        "count": 1
+      },
+      "revenue_growth": {
+        "avg": 4.8,
+        "median": 4.8,
+        "min": 4.8,
+        "max": 4.8,
+        "count": 1
+      },
+      "profit_margin": {
+        "avg": 4.04,
+        "median": 4.04,
+        "min": 4.04,
+        "max": 4.04,
+        "count": 1
+      }
+    }
+  },
+  "Telecommunication Services": {
+    "company_count": 1,
+    "tickers": [
+      "DIAL"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 15.89,
+        "median": 15.89,
+        "min": 15.89,
+        "max": 15.89,
+        "count": 1
+      },
+      "eps": {
+        "avg": 1.43,
+        "median": 1.43,
+        "min": 1.43,
+        "max": 1.43,
+        "count": 1
+      },
+      "nav": {
+        "avg": 8.51,
+        "median": 8.51,
+        "min": 8.51,
+        "max": 8.51,
+        "count": 1
+      },
+      "dividend_per_share": {
+        "avg": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "count": 1
+      },
+      "debt_to_equity": {
+        "avg": 1.38,
+        "median": 1.38,
+        "min": 1.38,
+        "max": 1.38,
+        "count": 1
+      },
+      "revenue_growth": {
+        "avg": -5.8,
+        "median": -5.8,
+        "min": -5.8,
+        "max": -5.8,
+        "count": 1
+      },
+      "profit_margin": {
+        "avg": 7.26,
+        "median": 7.26,
+        "min": 7.26,
+        "max": 7.26,
+        "count": 1
+      }
+    }
+  },
+  "Real Estate Management & Development": {
+    "company_count": 1,
+    "tickers": [
+      "KZOO"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "eps": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "nav": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "dividend_per_share": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "debt_to_equity": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "revenue_growth": {
+        "avg": 140.3,
+        "median": 140.3,
+        "min": 140.3,
+        "max": 140.3,
+        "count": 1
+      },
+      "profit_margin": {
+        "avg": 333.67,
+        "median": 333.67,
+        "min": 333.67,
+        "max": 333.67,
+        "count": 1
+      }
+    }
+  },
+  "45103010 - Application Software": {
+    "company_count": 1,
+    "tickers": [
+      "HBS"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": -21.5,
+        "median": -21.5,
+        "min": -21.5,
+        "max": -21.5,
+        "count": 1
+      },
+      "eps": {
+        "avg": -1.01,
+        "median": -1.01,
+        "min": -1.01,
+        "max": -1.01,
+        "count": 1
+      },
+      "nav": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "dividend_per_share": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "debt_to_equity": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "revenue_growth": {
+        "avg": 10.5,
+        "median": 10.5,
+        "min": 10.5,
+        "max": 10.5,
+        "count": 1
+      },
+      "profit_margin": {
+        "avg": -15.73,
+        "median": -15.73,
+        "min": -15.73,
+        "max": -15.73,
+        "count": 1
+      }
+    }
+  },
+  "Diversified Financials": {
+    "company_count": 2,
+    "tickers": [
+      "CFIN",
+      "WAPO"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 11.34,
+        "median": 11.34,
+        "min": 11.34,
+        "max": 11.34,
+        "count": 1
+      },
+      "eps": {
+        "avg": 24.95,
+        "median": 24.95,
+        "min": 23.58,
+        "max": 26.31,
+        "count": 2
+      },
+      "nav": {
+        "avg": 155.24,
+        "median": 155.24,
+        "min": 67.66,
+        "max": 242.82,
+        "count": 2
+      },
+      "dividend_per_share": {
+        "avg": 4.33,
+        "median": 4.33,
+        "min": 2.15,
+        "max": 6.5,
+        "count": 2
+      },
+      "debt_to_equity": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "revenue_growth": {
+        "avg": 69.75,
+        "median": 69.75,
+        "min": -5.0,
+        "max": 144.5,
+        "count": 2
+      },
+      "profit_margin": {
+        "avg": 449.66,
+        "median": 449.66,
+        "min": 28.89,
+        "max": 870.43,
+        "count": 2
+      }
+    }
+  },
+  "Consumer Services": {
+    "company_count": 2,
+    "tickers": [
+      "KHL",
+      "JETS"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "eps": {
+        "avg": 0.28,
+        "median": 0.28,
+        "min": -0.16,
+        "max": 0.72,
+        "count": 2
+      },
+      "nav": {
+        "avg": 14.34,
+        "median": 14.34,
+        "min": 7.08,
+        "max": 21.61,
+        "count": 2
+      },
+      "dividend_per_share": {
+        "avg": 0.1,
+        "median": 0.1,
+        "min": 0.1,
+        "max": 0.1,
+        "count": 1
+      },
+      "debt_to_equity": {
+        "avg": 0.95,
+        "median": 0.95,
+        "min": 0.67,
+        "max": 1.23,
+        "count": 2
+      },
+      "revenue_growth": {
+        "avg": 4.2,
+        "median": 4.2,
+        "min": -4.6,
+        "max": 13,
+        "count": 2
+      },
+      "profit_margin": {
+        "avg": 10.6,
+        "median": 10.6,
+        "min": 10.6,
+        "max": 10.6,
+        "count": 1
+      }
+    }
+  },
+  "Insurance": {
+    "company_count": 3,
+    "tickers": [
+      "JINS",
+      "ATLL",
+      "SCAP"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 3.34,
+        "median": 0.01,
+        "min": -11,
+        "max": 21,
+        "count": 3
+      },
+      "eps": {
+        "avg": 6.57,
+        "median": 0.09,
+        "min": -0.29,
+        "max": 19.92,
+        "count": 3
+      },
+      "nav": {
+        "avg": 27.91,
+        "median": 12.75,
+        "min": -2.5,
+        "max": 73.47,
+        "count": 3
+      },
+      "dividend_per_share": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "debt_to_equity": {
+        "avg": 2.81,
+        "median": 2.81,
+        "min": 2.81,
+        "max": 2.81,
+        "count": 1
+      },
+      "revenue_growth": {
+        "avg": 19.52,
+        "median": 15,
+        "min": 12.55,
+        "max": 31,
+        "count": 3
+      },
+      "profit_margin": {
+        "avg": 14.56,
+        "median": 4.0,
+        "min": 0.39,
+        "max": 39.31,
+        "count": 3
+      }
+    }
+  },
+  "Diversified Financial Services": {
+    "company_count": 1,
+    "tickers": [
+      "LCBF"
+    ],
+    "metrics": {
+      "roe": {
+        "avg": 6.55,
+        "median": 6.55,
+        "min": 6.55,
+        "max": 6.55,
+        "count": 1
+      },
+      "eps": {
+        "avg": 0.26,
+        "median": 0.26,
+        "min": 0.26,
+        "max": 0.26,
+        "count": 1
+      },
+      "nav": {
+        "avg": 3.95,
+        "median": 3.95,
+        "min": 3.95,
+        "max": 3.95,
+        "count": 1
+      },
+      "dividend_per_share": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "debt_to_equity": {
+        "avg": null,
+        "median": null,
+        "min": null,
+        "max": null,
+        "count": 0
+      },
+      "revenue_growth": {
+        "avg": 6.0,
+        "median": 6.0,
+        "min": 6.0,
+        "max": 6.0,
+        "count": 1
+      },
+      "profit_margin": {
+        "avg": 14.05,
+        "median": 14.05,
+        "min": 14.05,
+        "max": 14.05,
+        "count": 1
+      }
+    }
+  }
+}

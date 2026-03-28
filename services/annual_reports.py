@@ -39,6 +39,12 @@ def get_all_tickers() -> list[str]:
     return list(_load().keys())
 
 
+def get_companies_by_sector(sector: str) -> dict[str, dict]:
+    """Get all companies in a given sector. Returns {ticker: report_data}."""
+    data = _load()
+    return {t: d for t, d in data.items() if d.get("sector") == sector}
+
+
 def cross_reference_news(ticker: str, hours: int = 72) -> list[dict]:
     """
     Find recent news headlines that relate to management plans.

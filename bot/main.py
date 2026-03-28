@@ -29,7 +29,7 @@ from services.pulse_db import (
     remove_watchlist,
     get_watchlist,
 )
-from utils.card_generator import generate_main_card, generate_company_info_card, generate_technicals_card, generate_report_card, generate_compare_card
+from utils.card_generator import generate_main_card, generate_company_info_card, generate_technicals_card, generate_report_card, generate_compare_card, generate_sector_card
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -75,6 +75,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/p TICKER — Look up any stock or director (works in groups)\n"
         "/report TICKER — Annual report summary\n"
         "/compare TICKER1 TICKER2 — Side-by-side comparison\n"
+        "/sector BANKING — Sector analysis & benchmarks\n"
         "/market — Today's market summary\n"
         "/watchlist — View your watchlist\n"
         "/addwatch TICKER — Add to watchlist\n"
@@ -678,14 +679,17 @@ async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not report:
         await update.message.reply_text(
             f"No annual report data for {ticker}.\n"
-            "Currently available: JKH, KPHL. More coming soon."
+            "Use /report with a ticker that has annual report data (31 stocks available)."
         )
         return
 
     await update.message.chat.send_action("upload_photo")
 
     news_matches = cross_reference_news(ticker, hours=72)
-    card_buf = generate_report_card(ticker, report, news_matches=news_matches or None)
+    from services.sector_benchmarks import get_sector_benchmark
+    sector = report.get("sector", "")
+    bench = get_sector_benchmark(sector) if sector else None
+    card_buf = generate_report_card(ticker, report, news_matches=news_matches or None, benchmarks=bench)
     await update.message.reply_photo(photo=card_buf)
 
 
@@ -725,13 +729,62 @@ async def compare_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if missing:
         await update.message.reply_text(
             f"No annual report data for: {', '.join(missing)}.\n"
-            "Currently available: JKH, KPHL. More coming soon."
+            "Use /report with a ticker that has annual report data (31 stocks available)."
         )
         return
 
     await update.message.chat.send_action("upload_photo")
 
     card_buf = generate_compare_card(ticker1, report1, ticker2, report2)
+    await update.message.reply_photo(photo=card_buf)
+
+
+async def sector_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /sector NAME — show sector analysis with benchmarks."""
+    from services.sector_benchmarks import resolve_sector, get_sector_benchmark, get_all_sectors
+    from services.annual_reports import get_companies_by_sector
+
+    args = context.args
+    if args is None and update.message and update.message.text:
+        parts = update.message.text.split(maxsplit=1)
+        args = parts[1].split() if len(parts) > 1 else []
+
+    if not args:
+        sectors = get_all_sectors()
+        sector_list = "\n".join(f"  {s}" for s in sorted(sectors))
+        await update.message.reply_text(
+            f"Usage: /sector BANKING\n\n"
+            f"Available sectors:\n{sector_list}"
+        )
+        return
+
+    if _is_rate_limited(update.effective_user.id):
+        await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
+        return
+
+    sector_input = " ".join(args)
+    sector = resolve_sector(sector_input)
+    if not sector:
+        sectors = get_all_sectors()
+        sector_list = "\n".join(f"  {s}" for s in sorted(sectors))
+        await update.message.reply_text(
+            f"Unknown sector: {sector_input}\n\n"
+            f"Available sectors:\n{sector_list}"
+        )
+        return
+
+    companies = get_companies_by_sector(sector)
+    if not companies:
+        await update.message.reply_text(f"No annual report data for sector: {sector}")
+        return
+
+    bench = get_sector_benchmark(sector)
+    if not bench:
+        await update.message.reply_text(f"Could not calculate benchmarks for: {sector}")
+        return
+
+    await update.message.chat.send_action("upload_photo")
+    card_buf = generate_sector_card(sector, companies, bench)
     await update.message.reply_photo(photo=card_buf)
 
 
@@ -754,6 +807,7 @@ def main():
     app.add_handler(CommandHandler(["p", "pulse"], pulse_command))
     app.add_handler(CommandHandler("report", report_command))
     app.add_handler(CommandHandler("compare", compare_command))
+    app.add_handler(CommandHandler("sector", sector_command))
     app.add_handler(CommandHandler("brief", brief_command))
 
     # Catch uppercase /P and /PULSE (Telegram may not recognize as BOT_COMMAND)
