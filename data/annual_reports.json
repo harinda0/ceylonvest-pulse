@@ -1,0 +1,55 @@
+{
+  "JKH": {
+    "company": "John Keells Holdings PLC",
+    "year": "2024/2025",
+    "financials": {
+      "revenue": {"value": 228000000000, "yoy_change": 12.5},
+      "net_profit": {"value": 18500000000, "yoy_change": 8.2},
+      "eps": 13.45,
+      "nav": 142.30,
+      "dividend_per_share": 5.00,
+      "roe": 9.5,
+      "debt_to_equity": 0.45
+    },
+    "management_plans": [
+      "Expand port operations through SAGT Phase 2 by Q4 2026",
+      "Target 15% revenue growth in leisure sector from tourism recovery",
+      "Invest LKR 8B in logistics infrastructure over 2 years",
+      "Reduce group debt-to-equity ratio to below 0.4 by FY2026"
+    ],
+    "key_risks": [
+      "Tourism recovery dependent on global economic conditions",
+      "Port operations face competition from Hambantota",
+      "Consumer goods margins under pressure from import costs",
+      "Interest rate environment affects property segment demand"
+    ],
+    "chairman_outlook": "Cautiously optimistic on Sri Lanka's recovery trajectory. Focus on core verticals of ports, logistics, and consumer brands. Tourism segment expected to be the key growth driver as arrival numbers normalize.",
+    "updated": "2025-03"
+  },
+  "KPHL": {
+    "company": "Kapruka Holdings PLC",
+    "year": "2024/2025",
+    "financials": {
+      "revenue": {"value": 3950000000, "yoy_change": 18.3},
+      "net_profit": {"value": 370000000, "yoy_change": 22.1},
+      "eps": 2.26,
+      "nav": 22.40,
+      "dividend_per_share": 0.50,
+      "roe": 10.1,
+      "debt_to_equity": 0.32
+    },
+    "management_plans": [
+      "Launch same-day delivery in Colombo metro area by mid-2026",
+      "Expand grocery vertical to 30% of GMV from current 18%",
+      "Build out B2B marketplace for SME sellers",
+      "Target breakeven on logistics subsidiary within 18 months"
+    ],
+    "key_risks": [
+      "High customer acquisition costs in competitive e-commerce market",
+      "Last-mile delivery costs remain elevated outside Colombo",
+      "Dependence on COD payments limits working capital efficiency"
+    ],
+    "chairman_outlook": "E-commerce penetration in Sri Lanka remains below 2% — massive growth runway. Our logistics network is the competitive moat. Focus on unit economics and path to profitability.",
+    "updated": "2025-03"
+  }
+}

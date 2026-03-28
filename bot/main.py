@@ -29,7 +29,7 @@ from services.pulse_db import (
     remove_watchlist,
     get_watchlist,
 )
-from utils.card_generator import generate_main_card, generate_company_info_card, generate_technicals_card
+from utils.card_generator import generate_main_card, generate_company_info_card, generate_technicals_card, generate_report_card, generate_compare_card
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -73,6 +73,8 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "  combank\n\n"
         "Commands:\n"
         "/p TICKER — Look up any stock or director (works in groups)\n"
+        "/report TICKER — Annual report summary\n"
+        "/compare TICKER1 TICKER2 — Side-by-side comparison\n"
         "/market — Today's market summary\n"
         "/watchlist — View your watchlist\n"
         "/addwatch TICKER — Add to watchlist\n"
@@ -649,6 +651,90 @@ async def send_sentiment_text(query, ticker: str):
     await query.message.reply_text(text)
 
 
+async def report_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /report TICKER — show annual report summary."""
+    from services.annual_reports import get_report, cross_reference_news
+
+    args = context.args
+    if args is None and update.message and update.message.text:
+        parts = update.message.text.split(maxsplit=1)
+        args = parts[1].split() if len(parts) > 1 else []
+
+    if not args:
+        await update.message.reply_text(
+            "Usage: /report JKH\n"
+            "Shows annual report financials, management targets, and chairman's outlook."
+        )
+        return
+
+    if _is_rate_limited(update.effective_user.id):
+        await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
+        return
+
+    ticker_input = args[0].upper()
+    ticker = resolve_ticker(ticker_input) or ticker_input
+
+    report = get_report(ticker)
+    if not report:
+        await update.message.reply_text(
+            f"No annual report data for {ticker}.\n"
+            "Currently available: JKH, KPHL. More coming soon."
+        )
+        return
+
+    await update.message.chat.send_action("upload_photo")
+
+    news_matches = cross_reference_news(ticker, hours=72)
+    card_buf = generate_report_card(ticker, report, news_matches=news_matches or None)
+    await update.message.reply_photo(photo=card_buf)
+
+
+async def compare_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /compare TICKER1 TICKER2 — side-by-side financial comparison."""
+    from services.annual_reports import get_report
+
+    args = context.args
+    if args is None and update.message and update.message.text:
+        parts = update.message.text.split(maxsplit=1)
+        args = parts[1].split() if len(parts) > 1 else []
+
+    if not args or len(args) < 2:
+        await update.message.reply_text(
+            "Usage: /compare JKH KPHL\n"
+            "Shows side-by-side financial comparison from annual reports."
+        )
+        return
+
+    if _is_rate_limited(update.effective_user.id):
+        await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
+        return
+
+    t1_input = args[0].upper()
+    t2_input = args[1].upper()
+    ticker1 = resolve_ticker(t1_input) or t1_input
+    ticker2 = resolve_ticker(t2_input) or t2_input
+
+    report1 = get_report(ticker1)
+    report2 = get_report(ticker2)
+
+    missing = []
+    if not report1:
+        missing.append(ticker1)
+    if not report2:
+        missing.append(ticker2)
+    if missing:
+        await update.message.reply_text(
+            f"No annual report data for: {', '.join(missing)}.\n"
+            "Currently available: JKH, KPHL. More coming soon."
+        )
+        return
+
+    await update.message.chat.send_action("upload_photo")
+
+    card_buf = generate_compare_card(ticker1, report1, ticker2, report2)
+    await update.message.reply_photo(photo=card_buf)
+
+
 def main():
     """Start the bot."""
     token = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -666,6 +752,8 @@ def main():
     app.add_handler(CommandHandler("addwatch", addwatch_command))
     app.add_handler(CommandHandler("removewatch", removewatch_command))
     app.add_handler(CommandHandler(["p", "pulse"], pulse_command))
+    app.add_handler(CommandHandler("report", report_command))
+    app.add_handler(CommandHandler("compare", compare_command))
     app.add_handler(CommandHandler("brief", brief_command))
 
     # Catch uppercase /P and /PULSE (Telegram may not recognize as BOT_COMMAND)

@@ -808,3 +808,350 @@ def generate_technicals_card(
     img.save(buf, format="PNG", quality=95)
     buf.seek(0)
     return buf
+
+
+# ==========================================================================
+# Annual report card
+# ==========================================================================
+
+def _fmt_lkr(val: float | int) -> str:
+    """Format a LKR value with B/M suffix."""
+    if val >= 1e9:
+        return f"LKR {val/1e9:.1f}B"
+    elif val >= 1e6:
+        return f"LKR {val/1e6:.0f}M"
+    return f"LKR {val:,.0f}"
+
+
+def _yoy_pill(draw, x, y, change: float | None):
+    """Draw a small YoY change pill. Returns width consumed."""
+    if change is None:
+        return 0
+    sign = "+" if change >= 0 else ""
+    text = f"{sign}{change:.1f}% YoY"
+    color = GREEN if change >= 0 else RED
+    bg = GREEN_DIM if change >= 0 else RED_DIM
+    tw = draw.textlength(text, font=FONT_TINY)
+    _rounded_rect(draw, (x, y, x + tw + 12, y + 18), bg, radius=5)
+    draw.text((x + 6, y + 1), text, fill=color, font=FONT_TINY)
+    return int(tw + 16)
+
+
+def generate_report_card(
+    ticker: str,
+    report: dict,
+    news_matches: list[dict] | None = None,
+) -> BytesIO:
+    """Generate an annual report summary card."""
+    WIDTH = 800
+    PAD = 30
+    INNER = WIDTH - 2 * PAD
+    SECTION_GAP = 18
+    BOX_H = 62
+
+    company = report.get("company", "")
+    year = report.get("year", "")
+    fin = report.get("financials", {})
+    plans = report.get("management_plans", [])
+    risks = report.get("key_risks", [])
+    outlook = report.get("chairman_outlook", "")
+    updated = report.get("updated", "")
+
+    # Calculate height
+    h = 24 + 50 + SECTION_GAP  # header
+    h += BOX_H + 10 + BOX_H + SECTION_GAP  # financials 2x2
+    h += BOX_H + SECTION_GAP  # ratios row
+    if plans:
+        h += 22 + len(plans[:4]) * 24 + SECTION_GAP
+    if outlook:
+        wrapped_outlook = _wrap_text(outlook, FONT_SMALL, INNER - 28)
+        h += 22 + len(wrapped_outlook) * 20 + SECTION_GAP
+    if risks:
+        h += 22 + len(risks[:3]) * 24 + SECTION_GAP
+    if news_matches:
+        h += 22 + len(news_matches[:3]) * 48 + SECTION_GAP
+    h += 40  # footer
+
+    img = Image.new("RGB", (WIDTH, h), BG)
+    draw = ImageDraw.Draw(img)
+    y = 24
+
+    # Header
+    draw.rectangle([(0, 0), (WIDTH, 4)], fill=PURPLE)
+    draw.text((PAD, y), f"{ticker} ANNUAL REPORT", fill=TEXT_DIM, font=FONT_BRAND)
+    period_text = f"FY {year}" if year else ""
+    if updated:
+        period_text += f"  |  Updated {updated}"
+    draw.text((WIDTH - PAD, y + 1), period_text, fill=TEXT_DIM, font=FONT_TINY, anchor="rt")
+    y += 26
+    draw.text((PAD, y), company, fill=TEXT_PRIMARY, font=FONT_COMPANY)
+    y += 28 + SECTION_GAP
+
+    # Financials — row 1: Revenue + Net Profit
+    box_w = (INNER - 8) // 2
+    rev = fin.get("revenue", {})
+    rev_val = rev.get("value") if isinstance(rev, dict) else None
+    rev_yoy = rev.get("yoy_change") if isinstance(rev, dict) else None
+    _rounded_rect(draw, (PAD, y, PAD + box_w, y + BOX_H), BG_SURFACE, radius=8)
+    draw.text((PAD + 14, y + 10), "REVENUE", fill=TEXT_MUTED, font=FONT_LABEL)
+    draw.text((PAD + 14, y + 32), _fmt_lkr(rev_val) if rev_val else "N/A",
+              fill=TEXT_PRIMARY, font=FONT_VALUE)
+    if rev_yoy is not None:
+        vw = draw.textlength(_fmt_lkr(rev_val) if rev_val else "N/A", font=FONT_VALUE)
+        _yoy_pill(draw, PAD + 14 + vw + 10, y + 34, rev_yoy)
+
+    np_data = fin.get("net_profit", {})
+    np_val = np_data.get("value") if isinstance(np_data, dict) else None
+    np_yoy = np_data.get("yoy_change") if isinstance(np_data, dict) else None
+    _rounded_rect(draw, (PAD + box_w + 8, y, PAD + box_w * 2 + 8, y + BOX_H), BG_SURFACE, radius=8)
+    draw.text((PAD + box_w + 22, y + 10), "NET PROFIT", fill=TEXT_MUTED, font=FONT_LABEL)
+    draw.text((PAD + box_w + 22, y + 32), _fmt_lkr(np_val) if np_val else "N/A",
+              fill=TEXT_PRIMARY, font=FONT_VALUE)
+    if np_yoy is not None:
+        vw = draw.textlength(_fmt_lkr(np_val) if np_val else "N/A", font=FONT_VALUE)
+        _yoy_pill(draw, PAD + box_w + 22 + vw + 10, y + 34, np_yoy)
+    y += BOX_H + 10
+
+    # Row 2: EPS + NAV
+    eps = fin.get("eps")
+    nav = fin.get("nav")
+    _draw_metric(draw, PAD, y, box_w, BOX_H, "EPS",
+                 f"LKR {eps:.2f}" if eps else "N/A")
+    _draw_metric(draw, PAD + box_w + 8, y, box_w, BOX_H, "NAV / SHARE",
+                 f"LKR {nav:.2f}" if nav else "N/A")
+    y += BOX_H + SECTION_GAP
+
+    # Row 3: DPS, ROE, D/E
+    box_w3 = (INNER - 16) // 3
+    dps = fin.get("dividend_per_share")
+    roe = fin.get("roe")
+    dte = fin.get("debt_to_equity")
+    _draw_metric(draw, PAD, y, box_w3, BOX_H, "DPS",
+                 f"LKR {dps:.2f}" if dps else "N/A",
+                 GREEN if dps and dps > 0 else TEXT_PRIMARY)
+    _draw_metric(draw, PAD + box_w3 + 8, y, box_w3, BOX_H, "ROE",
+                 f"{roe:.1f}%" if roe else "N/A",
+                 GREEN if roe and roe > 10 else AMBER if roe and roe > 5 else TEXT_PRIMARY)
+    dte_color = TEXT_PRIMARY
+    if dte is not None:
+        dte_color = GREEN if dte < 0.5 else AMBER if dte < 1 else RED
+    _draw_metric(draw, PAD + 2 * (box_w3 + 8), y, box_w3, BOX_H, "DEBT/EQUITY",
+                 f"{dte:.2f}x" if dte is not None else "N/A", dte_color)
+    y += BOX_H + SECTION_GAP
+
+    # Management plans
+    if plans:
+        _draw_divider(draw, PAD, y, INNER)
+        y += 10
+        draw.text((PAD, y), "MANAGEMENT TARGETS", fill=TEXT_MUTED, font=FONT_LABEL)
+        y += 22
+        for plan in plans[:4]:
+            draw.ellipse((PAD + 8, y + 6, PAD + 14, y + 12), fill=PURPLE)
+            display = plan
+            max_w = INNER - 30
+            while draw.textlength(display, font=FONT_SMALL) > max_w and len(display) > 10:
+                display = display[:-4] + "..."
+            draw.text((PAD + 22, y), display, fill=TEXT_SECONDARY, font=FONT_SMALL)
+            y += 24
+        y += SECTION_GAP - 8
+
+    # Chairman's outlook
+    if outlook:
+        _draw_divider(draw, PAD, y, INNER)
+        y += 10
+        draw.text((PAD, y), "CHAIRMAN'S OUTLOOK", fill=TEXT_MUTED, font=FONT_LABEL)
+        y += 22
+        wrapped = _wrap_text(outlook, FONT_SMALL, INNER - 28)
+        for line in wrapped:
+            draw.text((PAD + 14, y), line, fill=TEXT_MUTED, font=FONT_SMALL)
+            y += 20
+        y += SECTION_GAP - 8
+
+    # Key risks
+    if risks:
+        _draw_divider(draw, PAD, y, INNER)
+        y += 10
+        draw.text((PAD, y), "KEY RISKS", fill=TEXT_MUTED, font=FONT_LABEL)
+        y += 22
+        for risk in risks[:3]:
+            draw.ellipse((PAD + 8, y + 6, PAD + 14, y + 12), fill=RED)
+            display = risk
+            max_w = INNER - 30
+            while draw.textlength(display, font=FONT_SMALL) > max_w and len(display) > 10:
+                display = display[:-4] + "..."
+            draw.text((PAD + 22, y), display, fill=TEXT_SECONDARY, font=FONT_SMALL)
+            y += 24
+        y += SECTION_GAP - 8
+
+    # News cross-references
+    if news_matches:
+        _draw_divider(draw, PAD, y, INNER)
+        y += 10
+        draw.text((PAD, y), "NEWS vs MANAGEMENT PLANS", fill=AMBER, font=FONT_LABEL)
+        y += 22
+        for match in news_matches[:3]:
+            plan_short = match["plan"]
+            if len(plan_short) > 60:
+                plan_short = plan_short[:57] + "..."
+            draw.text((PAD + 8, y), f"Plan: {plan_short}", fill=PURPLE, font=FONT_TINY)
+            y += 18
+            src = match.get("source", "")
+            stw = draw.textlength(src, font=FONT_TINY)
+            _rounded_rect(draw, (PAD + 8, y, PAD + 8 + stw + 10, y + 18), BG_ACCENT, radius=4)
+            draw.text((PAD + 13, y + 1), src, fill=BLUE, font=FONT_TINY)
+            hl = match.get("headline", "")
+            if len(hl) > 70:
+                hl = hl[:67] + "..."
+            draw.text((PAD + 22 + stw, y + 1), hl, fill=TEXT_SECONDARY, font=FONT_TINY)
+            y += 22
+            y += 8
+
+    # Footer
+    y += 4
+    _draw_footer(draw, y, WIDTH, PAD)
+    actual_h = y + 34
+    img = img.crop((0, 0, WIDTH, actual_h))
+
+    buf = BytesIO()
+    img.save(buf, format="PNG", quality=95)
+    buf.seek(0)
+    return buf
+
+
+# ==========================================================================
+# Compare card
+# ==========================================================================
+
+def _get_fin_value(fin: dict, key: str) -> float | None:
+    """Extract value from a financials entry that may be a dict or scalar."""
+    v = fin.get(key)
+    if isinstance(v, dict):
+        return v.get("value")
+    return v
+
+
+def _get_fin_yoy(fin: dict, key: str) -> float | None:
+    """Extract YoY change from a financials entry."""
+    v = fin.get(key)
+    if isinstance(v, dict):
+        return v.get("yoy_change")
+    return None
+
+
+def _fmt_compare_val(val, is_lkr: bool, label: str) -> str:
+    """Format a comparison value."""
+    if val is None:
+        return "N/A"
+    if is_lkr:
+        return _fmt_lkr(val)
+    if label in ("ROE",):
+        return f"{val:.1f}%"
+    if label in ("D/E RATIO",):
+        return f"{val:.2f}x"
+    if label in ("EPS", "NAV", "DPS"):
+        return f"LKR {val:.2f}"
+    return f"{val}"
+
+
+def generate_compare_card(
+    ticker1: str, report1: dict,
+    ticker2: str, report2: dict,
+) -> BytesIO:
+    """Generate a side-by-side comparison card for two stocks."""
+    WIDTH = 800
+    PAD = 30
+    INNER = WIDTH - 2 * PAD
+    SECTION_GAP = 16
+
+    fin1 = report1.get("financials", {})
+    fin2 = report2.get("financials", {})
+
+    metrics = [
+        ("REVENUE", _get_fin_value(fin1, "revenue"), _get_fin_value(fin2, "revenue"),
+         _get_fin_yoy(fin1, "revenue"), _get_fin_yoy(fin2, "revenue"), True),
+        ("NET PROFIT", _get_fin_value(fin1, "net_profit"), _get_fin_value(fin2, "net_profit"),
+         _get_fin_yoy(fin1, "net_profit"), _get_fin_yoy(fin2, "net_profit"), True),
+        ("EPS", fin1.get("eps"), fin2.get("eps"), None, None, False),
+        ("NAV", fin1.get("nav"), fin2.get("nav"), None, None, False),
+        ("DPS", fin1.get("dividend_per_share"), fin2.get("dividend_per_share"), None, None, False),
+        ("ROE", fin1.get("roe"), fin2.get("roe"), None, None, False),
+        ("D/E RATIO", fin1.get("debt_to_equity"), fin2.get("debt_to_equity"), None, None, False),
+    ]
+
+    ROW_H = 44
+    h = 24 + 50 + SECTION_GAP  # header
+    h += 30  # column headers
+    h += len(metrics) * ROW_H
+    h += SECTION_GAP + 40  # footer
+
+    img = Image.new("RGB", (WIDTH, h), BG)
+    draw = ImageDraw.Draw(img)
+    y = 24
+
+    # Header
+    draw.rectangle([(0, 0), (WIDTH, 4)], fill=PURPLE)
+    draw.text((PAD, y), "ANNUAL REPORT COMPARISON", fill=TEXT_DIM, font=FONT_BRAND)
+    y += 26
+
+    col_left = PAD + 160
+    col_right = PAD + 160 + (INNER - 160) // 2
+    draw.text((col_left, y), ticker1, fill=TEXT_PRIMARY, font=FONT_TICKER)
+    draw.text((col_right, y), ticker2, fill=TEXT_PRIMARY, font=FONT_TICKER)
+
+    y += 36
+    name1 = report1.get("company", "")
+    name2 = report2.get("company", "")
+    if len(name1) > 25:
+        name1 = name1[:22] + "..."
+    if len(name2) > 25:
+        name2 = name2[:22] + "..."
+    draw.text((col_left, y), name1, fill=TEXT_MUTED, font=FONT_TINY)
+    draw.text((col_right, y), name2, fill=TEXT_MUTED, font=FONT_TINY)
+    y += 20 + SECTION_GAP
+
+    # Column headers
+    draw.text((PAD, y + 4), "METRIC", fill=TEXT_DIM, font=FONT_LABEL)
+    _draw_divider(draw, PAD, y + 24, INNER)
+    y += 30
+
+    for label, v1, v2, yoy1, yoy2, is_lkr in metrics:
+        _rounded_rect(draw, (PAD, y, WIDTH - PAD, y + ROW_H - 4), BG_SURFACE, radius=6)
+        draw.text((PAD + 14, y + 12), label, fill=TEXT_MUTED, font=FONT_LABEL)
+
+        s1 = _fmt_compare_val(v1, is_lkr, label)
+        s2 = _fmt_compare_val(v2, is_lkr, label)
+
+        c1, c2 = TEXT_PRIMARY, TEXT_PRIMARY
+        if v1 is not None and v2 is not None:
+            if label == "D/E RATIO":
+                if v1 < v2:
+                    c1 = GREEN
+                elif v2 < v1:
+                    c2 = GREEN
+            else:
+                if v1 > v2:
+                    c1 = GREEN
+                elif v2 > v1:
+                    c2 = GREEN
+
+        draw.text((col_left, y + 10), s1, fill=c1, font=FONT_VALUE)
+        draw.text((col_right, y + 10), s2, fill=c2, font=FONT_VALUE)
+
+        if yoy1 is not None:
+            vw = draw.textlength(s1, font=FONT_VALUE)
+            _yoy_pill(draw, col_left + vw + 8, y + 14, yoy1)
+        if yoy2 is not None:
+            vw = draw.textlength(s2, font=FONT_VALUE)
+            _yoy_pill(draw, col_right + vw + 8, y + 14, yoy2)
+
+        y += ROW_H
+
+    y += SECTION_GAP // 2
+    _draw_footer(draw, y, WIDTH, PAD)
+    actual_h = y + 34
+    img = img.crop((0, 0, WIDTH, actual_h))
+
+    buf = BytesIO()
+    img.save(buf, format="PNG", quality=95)
+    buf.seek(0)
+    return buf
