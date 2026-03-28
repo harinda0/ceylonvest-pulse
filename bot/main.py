@@ -107,8 +107,21 @@ async def market_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             change = idx.get("change", 0)
             pct = idx.get("changePercentage", 0)
             sign = "+" if change >= 0 else ""
-            emoji = "" if change >= 0 else ""
-            text += f"{name}: {value:,.2f} ({sign}{change:,.2f} / {sign}{pct:.2f}%)\n"
+            arrow = "^" if change >= 0 else "v"
+            text += f"{arrow} {name}: {value:,.2f} ({sign}{change:,.2f} / {sign}{pct:.2f}%)\n"
+
+    # Trade volume/turnover
+    vol = data.get("shareVolume", 0)
+    trades = data.get("trades", 0)
+    if vol or trades:
+        text += "\n"
+        if vol:
+            if vol >= 1e6:
+                text += f"Share Volume: {vol/1e6:.1f}M\n"
+            else:
+                text += f"Share Volume: {vol:,.0f}\n"
+        if trades:
+            text += f"Trades: {trades:,.0f}\n"
 
     await update.message.reply_text(text)
 
@@ -250,7 +263,13 @@ async def _send_ticker_card(update: Update, ticker: str):
 
 async def pulse_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /p and /pulse — command-based ticker lookup for groups."""
-    if not context.args:
+    # Support uppercase /P /PULSE — parse args from message text if context.args is None
+    args = context.args
+    if args is None and update.message and update.message.text:
+        parts = update.message.text.split(maxsplit=1)
+        args = parts[1].split() if len(parts) > 1 else []
+
+    if not args:
         await update.message.reply_text("Usage: /p KPHL or /p dhammika perera")
         return
 
@@ -259,7 +278,7 @@ async def pulse_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
         return
 
-    query = " ".join(context.args)
+    query = " ".join(args)
     result = resolve_input(query)
 
     if result["type"] == "director":
@@ -554,15 +573,16 @@ async def handle_new_group(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     welcome = (
         "Hey! I'm CeylonVest Pulse — your AI-powered CSE market intelligence assistant.\n\n"
-        "Here's what I can do:\n\n"
-        "/p [ticker] — Get live price, market data & sentiment for any CSE stock "
-        "(e.g. /p JKH, /p LOLC, /p KPHL)\n\n"
-        "/p [name] — Search by company or director name "
-        "(e.g. /p kapruka, /p dhammika perera, /p john keells)\n\n"
-        "/market — Market summary with ASPI & index data\n\n"
+        "What I can do:\n\n"
+        "/p TICKER — Look up any of the 289 CSE-listed stocks\n"
+        "Examples: /p JKH  /p COMB  /p LOLC  /p LIOC\n\n"
+        "/p COMPANY NAME — Search by name instead of ticker\n"
+        "Examples: /p kapruka  /p dialog  /p sampath bank\n\n"
+        "/p DIRECTOR — See a director's portfolio\n"
+        "Examples: /p dhammika perera  /p dulith herath\n\n"
+        "/market — ASPI, S&P SL20 & sector indices\n"
         "/watchlist — Track your favorite stocks\n\n"
-        "I cover all 289 stocks on the Colombo Stock Exchange.\n\n"
-        "Try it now — /p JKH"
+        "Try it now — type /p JKH"
     )
 
     chat_id = update.my_chat_member.chat.id
@@ -622,6 +642,12 @@ def main():
     app.add_handler(CommandHandler("removewatch", removewatch_command))
     app.add_handler(CommandHandler(["p", "pulse"], pulse_command))
     app.add_handler(CommandHandler("brief", brief_command))
+
+    # Catch uppercase /P and /PULSE (Telegram may not recognize as BOT_COMMAND)
+    app.add_handler(MessageHandler(
+        filters.Regex(r"^/[Pp](?:[Uu][Ll][Ss][Ee])?\s") & filters.TEXT,
+        pulse_command,
+    ))
 
     # Group welcome when bot is added
     app.add_handler(ChatMemberHandler(handle_new_group, ChatMemberHandler.MY_CHAT_MEMBER))

@@ -183,6 +183,12 @@ DIRECTOR_MAP: dict[str, dict] = {
         "tickers": ["LIOC"],
         "note": "Heads Indian Oil's Sri Lanka subsidiary.",
     },
+    "dulith herath": {
+        "name": "Dulith Herath",
+        "title": "Founder/CEO, Kapruka",
+        "tickers": ["KPHL"],
+        "note": "Founded Kapruka.com, Sri Lanka's pioneering e-commerce platform.",
+    },
 }
 
 # Common misspellings and nickname aliases for major directors
@@ -214,6 +220,9 @@ _DIRECTOR_MISSPELLINGS: dict[str, str] = {
     # H.K. Wickramasinghe
     "hk wickramasinghe": "deshamanya h.k. wickramasinghe",
     "wickramasinghe cargills": "deshamanya h.k. wickramasinghe",
+    # Dulith Herath
+    "dulith": "dulith herath",
+    "dulith herath": "dulith herath",
 }
 
 # Build name alias index — explicit aliases only, no loose substring matching
