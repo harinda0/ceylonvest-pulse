@@ -1,11 +1,14 @@
 """
-Batch extractor for ALL remaining CSE annual reports.
-Skips tickers already in data/annual_reports.json.
+Batch extractor for ALL CSE annual reports using two-pass strategy.
+
+Phase 1: Re-run Pass 2 for existing stocks that have null metrics
+Phase 2: Process all remaining tickers with two-pass extraction
 Saves progress every 5 stocks.
 
 Usage:
-    python scripts/extract_all_remaining.py              # all remaining
-    python scripts/extract_all_remaining.py --jkh-first  # re-extract JKH with 150 pages, then all remaining
+    python scripts/extract_all_remaining.py              # full run
+    python scripts/extract_all_remaining.py --fix-nulls  # only fix existing nulls
+    python scripts/extract_all_remaining.py --new-only   # only new tickers
 """
 
 import json
@@ -23,7 +26,11 @@ load_dotenv(Path(__file__).parent.parent / ".env")
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from utils.ticker_map import TICKER_TO_CSE
-from scripts.extract_annual_report import process_ticker, OUTPUT_PATH
+from scripts.extract_annual_report import (
+    process_ticker, process_ticker_pass2_only,
+    OUTPUT_PATH, _get_missing_metrics,
+    PASS1_PAGES, PASS2_PAGES,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -33,7 +40,7 @@ logging.basicConfig(
 logger = logging.getLogger("batch_extractor")
 
 SAVE_INTERVAL = 5  # Save after every N successful extractions
-PAGES_PER_PDF = 100  # Balance between coverage and API cost
+API_COOLDOWN = 35  # Seconds between API calls to avoid rate limits
 
 
 def load_existing() -> dict:
@@ -53,48 +60,65 @@ def save_data(data: dict):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
-def main():
-    args = sys.argv[1:]
-    jkh_first = "--jkh-first" in args
+def fix_existing_nulls(existing: dict) -> dict:
+    """Phase 1: Re-run Pass 2 for existing stocks with null critical metrics."""
+    needs_fix = {}
+    for ticker, data in existing.items():
+        missing = _get_missing_metrics(data)
+        if missing:
+            needs_fix[ticker] = missing
 
-    # Load existing data
-    existing = load_existing()
-    logger.info(f"Loaded {len(existing)} existing entries")
+    if not needs_fix:
+        logger.info("All existing stocks have complete metrics!")
+        return existing
 
-    # Build list of tickers to process
-    all_tickers = sorted(TICKER_TO_CSE.keys())
+    logger.info(f"{'='*60}")
+    logger.info(f"PHASE 1: Fix {len(needs_fix)} existing stocks with null metrics")
+    for t, m in needs_fix.items():
+        logger.info(f"  {t}: missing {m}")
+    logger.info(f"{'='*60}")
 
-    if jkh_first:
-        # Re-extract JKH first with 150 pages (already set in extract_annual_report.py)
-        logger.info("=" * 60)
-        logger.info("RE-EXTRACTING JKH with 150 pages")
-        logger.info("=" * 60)
+    fixed = 0
+    for i, (ticker, missing) in enumerate(needs_fix.items(), 1):
+        logger.info(f"[{i}/{len(needs_fix)}] Fixing {ticker} (missing: {missing})")
         try:
-            data = process_ticker("JKH")
-            if data:
-                source = data.pop("source_pdf", None)
-                existing["JKH"] = data
-                save_data(existing)
-                logger.info(f"JKH re-extracted successfully. EPS: {data.get('financials', {}).get('eps')}, NAV: {data.get('financials', {}).get('nav')}, ROE: {data.get('financials', {}).get('roe')}")
-            else:
-                logger.error("JKH re-extraction failed")
+            updated = process_ticker_pass2_only(ticker, existing[ticker])
+            if updated:
+                existing[ticker] = updated
+                existing[ticker]["updated"] = time.strftime("%Y-%m")
+                new_missing = _get_missing_metrics(updated)
+                if len(new_missing) < len(missing):
+                    fixed += 1
+                    save_data(existing)
+                    logger.info(f"  IMPROVED: {ticker} (was missing {missing}, now missing {new_missing})")
+                else:
+                    logger.info(f"  No improvement for {ticker}")
         except Exception as e:
-            logger.error(f"JKH re-extraction error: {e}")
-        time.sleep(2)
+            logger.error(f"  FAIL: {ticker} - {e}")
 
-    # Skip already-extracted tickers
+        if i < len(needs_fix):
+            time.sleep(API_COOLDOWN)
+
+    logger.info(f"Phase 1 complete: improved {fixed}/{len(needs_fix)} stocks")
+    return existing
+
+
+def process_remaining(existing: dict) -> dict:
+    """Phase 2: Process all remaining tickers not in existing data."""
+    all_tickers = sorted(TICKER_TO_CSE.keys())
     remaining = [t for t in all_tickers if t not in existing]
-    logger.info(f"Total tickers: {len(all_tickers)}, Already done: {len(existing)}, Remaining: {len(remaining)}")
+
+    logger.info(f"{'='*60}")
+    logger.info(f"PHASE 2: Process {len(remaining)} remaining tickers")
+    logger.info(f"  Total tickers: {len(all_tickers)}")
+    logger.info(f"  Already done: {len(existing)}")
+    logger.info(f"  Remaining: {len(remaining)}")
+    logger.info(f"{'='*60}")
 
     if not remaining:
         logger.info("All tickers already extracted!")
-        return
+        return existing
 
-    # Override MAX_PDF_PAGES for batch mode (100 pages for cost efficiency)
-    import scripts.extract_annual_report as extractor
-    extractor.MAX_PDF_PAGES = PAGES_PER_PDF
-
-    # Process remaining tickers
     success_count = 0
     failed = []
     no_report = []
@@ -109,7 +133,8 @@ def main():
                 existing[ticker] = data
                 success_count += 1
                 new_since_save += 1
-                logger.info(f"  OK: {data.get('company', '?')} - {data.get('year', '?')}")
+                fin = data.get("financials", {})
+                logger.info(f"  OK: {data.get('company', '?')} EPS={fin.get('eps')} ROE={fin.get('roe')}")
 
                 # Save periodically
                 if new_since_save >= SAVE_INTERVAL:
@@ -124,9 +149,8 @@ def main():
             failed.append(ticker)
 
         # Rate limit — wait between API calls to avoid 429s
-        # 30k token/min limit means ~2 requests/min max for large PDFs
         if i < len(remaining):
-            wait = 35 if data else 3  # shorter wait if no PDF/API call was made
+            wait = API_COOLDOWN if data else 3
             time.sleep(wait)
 
     # Final save
@@ -134,18 +158,41 @@ def main():
         save_data(existing)
 
     # Summary
-    logger.info("=" * 60)
-    logger.info(f"BATCH EXTRACTION COMPLETE")
+    logger.info(f"{'='*60}")
+    logger.info(f"PHASE 2 COMPLETE")
     logger.info(f"  Successful: {success_count}/{len(remaining)}")
     logger.info(f"  Total entries: {len(existing)}")
     logger.info(f"  No annual report available: {len(no_report)}")
     logger.info(f"  Failed (errors): {len(failed)}")
-    logger.info("=" * 60)
+    logger.info(f"{'='*60}")
 
     if no_report:
         logger.info(f"No report: {', '.join(no_report)}")
     if failed:
         logger.info(f"Failed: {', '.join(failed)}")
+
+    return existing
+
+
+def main():
+    args = sys.argv[1:]
+    fix_only = "--fix-nulls" in args
+    new_only = "--new-only" in args
+
+    existing = load_existing()
+    logger.info(f"Loaded {len(existing)} existing entries")
+
+    if not new_only:
+        # Phase 1: Fix existing stocks with null metrics
+        existing = fix_existing_nulls(existing)
+
+    if not fix_only:
+        # Phase 2: Process remaining tickers
+        existing = process_remaining(existing)
+
+    # Final save
+    save_data(existing)
+    logger.info(f"Done. Total entries: {len(existing)}")
 
 
 if __name__ == "__main__":

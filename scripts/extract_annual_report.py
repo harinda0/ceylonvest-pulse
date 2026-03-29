@@ -1,7 +1,10 @@
 """
-CSE Annual Report Extractor
+CSE Annual Report Extractor (Two-Pass Strategy)
 Downloads annual report PDFs from CSE, extracts text with pdfplumber,
 and uses Claude API to extract structured financial data.
+
+PASS 1 (fast — first 80 pages): Extract all financial metrics + summary
+PASS 2 (only if needed — full report): Fill in missing metrics + forward_guidance
 
 Usage:
     python scripts/extract_annual_report.py                  # default: top 30 by turnover
@@ -41,7 +44,8 @@ TEST_TICKERS = ["JKH", "COMB", "KPHL"]
 BASE_URL = "https://www.cse.lk/api/"
 CDN_URL = "https://cdn.cse.lk/"
 OUTPUT_PATH = Path(__file__).parent.parent / "data" / "annual_reports.json"
-MAX_PDF_PAGES = 150  # extract more pages to catch EPS/NAV/ROE in large reports
+PASS1_PAGES = 80   # fast first pass
+PASS2_PAGES = 250  # deep second pass for missing data
 TEXT_CHAR_LIMIT = 200_000  # Claude context budget (~50k tokens)
 
 HEADERS = {
@@ -52,7 +56,10 @@ HEADERS = {
     "Referer": "https://www.cse.lk/",
 }
 
-EXTRACTION_PROMPT = """You are a financial analyst extracting structured data from a CSE (Colombo Stock Exchange) annual report.
+# Key financial metrics that trigger Pass 2 if null
+CRITICAL_METRICS = ["eps", "nav", "roe", "debt_to_equity"]
+
+PASS1_PROMPT = """You are a financial analyst extracting structured data from a CSE (Colombo Stock Exchange) annual report.
 
 Given the extracted text from an annual report PDF, return a JSON object with this EXACT structure:
 
@@ -74,18 +81,90 @@ Given the extracted text from an annual report PDF, return a JSON object with th
   "key_risks": [
     "Specific risk factor mentioned in the report (max 5 items)"
   ],
-  "chairman_outlook": "2-3 sentence summary of chairman's statement on outlook and strategy"
+  "chairman_outlook": "2-3 sentence summary of chairman's statement on outlook and strategy",
+  "forward_guidance": {
+    "management_targets": [
+      "Every specific forward-looking plan, target, or commitment with amounts/dates where available"
+    ],
+    "capex_plans": [
+      "Every capital expenditure or investment plan with amounts and timelines"
+    ],
+    "partnerships_acquisitions": [
+      "Any partnerships, JVs, acquisitions, expansions, new products mentioned"
+    ],
+    "geographic_expansion": [
+      "Any geographic expansion plans (domestic or international)"
+    ],
+    "regulatory_dependencies": [
+      "Any regulatory, policy, or government dependencies mentioned"
+    ],
+    "segment_info": [
+      "Key subsidiary or business segment performance highlights"
+    ],
+    "all_risks": [
+      "Every risk factor mentioned in the report, not just top 5"
+    ]
+  }
 }
 
 IMPORTANT RULES:
 - All monetary values must be in LKR (Sri Lankan Rupees), NOT thousands or millions. Convert if needed.
   Example: "Revenue Rs. 228 Bn" = 228000000000, "Net Profit Rs. 18.5 Mn" = 18500000
 - yoy_change is year-over-year percentage change. Use positive for increase, negative for decrease.
-- For management_plans: extract SPECIFIC, ACTIONABLE plans with timelines/targets where available. Not vague statements.
-- For key_risks: extract SPECIFIC risks, not generic business disclaimers.
+- For management_plans: extract the TOP 6 most specific, actionable plans.
+- For forward_guidance: extract EVERYTHING — every plan, target, capex, partnership, risk, segment detail.
+  Include specific numbers, dates, percentages where mentioned. This is raw material for news matching.
 - chairman_outlook should capture the strategic direction and economic outlook mentioned.
 - If a value is not found in the report, use null. NEVER fabricate numbers.
 - Return ONLY the JSON object. No markdown, no code fences, no explanation."""
+
+PASS2_PROMPT = """You are a financial analyst doing a DEEP extraction pass on a CSE annual report.
+The first extraction pass found some data but MISSED these critical financial metrics.
+
+From the FIRST PASS, we already have:
+{existing_data}
+
+The following metrics are MISSING (null) and need to be found:
+{missing_fields}
+
+Search the report text carefully for:
+1. Earnings Per Share (EPS) — look in financial highlights, per-share data, income statement notes
+2. Net Asset Value per share (NAV) — look in balance sheet, per-share data, shareholder information
+3. Return on Equity (ROE) — look in financial summary, key performance indicators, management discussion
+4. Debt to Equity ratio — look in balance sheet analysis, capital structure, financial risk section
+
+Also extract any ADDITIONAL forward guidance items not found in Pass 1:
+- Management targets with specific numbers/dates
+- Capex and investment plans with amounts
+- Partnerships, acquisitions, new products
+- Geographic expansion plans
+- Regulatory dependencies
+- Segment/subsidiary details
+- All risk factors
+
+Return a JSON object with ONLY the fields that have NEW data (don't repeat existing data):
+{{
+  "financials": {{
+    "eps": <number or null if still not found>,
+    "nav": <number or null>,
+    "roe": <percentage or null>,
+    "debt_to_equity": <ratio or null>
+  }},
+  "additional_forward_guidance": {{
+    "management_targets": [...],
+    "capex_plans": [...],
+    "partnerships_acquisitions": [...],
+    "geographic_expansion": [...],
+    "regulatory_dependencies": [...],
+    "segment_info": [...],
+    "all_risks": [...]
+  }}
+}}
+
+RULES:
+- All monetary values in LKR. Convert from millions/billions.
+- NEVER fabricate. Use null if truly not found.
+- Return ONLY JSON. No markdown, no explanation."""
 
 
 # ---------------------------------------------------------------------------
@@ -209,7 +288,9 @@ _FINANCIAL_KEYWORDS = [
     "revenue", "net profit", "profit after tax", "chairman's statement",
     "chairman's review", "outlook", "management discussion",
     "financial highlights", "financial summary", "key performance",
-    "five year summary", "ten year summary",
+    "five year summary", "ten year summary", "forward looking",
+    "capex", "capital expenditure", "acquisition", "partnership",
+    "expansion plan", "geographic", "regulatory", "segment",
 ]
 
 
@@ -219,10 +300,13 @@ def _page_financial_score(text: str) -> int:
     return sum(1 for kw in _FINANCIAL_KEYWORDS if kw in lower)
 
 
-def extract_text_from_pdf(pdf_bytes: bytes) -> str | None:
+def extract_text_from_pdf(pdf_bytes: bytes, max_pages: int | None = None) -> str | None:
     """Extract text from PDF using pdfplumber.
     Prioritizes pages with financial keywords to stay within the char limit.
     """
+    if max_pages is None:
+        max_pages = PASS1_PAGES
+
     with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as f:
         f.write(pdf_bytes)
         tmp_path = f.name
@@ -230,7 +314,7 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str | None:
     try:
         with pdfplumber.open(tmp_path) as pdf:
             num_pages = len(pdf.pages)
-            pages_to_scan = min(num_pages, MAX_PDF_PAGES)
+            pages_to_scan = min(num_pages, max_pages)
             logger.info(f"PDF has {num_pages} pages - scanning first {pages_to_scan}")
 
             # Extract text from all scanned pages
@@ -249,22 +333,19 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str | None:
                 return full_text if full_text.strip() else None
 
             # Budget exceeded — prioritize financial pages
-            # Split into high-priority (financial keywords) and normal pages
             scored = [(i, text, _page_financial_score(text)) for i, text in page_texts]
-            high_priority = [(i, text) for i, text, score in scored if score >= 2]
+            high_priority = [(i, text, score) for i, text, score in scored if score >= 2]
             normal = [(i, text) for i, text, score in scored if score < 2]
 
             logger.info(f"Found {len(high_priority)} high-priority financial pages")
 
-            # Build output: high-priority pages first (by score desc), then normal pages
+            # Sort high-priority by score (highest first) to fit best pages in budget
+            high_priority.sort(key=lambda x: x[2], reverse=True)
+
             selected = []
             char_count = 0
 
-            # Sort high-priority by score (highest first) to fit best pages in budget
-            hp_scored = [(i, text, _page_financial_score(text)) for i, text in high_priority]
-            hp_scored.sort(key=lambda x: x[2], reverse=True)
-
-            for i, text, _ in hp_scored:
+            for i, text, _ in high_priority:
                 if char_count + len(text) > TEXT_CHAR_LIMIT:
                     continue
                 selected.append((i, text))
@@ -294,8 +375,8 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str | None:
 # ---------------------------------------------------------------------------
 # Claude API extraction
 # ---------------------------------------------------------------------------
-def extract_with_claude(text: str, company_name: str | None = None) -> dict | None:
-    """Send PDF text to Claude API and extract structured data."""
+def _call_claude(prompt: str, user_msg: str, max_tokens: int = 8192) -> dict | None:
+    """Send a prompt to Claude API and parse the JSON response."""
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
         logger.error("ANTHROPIC_API_KEY not set")
@@ -303,16 +384,13 @@ def extract_with_claude(text: str, company_name: str | None = None) -> dict | No
 
     client = anthropic.Anthropic(api_key=api_key)
 
-    user_msg = f"Company: {company_name}\n\n" if company_name else ""
-    user_msg += f"Annual report text ({len(text):,} characters):\n\n{text}"
-
     logger.info("Sending to Claude API for extraction...")
     try:
         response = client.messages.create(
             model="claude-sonnet-4-20250514",
-            max_tokens=4096,
+            max_tokens=max_tokens,
             messages=[
-                {"role": "user", "content": EXTRACTION_PROMPT + "\n\n" + user_msg}
+                {"role": "user", "content": prompt + "\n\n" + user_msg}
             ],
         )
         raw = response.content[0].text.strip()
@@ -334,7 +412,6 @@ def extract_with_claude(text: str, company_name: str | None = None) -> dict | No
             raw = raw[:last_brace + 1]
 
         result = json.loads(raw)
-        logger.info(f"Extracted: {result.get('company', '?')} - {result.get('year', '?')}")
         return result
     except json.JSONDecodeError as e:
         logger.error(f"Claude returned invalid JSON: {e}")
@@ -345,11 +422,68 @@ def extract_with_claude(text: str, company_name: str | None = None) -> dict | No
         return None
 
 
+def extract_pass1(text: str, company_name: str | None = None) -> dict | None:
+    """PASS 1: Extract all financial metrics + forward guidance from first 80 pages."""
+    user_msg = f"Company: {company_name}\n\n" if company_name else ""
+    user_msg += f"Annual report text ({len(text):,} characters):\n\n{text}"
+    result = _call_claude(PASS1_PROMPT, user_msg)
+    if result:
+        logger.info(f"Pass 1 extracted: {result.get('company', '?')} - {result.get('year', '?')}")
+    return result
+
+
+def extract_pass2(text: str, existing_data: dict, missing_fields: list[str]) -> dict | None:
+    """PASS 2: Extract missing metrics from deeper pages."""
+    existing_summary = json.dumps({
+        "company": existing_data.get("company"),
+        "year": existing_data.get("year"),
+        "financials": existing_data.get("financials"),
+    }, indent=2)
+
+    prompt = PASS2_PROMPT.replace("{existing_data}", existing_summary)
+    prompt = prompt.replace("{missing_fields}", ", ".join(missing_fields))
+
+    user_msg = f"Annual report text ({len(text):,} characters):\n\n{text}"
+    result = _call_claude(prompt, user_msg)
+    if result:
+        logger.info(f"Pass 2 found additional data")
+    return result
+
+
+def _get_missing_metrics(result: dict) -> list[str]:
+    """Check which critical financial metrics are null."""
+    fin = result.get("financials", {})
+    return [m for m in CRITICAL_METRICS if fin.get(m) is None]
+
+
+def _merge_pass2(result: dict, pass2: dict) -> dict:
+    """Merge Pass 2 data into the main result."""
+    # Merge financial metrics
+    p2_fin = pass2.get("financials", {})
+    for key in CRITICAL_METRICS:
+        if p2_fin.get(key) is not None and result.get("financials", {}).get(key) is None:
+            result["financials"][key] = p2_fin[key]
+
+    # Merge additional forward guidance
+    p2_fg = pass2.get("additional_forward_guidance", {})
+    if p2_fg:
+        fg = result.get("forward_guidance", {})
+        for key, values in p2_fg.items():
+            if isinstance(values, list) and values:
+                existing = set(fg.get(key, []))
+                for item in values:
+                    if item not in existing:
+                        fg.setdefault(key, []).append(item)
+        result["forward_guidance"] = fg
+
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Main pipeline
 # ---------------------------------------------------------------------------
 def process_ticker(ticker: str) -> dict | None:
-    """Full pipeline: fetch PDF -> extract text -> Claude -> structured data."""
+    """Full two-pass pipeline: fetch PDF -> Pass 1 -> check nulls -> Pass 2 if needed."""
     symbol = f"{ticker}.N0000"
     logger.info(f"{'='*60}")
     logger.info(f"Processing {ticker} ({symbol})")
@@ -376,16 +510,35 @@ def process_ticker(ticker: str) -> dict | None:
     if not pdf_bytes:
         return None
 
-    # Step 4: Extract text
-    text = extract_text_from_pdf(pdf_bytes)
-    if not text:
+    # Step 4: PASS 1 — Extract from first 80 pages
+    logger.info(f"--- PASS 1 (first {PASS1_PAGES} pages) ---")
+    text1 = extract_text_from_pdf(pdf_bytes, max_pages=PASS1_PAGES)
+    if not text1:
         logger.error(f"No text extracted from PDF for {ticker}")
         return None
 
-    # Step 5: Send to Claude for structured extraction
-    result = extract_with_claude(text, company_name)
+    result = extract_pass1(text1, company_name)
     if not result:
         return None
+
+    # Step 5: Check for missing critical metrics
+    missing = _get_missing_metrics(result)
+    if missing:
+        logger.info(f"Pass 1 missing: {missing} — running Pass 2 with {PASS2_PAGES} pages")
+
+        # PASS 2 — Extract from deeper pages
+        text2 = extract_text_from_pdf(pdf_bytes, max_pages=PASS2_PAGES)
+        if text2:
+            pass2 = extract_pass2(text2, result, missing)
+            if pass2:
+                result = _merge_pass2(result, pass2)
+                still_missing = _get_missing_metrics(result)
+                if still_missing:
+                    logger.warning(f"Still missing after Pass 2: {still_missing}")
+                else:
+                    logger.info(f"All critical metrics found after Pass 2")
+    else:
+        logger.info("All critical metrics found in Pass 1")
 
     # Step 6: Add metadata
     if sector:
@@ -393,7 +546,53 @@ def process_ticker(ticker: str) -> dict | None:
     result["source_pdf"] = pdf_url
     result["updated"] = time.strftime("%Y-%m")
 
+    # Log key metrics
+    fin = result.get("financials", {})
+    logger.info(f"  EPS={fin.get('eps')} NAV={fin.get('nav')} ROE={fin.get('roe')} D/E={fin.get('debt_to_equity')}")
+
     return result
+
+
+def process_ticker_pass2_only(ticker: str, existing_data: dict) -> dict | None:
+    """Run ONLY Pass 2 for a ticker that already has Pass 1 data but has null metrics."""
+    symbol = f"{ticker}.N0000"
+    missing = _get_missing_metrics(existing_data)
+    if not missing:
+        logger.info(f"{ticker}: no missing metrics, skipping Pass 2")
+        return existing_data
+
+    logger.info(f"{'='*60}")
+    logger.info(f"Pass 2 only: {ticker} — missing: {missing}")
+    logger.info(f"{'='*60}")
+
+    # Get PDF URL
+    pdf_url, report_title = fetch_latest_annual_pdf_url(symbol)
+    if not pdf_url:
+        logger.error(f"No annual report PDF found for {ticker}")
+        return existing_data
+
+    # Download PDF
+    pdf_bytes = download_pdf(pdf_url)
+    if not pdf_bytes:
+        return existing_data
+
+    # Extract full text
+    text = extract_text_from_pdf(pdf_bytes, max_pages=PASS2_PAGES)
+    if not text:
+        return existing_data
+
+    # Run Pass 2
+    pass2 = extract_pass2(text, existing_data, missing)
+    if pass2:
+        result = _merge_pass2(existing_data, pass2)
+        still_missing = _get_missing_metrics(result)
+        if still_missing:
+            logger.warning(f"Still missing after Pass 2: {still_missing}")
+        else:
+            logger.info(f"All critical metrics found")
+        return result
+
+    return existing_data
 
 
 def main():
