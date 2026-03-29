@@ -67,7 +67,7 @@ _HIGHER_IS_BETTER = {
 def _load_reports() -> dict:
     """Load annual_reports.json."""
     try:
-        with open(_REPORTS_PATH) as f:
+        with open(_REPORTS_PATH, encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         logger.error(f"Failed to load annual_reports.json: {e}")

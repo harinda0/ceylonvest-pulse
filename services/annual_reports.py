@@ -21,7 +21,7 @@ def _load() -> dict:
     if _cache is not None:
         return _cache
     try:
-        with open(_JSON_PATH, "r") as f:
+        with open(_JSON_PATH, "r", encoding="utf-8") as f:
             _cache = json.load(f)
         return _cache
     except Exception as e:

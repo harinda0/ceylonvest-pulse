@@ -387,7 +387,7 @@ def _call_claude(prompt: str, user_msg: str, max_tokens: int = 8192) -> dict | N
     logger.info("Sending to Claude API for extraction...")
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-6-20250627",
+            model="claude-sonnet-4-20250514",
             max_tokens=max_tokens,
             messages=[
                 {"role": "user", "content": prompt + "\n\n" + user_msg}
