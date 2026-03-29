@@ -42,6 +42,14 @@ SECTOR_ALIASES = {
     "TOURISM": "Consumer Services",
     "APPAREL": "Consumer Durables & Apparel",
     "MATERIALS": "Materials",
+    "PLANTATIONS": "Materials",
+    "PLANTATION": "Materials",
+    "HEALTH": "Consumer Services",
+    "HEALTHCARE": "Consumer Services",
+    "CONSTRUCTION": "Capital Goods",
+    "AUTO": "Capital Goods",
+    "AUTOMOTIVE": "Capital Goods",
+    "DIVERSIFIED": "Diversified Financials",
 }
 
 # Metrics where higher = better (True) vs lower = better (False)

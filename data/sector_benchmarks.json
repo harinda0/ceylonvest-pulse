@@ -1,62 +1,63 @@
 {
   "Capital Goods": {
-    "company_count": 5,
+    "company_count": 6,
     "tickers": [
       "JKH",
       "RCL",
       "ACL",
       "DOCK",
-      "SIRA"
+      "SIRA",
+      "AFS"
     ],
     "metrics": {
       "roe": {
-        "avg": -11.66,
-        "median": 9.3,
+        "avg": -6.04,
+        "median": 12.18,
         "min": -102,
-        "max": 17.96,
-        "count": 5
+        "max": 22.02,
+        "count": 6
       },
       "eps": {
-        "avg": -7.85,
-        "median": 0.99,
+        "avg": -1.88,
+        "median": 1.36,
         "min": -38,
-        "max": 4.6,
-        "count": 4
+        "max": 19.11,
+        "count": 6
       },
       "nav": {
-        "avg": 31.15,
-        "median": 38,
-        "min": 11.56,
-        "max": 43.9,
-        "count": 3
+        "avg": 77.44,
+        "median": 40.95,
+        "min": 4.72,
+        "max": 237.85,
+        "count": 6
       },
       "dividend_per_share": {
-        "avg": 0.88,
-        "median": 0.88,
+        "avg": 0.63,
+        "median": 0.15,
         "min": 0.15,
         "max": 1.6,
-        "count": 2
+        "count": 3
       },
       "debt_to_equity": {
-        "avg": 0.25,
-        "median": 0.25,
+        "avg": 9.97,
+        "median": 0.49,
         "min": 0.04,
-        "max": 0.47,
-        "count": 2
+        "max": 58,
+        "count": 6
       },
       "revenue_growth": {
-        "avg": 4.96,
-        "median": 12,
+        "avg": 8.63,
+        "median": 12.8,
         "min": -28.3,
         "max": 28.4,
-        "count": 5
+        "count": 6
       },
       "profit_margin": {
-        "avg": 4.81,
-        "median": 9.76,
+        "avg": 5.58,
+        "median": 9.61,
         "min": -11.62,
         "max": 14.46,
-        "count": 5
+        "count": 6
       }
     }
   },
@@ -120,120 +121,122 @@
     }
   },
   "Banks": {
-    "company_count": 5,
+    "company_count": 6,
     "tickers": [
       "COMB",
       "HNB",
       "SEYB",
       "SAMP",
-      "NDB"
+      "NDB",
+      "ABL"
     ],
     "metrics": {
       "roe": {
-        "avg": 16.99,
-        "median": 17.93,
-        "min": 13.49,
+        "avg": 15.49,
+        "median": 16.91,
+        "min": 8.0,
         "max": 19.51,
-        "count": 5
+        "count": 6
       },
       "eps": {
-        "avg": 37.2,
-        "median": 25.9,
-        "min": 19.05,
+        "avg": 31.54,
+        "median": 25.83,
+        "min": 3.22,
         "max": 79.44,
-        "count": 5
+        "count": 6
       },
       "nav": {
-        "avg": 230.79,
-        "median": 198.3,
-        "min": 128.87,
+        "avg": 199.23,
+        "median": 175.42,
+        "min": 41.45,
         "max": 472.74,
-        "count": 5
+        "count": 6
       },
       "dividend_per_share": {
-        "avg": 11.2,
-        "median": 10.4,
-        "min": 4.0,
+        "avg": 9.2,
+        "median": 10.3,
+        "min": 1.2,
         "max": 20.0,
-        "count": 4
+        "count": 5
       },
       "debt_to_equity": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": 8.07,
+        "median": 1.46,
+        "min": 0.14,
+        "max": 22.61,
+        "count": 3
       },
       "revenue_growth": {
-        "avg": 14.84,
-        "median": 12.0,
-        "min": -1.19,
+        "avg": 10.53,
+        "median": 7.33,
+        "min": -11,
         "max": 32.92,
-        "count": 5
+        "count": 6
       },
       "profit_margin": {
-        "avg": 14.62,
-        "median": 13.81,
+        "avg": 14.1,
+        "median": 13.36,
         "min": 11.24,
         "max": 18.65,
-        "count": 5
+        "count": 6
       }
     }
   },
   "Consumer Durables & Apparel": {
-    "company_count": 1,
+    "company_count": 2,
     "tickers": [
-      "TJL"
+      "TJL",
+      "ABAN"
     ],
     "metrics": {
       "roe": {
-        "avg": 9.1,
-        "median": 9.1,
+        "avg": 13.77,
+        "median": 13.77,
         "min": 9.1,
-        "max": 9.1,
-        "count": 1
+        "max": 18.45,
+        "count": 2
       },
       "eps": {
-        "avg": 3.88,
-        "median": 3.88,
+        "avg": 50.88,
+        "median": 50.88,
         "min": 3.88,
-        "max": 3.88,
-        "count": 1
+        "max": 97.87,
+        "count": 2
       },
       "nav": {
-        "avg": 43.7,
-        "median": 43.7,
+        "avg": 287.02,
+        "median": 287.02,
         "min": 43.7,
-        "max": 43.7,
-        "count": 1
+        "max": 530.33,
+        "count": 2
       },
       "dividend_per_share": {
-        "avg": 2.35,
-        "median": 2.35,
+        "avg": 8.68,
+        "median": 8.68,
         "min": 2.35,
-        "max": 2.35,
-        "count": 1
+        "max": 15.0,
+        "count": 2
       },
       "debt_to_equity": {
-        "avg": 0.24,
-        "median": 0.24,
-        "min": 0.24,
+        "avg": 0.14,
+        "median": 0.14,
+        "min": 0.05,
         "max": 0.24,
-        "count": 1
+        "count": 2
       },
       "revenue_growth": {
-        "avg": 10.0,
-        "median": 10,
-        "min": 10,
+        "avg": 9.77,
+        "median": 9.77,
+        "min": 9.53,
         "max": 10,
-        "count": 1
+        "count": 2
       },
       "profit_margin": {
-        "avg": 4.17,
-        "median": 4.17,
+        "avg": 5.81,
+        "median": 5.81,
         "min": 4.17,
-        "max": 4.17,
-        "count": 1
+        "max": 7.46,
+        "count": 2
       }
     }
   },
@@ -258,11 +261,11 @@
         "count": 0
       },
       "nav": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": -5.46,
+        "median": -5.46,
+        "min": -5.46,
+        "max": -5.46,
+        "count": 1
       },
       "dividend_per_share": {
         "avg": null,
@@ -272,11 +275,11 @@
         "count": 0
       },
       "debt_to_equity": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": 1.45,
+        "median": 1.45,
+        "min": 1.45,
+        "max": 1.45,
+        "count": 1
       },
       "revenue_growth": {
         "avg": 8.2,
@@ -303,25 +306,25 @@
     ],
     "metrics": {
       "roe": {
-        "avg": 3.5,
-        "median": 3.5,
-        "min": 3.5,
+        "avg": 2.75,
+        "median": 2.75,
+        "min": 1.99,
         "max": 3.5,
-        "count": 1
+        "count": 2
       },
       "eps": {
-        "avg": 2.51,
-        "median": 2.51,
-        "min": 2.51,
+        "avg": 0.86,
+        "median": 0.86,
+        "min": -0.78,
         "max": 2.51,
-        "count": 1
+        "count": 2
       },
       "nav": {
-        "avg": 72.27,
-        "median": 72.27,
-        "min": 72.27,
+        "avg": 35.99,
+        "median": 35.99,
+        "min": -0.29,
         "max": 72.27,
-        "count": 1
+        "count": 2
       },
       "dividend_per_share": {
         "avg": 0.63,
@@ -331,11 +334,11 @@
         "count": 1
       },
       "debt_to_equity": {
-        "avg": 11.9,
-        "median": 11.9,
-        "min": 11.9,
+        "avg": -2.6,
+        "median": -2.6,
+        "min": -17.11,
         "max": 11.9,
-        "count": 1
+        "count": 2
       },
       "revenue_growth": {
         "avg": 21.56,
@@ -367,18 +370,18 @@
         "count": 1
       },
       "eps": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": 1.31,
+        "median": 1.31,
+        "min": 1.31,
+        "max": 1.31,
+        "count": 1
       },
       "nav": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": 10.6,
+        "median": 10.6,
+        "min": 10.6,
+        "max": 10.6,
+        "count": 1
       },
       "dividend_per_share": {
         "avg": null,
@@ -538,18 +541,18 @@
         "count": 0
       },
       "eps": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": -0.35,
+        "median": -0.35,
+        "min": -0.35,
+        "max": -0.35,
+        "count": 1
       },
       "nav": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": 11.4,
+        "median": 11.4,
+        "min": 11.4,
+        "max": 11.4,
+        "count": 1
       },
       "dividend_per_share": {
         "avg": null,
@@ -639,32 +642,33 @@
     }
   },
   "Diversified Financials": {
-    "company_count": 2,
+    "company_count": 3,
     "tickers": [
       "CFIN",
-      "WAPO"
+      "WAPO",
+      "AAF"
     ],
     "metrics": {
       "roe": {
-        "avg": 11.34,
-        "median": 11.34,
+        "avg": 11.84,
+        "median": 11.84,
         "min": 11.34,
-        "max": 11.34,
-        "count": 1
+        "max": 12.35,
+        "count": 2
       },
       "eps": {
-        "avg": 24.95,
-        "median": 24.95,
-        "min": 23.58,
+        "avg": 17.81,
+        "median": 23.58,
+        "min": 3.55,
         "max": 26.31,
-        "count": 2
+        "count": 3
       },
       "nav": {
-        "avg": 155.24,
-        "median": 155.24,
-        "min": 67.66,
+        "avg": 113.64,
+        "median": 67.66,
+        "min": 30.43,
         "max": 242.82,
-        "count": 2
+        "count": 3
       },
       "dividend_per_share": {
         "avg": 4.33,
@@ -674,25 +678,25 @@
         "count": 2
       },
       "debt_to_equity": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": 4.69,
+        "median": 4.69,
+        "min": 0.9,
+        "max": 8.47,
+        "count": 2
       },
       "revenue_growth": {
-        "avg": 69.75,
-        "median": 69.75,
+        "avg": 48.16,
+        "median": 4.97,
         "min": -5.0,
         "max": 144.5,
-        "count": 2
+        "count": 3
       },
       "profit_margin": {
-        "avg": 449.66,
-        "median": 449.66,
-        "min": 28.89,
+        "avg": 301.91,
+        "median": 28.89,
+        "min": 6.39,
         "max": 870.43,
-        "count": 2
+        "count": 3
       }
     }
   },
@@ -704,11 +708,11 @@
     ],
     "metrics": {
       "roe": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
+        "avg": 10.6,
+        "median": 10.6,
+        "min": 10.6,
+        "max": 10.6,
+        "count": 1
       },
       "eps": {
         "avg": 0.28,
@@ -755,61 +759,62 @@
     }
   },
   "Insurance": {
-    "company_count": 3,
+    "company_count": 4,
     "tickers": [
       "JINS",
       "ATLL",
-      "SCAP"
+      "SCAP",
+      "AAIC"
     ],
     "metrics": {
       "roe": {
-        "avg": 3.34,
-        "median": 0.01,
+        "avg": 12.25,
+        "median": 10.51,
         "min": -11,
-        "max": 21,
-        "count": 3
+        "max": 39.0,
+        "count": 4
       },
       "eps": {
-        "avg": 6.57,
-        "median": 0.09,
+        "avg": 8.63,
+        "median": 7.44,
         "min": -0.29,
         "max": 19.92,
-        "count": 3
+        "count": 4
       },
       "nav": {
-        "avg": 27.91,
-        "median": 12.75,
+        "avg": 31.73,
+        "median": 27.98,
         "min": -2.5,
         "max": 73.47,
-        "count": 3
+        "count": 4
       },
       "dividend_per_share": {
-        "avg": null,
-        "median": null,
-        "min": null,
-        "max": null,
-        "count": 0
-      },
-      "debt_to_equity": {
-        "avg": 2.81,
-        "median": 2.81,
-        "min": 2.81,
-        "max": 2.81,
+        "avg": 4.5,
+        "median": 4.5,
+        "min": 4.5,
+        "max": 4.5,
         "count": 1
       },
+      "debt_to_equity": {
+        "avg": 1.41,
+        "median": 1.41,
+        "min": 0,
+        "max": 2.81,
+        "count": 2
+      },
       "revenue_growth": {
-        "avg": 19.52,
-        "median": 15,
+        "avg": 21.36,
+        "median": 20.95,
         "min": 12.55,
         "max": 31,
-        "count": 3
+        "count": 4
       },
       "profit_margin": {
-        "avg": 14.56,
-        "median": 4.0,
+        "avg": 13.84,
+        "median": 7.84,
         "min": 0.39,
         "max": 39.31,
-        "count": 3
+        "count": 4
       }
     }
   },

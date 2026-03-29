@@ -12,10 +12,10 @@
         "yoy_change": -49
       },
       "eps": 0.31,
-      "nav": null,
+      "nav": 237.85,
       "dividend_per_share": 0.15,
       "roe": 1.4,
-      "debt_to_equity": null
+      "debt_to_equity": 0.52
     },
     "management_plans": [
       "Accelerated outlet openings in supermarket business given positive industry outlook and macroeconomic stability",
@@ -34,7 +34,78 @@
     ],
     "chairman_outlook": "The Group is confident that the short term impact of ramp-up related expenses will be more than compensated by long term benefits and transformation from landmark investments like CODSL and WCT-1, positioning the Group for industry leadership and sustained growth. The much-anticipated sovereign rating upgrade and political stability provide a strong foundation for capitalizing on Sri Lanka's position as a logistics and leisure hub in the region.",
     "sector": "Capital Goods",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "USD 5 billion export revenue target by CY2030 for IT/BPM industry",
+        "40% female workforce representation target revised to 2029/30",
+        "WCT-1 expected to achieve cash-positive position within first year of operations",
+        "Run rate of volumes in Q4 expected to enable WCT-1 earnings at breakeven"
+      ],
+      "capex_plans": [
+        "Completion of retail mall and 113-key Nuwa hotel at CODSL",
+        "Final equity tranche in WCT-1 at Port of Colombo",
+        "Rollout of Supermarket outlets - number planned significantly higher than 2024/25",
+        "Strategic investments to expand impulse production in Confectionery business",
+        "Extensions into adjacent confectionery categories",
+        "Two-megawatt solar power system installation at JKW warehouse"
+      ],
+      "partnerships_acquisitions": [
+        "Partnership with BYD Auto Industry Company Limited for New Energy Vehicles",
+        "JKCG chosen as BYD partner for commercial vehicles in Sri Lanka",
+        "UA established exclusive bancassurance partnership with Sampath Bank PLC in January 2025",
+        "Joint venture with Deutsche post for DHL air express",
+        "AP Moller partnership for Maersk Lanka",
+        "Inchcape Shipping Services partnership for IMMS",
+        "Partnership with RCPL to manufacture beverages under Elephant House brand in India",
+        "Kandy Myst by Cinnamon - 40% equity stake partnership with Indra Traders"
+      ],
+      "geographic_expansion": [
+        "Beverage business focus on enhancing market reach in India through RCPL partnership",
+        "JKIT focus on expanding regionally and globally with strategic partnerships",
+        "Expansion into new markets regionally and globally for IT services",
+        "JKCG expansion through dealerships in Kandy and Galle"
+      ],
+      "regulatory_dependencies": [
+        "Gaming space opening in August 2025 subject to regulatory approvals",
+        "15% income tax on IT services profits from foreign clients effective April 2025",
+        "18% VAT on digital services by non-resident suppliers effective October 2025",
+        "TRC initiative to blacklist unauthorised IMEI numbers expected to benefit Office Automation",
+        "New food labelling and advertising regulations prohibiting promotion to children under 12"
+      ],
+      "segment_info": [
+        "Transportation: 42% stake in SAGT, 34% stake in WCT-1",
+        "WCT-1 shareholding: Adani Ports 51%, JKH 34%, Sri Lanka Ports Authority 15%",
+        "Consumer Foods: Beverages 16% CSD volume growth, Confectionery 22% volume growth",
+        "Retail: 138 supermarket outlets as at March 2025, NEV business launched",
+        "Leisure: 687-key Cinnamon Life hotel operational, 113-key Nuwa hotel opening August 2025",
+        "Property: 74% of residential units sold at Cinnamon Life towers",
+        "Financial Services: NTB 24% loan growth, UA 15% GWP growth"
+      ],
+      "all_risks": [
+        "Macroeconomic and political environment - Ultra-High risk",
+        "Regulatory environment changes - High risk",
+        "Human resources and talent management - High risk",
+        "Information technology risks - High risk",
+        "Portfolio balance risk - High risk",
+        "Supply chain disruptions - Medium risk",
+        "Financial exposure including exchange rate and interest rate volatility - Medium risk",
+        "Global competition - Medium risk",
+        "Environment and health & safety including climate risks - Medium risk",
+        "Reputation and brand image - Low risk",
+        "Geopolitical tensions impacting Red Sea shipping routes",
+        "India-Pakistan military tensions and regional stability concerns",
+        "Global trade tensions and US tariff measures",
+        "Volatile weather patterns impacting crops and fresh produce",
+        "Credit and counterparty risks",
+        "Liquidity risk",
+        "Competition in entry-level markets",
+        "Medical cost inflation affecting insurance claims",
+        "Policy lapse rates in insurance business",
+        "Talent flight and attrition in IT sector",
+        "Cross-skilling challenges in technology roles"
+      ]
+    }
   },
   "KPHL": {
     "company": "KAPRUKA HOLDINGS PLC",
@@ -89,7 +160,7 @@
       "nav": 198.3,
       "dividend_per_share": 10.5,
       "roe": 19.51,
-      "debt_to_equity": null
+      "debt_to_equity": 22.61
     },
     "management_plans": [
       "Launch OneApp in Sri Lanka and the Maldives in 2026 to drive comprehensive mobile experience transformation including expanding intelligent chatbots and virtual assistants",
@@ -108,7 +179,71 @@
     ],
     "chairman_outlook": "While the outlook has improved with Sri Lanka's economic normalisation, sustained progress will require continued fiscal discipline, structural reforms and renewed private sector dynamism. Commercial Bank stands ready to play its part by preserving capital strength and liquidity leadership, continuing disciplined yet proactive private sector credit expansion aligned to productive sectors, and deepening digital transformation while strengthening cybersecurity. By combining prudence, innovation and leadership, Commercial Bank is well positioned not only to participate in Sri Lanka's post-crisis growth story, but to help shape it responsibly.",
     "sector": "Banks",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Green finance target: Rs. 100 Bn. green financing portfolio by 2030",
+        "Digital penetration reached 56% with target to expand",
+        "Expand AMFU units to 100 units by 2026",
+        "Expand Shakthi Agency Banking to 100 agents by 2026",
+        "Return on average assets (ROA) target: Over 2%",
+        "Return on average shareholders' funds (ROE) target: Over 20%",
+        "Growth in gross income target: Over 20%",
+        "Capital adequacy ratios: 2% buffer over regulatory minimum requirement"
+      ],
+      "capex_plans": [
+        "Hyper-Converged Infrastructure expansion",
+        "Managed Security Operations Centre expansion",
+        "IT infrastructure strengthening and cybersecurity systems investment",
+        "Digital transformation project for retail banking",
+        "AI-powered ecosystem expansion across lending categories",
+        "Rs. 15 Bn. Green Bond proceeds for sustainable lending initiatives"
+      ],
+      "partnerships_acquisitions": [
+        "Partnership with International Finance Corporation (IFC) for Climate Transition Plan development",
+        "Green Climate Fund (GCF) accreditation pursuit",
+        "UN Women's Empowerment Principles adoption",
+        "Partnership with United Nations Fund for Population Activities (UNFPA)",
+        "Commercial Bank LEAP GlobalLinker platform partnerships",
+        "Strategic partnerships with Development Finance Institutions (DFIs)",
+        "Partnerships with property developers, vehicle suppliers, educational institutions"
+      ],
+      "geographic_expansion": [
+        "Bangladesh operations: 20 branches network maintained",
+        "Maldives subsidiary: CBM operations through 2 branches and 6 self-service terminals",
+        "Myanmar subsidiary: Expanded to 13 townships across Nay Pyi Taw and Mandalay regions",
+        "International Banking cross-border lending portfolio expansion in emerging markets",
+        "Representative office in Dubai International Financial Centre (DIFC)"
+      ],
+      "regulatory_dependencies": [
+        "IMF Extended Fund Facility (EFF) programme compliance",
+        "CBSL Green Finance Taxonomy alignment",
+        "Basel III capital adequacy requirements compliance",
+        "SLFRS S1 and S2 Sustainability-related Financial Disclosures first-time adoption",
+        "Central Bank of Sri Lanka regulatory guidance and directions compliance",
+        "US tariff framework impact (20% tariff rate on Sri Lanka)"
+      ],
+      "segment_info": [
+        "Personal Banking Division: Highest contributor to net interest income and fee income",
+        "SME Banking: Largest SME lender for 5th consecutive year, 30.3% market share",
+        "Corporate Banking: Focus on top-tier corporate clients and large-scale enterprises",
+        "International Banking: Cross-border lending portfolio nearly doubled",
+        "Treasury: Rs. 15 Bn. Green Bond issuance completed",
+        "Payments Business: No. 1 rank in Debit Card issuance and LANKAQR"
+      ],
+      "all_risks": [
+        "Climate-related physical risks from extreme weather events",
+        "Cybersecurity and data privacy risks",
+        "Credit risk from borrower cash flow deterioration",
+        "Regulatory compliance and conduct risks",
+        "Interest rate and foreign exchange volatility",
+        "Operational disruption risks",
+        "Fraud and financial crime risks",
+        "Reputation and market confidence risks",
+        "Liquidity and funding concentration risks",
+        "Technology and digital transformation execution risks"
+      ]
+    }
   },
   "TJL": {
     "company": "Teejay Lanka PLC",
@@ -160,10 +295,10 @@
         "yoy_change": null
       },
       "eps": null,
-      "nav": null,
+      "nav": -5.46,
       "dividend_per_share": null,
       "roe": null,
-      "debt_to_equity": null
+      "debt_to_equity": 1.45
     },
     "management_plans": [
       "Implement Bio-Compostable Product Design Project to develop fully compostable packaging under natural conditions",
@@ -182,7 +317,37 @@
     ],
     "chairman_outlook": "The Company remains committed to expanding its export footprint through resilient supply chain strategies, investment in quality assurance systems, and customer-focused innovation. As a responsible company, we will continue to explore and invest in environmentally sustainable packaging technologies, with the aim of minimizing environmental impact while maintaining product integrity and performance. These efforts are aimed at positioning the organisation as a preferred partner in international markets, while contributing to the broader national objective of strengthening Sri Lanka's export economy.",
     "sector": "Materials",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "regulatory_dependencies": [
+        "Extended Fund Facility (EFF) with International Monetary Fund - continuation supports fiscal and external sector stability",
+        "Environmental regulations and eco-friendly materials requirements driving need for sustainable packaging solutions",
+        "Stringent quality standards in export markets including ISO 9001:2015, ISO 22000:2018, FSMS, QMS, and FSSC 22000 Version 5.1 certification requirements",
+        "Compliance with CSE Listing Rules and Securities Exchange Commission regulations"
+      ],
+      "segment_info": [
+        "ACME Packaging Solutions (Private) Limited - Fully owned subsidiary with factory at Katugampola Industrial Estate, Makandura, Gonawila",
+        "Main industrial sectors serviced: tea, food, confectionery, milk powder, pharmaceuticals and consumer products",
+        "Export operations face challenges from stringent regulatory and quality standards, logistical complexities, high freight costs, and geopolitical instability"
+      ],
+      "all_risks": [
+        "Competitive business environment with increased market penetration by alternative packaging materials and low-cost imports",
+        "Higher cost of raw materials predominantly resins and specialty films affected by global supply chain disruptions and currency fluctuations",
+        "High capital investment required for technological advancements to enhance operational efficiency and meet international standards",
+        "Resin monopoly in local market limits pricing flexibility and bargaining power",
+        "High R&D investment costs with long gestation periods for returns",
+        "Credit risks from non-payment by debtors leading to working capital issues",
+        "Market risks from adverse movements in securities markets and macro environment factors",
+        "Inventory management risks requiring careful production planning and quality control",
+        "Quality-related risks requiring technology upgrades and compliance with local and international standards",
+        "IT systems and infrastructure dependency risks",
+        "Interest rate and exchange rate fluctuation risks",
+        "Health and safety risks in manufacturing operations",
+        "Technological and operational risks from system failures and contingencies",
+        "Legal compliance risks across multiple regulatory frameworks",
+        "Employee and industrial relationship management risks"
+      ]
+    }
   },
   "HNB": {
     "company": "Hatton National Bank PLC",
@@ -200,7 +365,7 @@
       "nav": 472.74,
       "dividend_per_share": 20.0,
       "roe": 18.11,
-      "debt_to_equity": null
+      "debt_to_equity": 0.14
     },
     "management_plans": [
       "Becoming Sri Lanka's Largest Private Sector Bank by 2030 through comprehensive five-year transformation agenda structured across two phases",
@@ -219,7 +384,58 @@
     ],
     "chairman_outlook": "Continuing the momentum of the past two years, the Sri Lankan economy is expected to expand by around 4-5% in 2026, yet the experience of the 2022 crisis underscores the importance of sustained resilience requiring stronger economic buffers, reinforced policy credibility, and enhanced capacity to absorb future shocks. HNB is well positioned to energise Sri Lanka's future through the Strategic Plan for 2026-2030, leveraging strong fundamentals and disciplined governance to continue strengthening core business verticals while reinforcing the Bank's position as a fully fledged financial services conglomerate.",
     "sector": "Banks",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Position HNB as a regional financial services player",
+        "Ensure long-term capital strength through disciplined capital planning",
+        "Position HNBA among the top three life insurers in Sri Lanka",
+        "Establish HNBGI as the most customer-centric general insurer in Sri Lanka"
+      ],
+      "capex_plans": [
+        "Capex on Tech and Digital Rs 1,745 Mn in 2025 vs Rs 896 Mn in 2024",
+        "Capex (excluding Tech and Digital) Rs 1,351 Mn in 2025 vs Rs 979 Mn in 2024",
+        "Replace aged SSMs in 2026 for continued service reliability",
+        "Phase out R22-filled air-conditioning chillers by 2030"
+      ],
+      "partnerships_acquisitions": [
+        "Completed acquisition of remaining 50% stake in Acuity Partners (Pvt) Ltd in January 2025, rebranded as HNB Investment Bank (Pvt) Ltd",
+        "Partnership with Flash Health to enhance wellness proposition for HNBA customers",
+        "Strategic partnership with fintech companies to strengthen business segments",
+        "Collaborations with telecom operators, supermarkets, retail chains, and banks for premium collection"
+      ],
+      "geographic_expansion": [
+        "Selectively pursue overseas expansion opportunities in regional markets aligned with trade flows",
+        "Increase offshore exposure to reduce impact of systemic risks and ensure diversification",
+        "HNB Investment Bank will seek business opportunities in other markets where HNB PLC has an established presence",
+        "Opened second branch in Jaffna for stockbroking operations"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with Central Bank of Sri Lanka's Technology Risk Management and Resilience Guidelines",
+        "Adherence to Personal Data Protection Act No 9 of 2022",
+        "Implementation of stricter IRCSL regulations for insurance operations",
+        "Compliance with enhanced KYC/AML/CFT standards"
+      ],
+      "segment_info": [
+        "Group assets surpassed Rs 2.5 Tn and closed at Rs 2.64 Tn with 19.4% year-on-year expansion",
+        "Bank remained largest contributor to Group assets with 90.6% share",
+        "Group deposit base grew by Rs 267.5 Bn surpassing Rs 2.0 Tn",
+        "Retail Banking: 52.2% of Net Operating Income, 23.6% of Advances",
+        "Wholesale Banking: 19.3% of Net Operating Income, 31.3% of Segment Liabilities",
+        "SME Banking: 15.1% of Net Operating Income, 11.6% of Advances"
+      ],
+      "all_risks": [
+        "Credit Risk from prolonged economic stress and climate-related vulnerabilities",
+        "Market Risk from exchange rate movements and interest rate fluctuations",
+        "Liquidity Risk from rapid credit growth and funding challenges",
+        "Operational Risk from technology failures and business continuity threats",
+        "Climate Risk highlighted by Cyclone Ditwah in December 2025",
+        "Information and Cyber Risk from digital transformation initiatives",
+        "Strategic Risk from competitive pressures and market dynamics",
+        "Reputation Risk from service quality and regulatory compliance challenges",
+        "Model Risk from AI and advanced technology implementations"
+      ]
+    }
   },
   "SINS": {
     "company": "Singer (Sri Lanka) PLC",
@@ -293,7 +509,58 @@
     ],
     "chairman_outlook": "The indications are that the company will overcome the challenges and obstacles it faced and be on its course towards profitability and growth in the ensuing year. The opening of the automobile market is expected to lead the way in growing revenues substantially, with return of infrastructure projects and likely commencement of power and water related projects expected to further boost revenues. Business plans indicate a turnaround in financial performance to provide satisfactory returns.",
     "sector": "Retailing",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Generate 70% of revenue from renewable sources by 2030",
+        "Improve agricultural productivity by increasing yields and reducing environmental impact",
+        "Create positive impact on lives of one million individuals by 2030",
+        "Reduce carbon emissions by 50% from 2019 baseline by 2030",
+        "Achieve 100% reuse of treated water"
+      ],
+      "capex_plans": [
+        "Total capital expenditure of Rs. 2.5 billion recorded in 2024/25",
+        "Rs. 735 million investment in Power Engineering and Building Technologies manufacturing capital",
+        "Rs. 349 million investment in Agriculture segment manufacturing capital",
+        "Continued investment in solar power plant installations - 5 additional plants under construction",
+        "Investment in ERP Phase 2 implementation planned for 2025/26"
+      ],
+      "partnerships_acquisitions": [
+        "Partnership with Varian (Siemens Healthineers) for cancer treatment access",
+        "Strategic partnerships with Connell Caldic (USA), JRS Food & Pharma (Germany), Kalsec (USA) and General Starch Limited (Thailand)",
+        "Acquisition of two subsidiaries for pharmaceutical business expansion",
+        "Partnership with Mercedes-Benz and TATA for electric vehicle expansion"
+      ],
+      "geographic_expansion": [
+        "Construction machinery business in Bangladesh maturing",
+        "Crossed international borders for elevator system installation at Male international airport",
+        "Agriculture export business expansion initiated during the year",
+        "Planned relocation of DIMO Academy for Technical Studies (DATS) to increase capacity"
+      ],
+      "regulatory_dependencies": [
+        "Vehicle import restrictions lifted in January 2025 creating new opportunities",
+        "Government target of 70% renewable energy by 2030 supporting solar business",
+        "Higher customs import duty and luxury tax on vehicles affecting demand",
+        "Compliance with EU deforestation regulations and carbon disclosures for agricultural exports"
+      ],
+      "segment_info": [
+        "Mobility segment expects improved performance with vehicle import ban lifting",
+        "Agriculture segment strategic adjustments expected to improve performance in 2025/26",
+        "Healthcare segment acquired well-rounded portfolio through recent acquisitions",
+        "Power Engineering targeting expansion as Independent Power Producer",
+        "Infrastructure Engineering positioned for growth with economic stabilization"
+      ],
+      "all_risks": [
+        "Climate-related physical risks including extreme weather events affecting supply chain",
+        "Transition risks from evolving energy efficiency standards and carbon regulations",
+        "Operational risks from talent migration and skilled labor shortages",
+        "Financial risks from exchange rate volatility and interest rate changes",
+        "Supply chain disruption risks from geopolitical tensions",
+        "Cybersecurity risks from digital transformation initiatives",
+        "Market risks from grey market competition and substitute products",
+        "Regulatory compliance risks across tax, corporate governance and data privacy"
+      ]
+    }
   },
   "RAL": {
     "company": "Renuka Agri Foods PLC",
@@ -344,8 +611,8 @@
         "value": 1231078752,
         "yoy_change": 9.0
       },
-      "eps": null,
-      "nav": null,
+      "eps": 1.31,
+      "nav": 10.6,
       "dividend_per_share": null,
       "roe": 12.0,
       "debt_to_equity": 0.08
@@ -367,7 +634,66 @@
     ],
     "chairman_outlook": "The Company is well-positioned for future-ready growth through innovation-led development, excellence in execution, and meaningful stakeholder engagement. We will continue developing landmark projects that set new benchmarks in sustainable design while pursuing global expansion opportunities, positioning PLR to lead transformation in responsible real estate development both locally and internationally.",
     "sector": "Real Estate (6010)",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "75% of new projects with green building certification by 2027",
+        "15% reduction in energy consumption per sq.m. through renewable energy diversification",
+        "30% reduction in carbon emissions per project by 2030",
+        "50% of new projects to have water recycling and rainwater harvesting compliance",
+        "100% STP and 40% solid waste load conversion to organic fertilizer",
+        "95% local labour target per project"
+      ],
+      "capex_plans": [
+        "Total invested in projects during the year: Rs. 14.2 billion (Rs. 12.2 billion in apartments, Rs. 2.0 billion in lands)",
+        "Land acquisitions in Colombo 5 and Colombo 8 for high-profile projects",
+        "Investment in 7,000 sq ft warehouse on Castle Street",
+        "Refreshed corporate office infrastructure",
+        "Continued digital upgrades and strategic land acquisitions"
+      ],
+      "partnerships_acquisitions": [
+        "Strategic partnerships with HNB, HNB Finance, Union Bank, and DFCC for co-branded financing campaigns",
+        "Collaboration with E-Marketing Eye for digital platform overhaul",
+        "Partnership with Federation of Sri Lanka Government Authorities (FSLGA) for Prime Rajya Sewa Abhiman program",
+        "Prime Constructions (Private) Limited incorporated as sister company",
+        "Approved as training partner for CA Sri Lanka at corporate and strategic levels"
+      ],
+      "geographic_expansion": [
+        "International expansion into select markets with high demand for serviced apartments",
+        "Tourism-oriented developments in Tangalle, Negombo, Hikkaduwa",
+        "Coastal cities expansion including Tangalle and Negombo for tourism-driven demand",
+        "Strategic expansion into new regions including Ella, Nuwara Eliya for geographic diversification",
+        "Prime Lands Australia Pty. Ltd operations for international market engagement"
+      ],
+      "regulatory_dependencies": [
+        "BOI approval secured for The Colombo Border as USD 65 million mega project",
+        "UDA Silver Certification awarded to The Seasons – Colombo 08",
+        "Compliance with Urban Development Authority (UDA) regulations",
+        "Revenue recognition policy compliance with SLFRS 15",
+        "Adherence to anti-money laundering and anti-corruption regulations",
+        "Personal data protection compliance requirements"
+      ],
+      "segment_info": [
+        "Apartments segment: 74% of total revenue, Rs. 6.15 billion revenue",
+        "Lands segment: Rs. 2.11 billion revenue contribution",
+        "Apartment inventory: 2,755 units valued at Rs. 1.7 billion at cost",
+        "Land inventory: 2,432 perches (down from 2,984 perches)",
+        "47 total projects (3,860 units): 41 completed (2,555 units), 2 ongoing (528 units), 2 newly launched (377 units), 2 upcoming (400 units)"
+      ],
+      "all_risks": [
+        "Currency risks from Rupee depreciation against foreign currencies",
+        "Interest rate risk from floating rate debt and market rate fluctuations",
+        "Operational risk from resource availability and skilled employee shortages",
+        "Legal and regulatory compliance risk",
+        "Reputation risk from customer and public opinion damage",
+        "Strategic risk from government legislation changes and multinational competition",
+        "IT and data security risks from cyberattacks and system failures",
+        "Data privacy risk from unauthorized access to stakeholder information",
+        "Supply chain disruption risk affecting construction materials and equipment",
+        "Climate-related risks from weather patterns and extreme events",
+        "Health and safety risk at construction sites and office premises"
+      ]
+    }
   },
   "LIOC": {
     "company": "Lanka IOC PLC",
@@ -492,8 +818,8 @@
         "value": 256740288,
         "yoy_change": -52.9
       },
-      "eps": null,
-      "nav": null,
+      "eps": -0.35,
+      "nav": 11.4,
       "dividend_per_share": null,
       "roe": null,
       "debt_to_equity": null
@@ -513,7 +839,41 @@
     ],
     "chairman_outlook": "The real estate sector is expected to maintain its positive trajectory, supported by favorable interest rates and growing demand for both residential and commercial properties. The company remains committed to driving development in this space as Sri Lanka emerges from economic crisis into a new era of political and economic stability following national elections.",
     "sector": "Real Estate Management & Development",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Real estate sector expected to maintain positive trajectory supported by favorable interest rates",
+        "Growing demand for both residential and commercial properties",
+        "Company committed to driving development in the property space"
+      ],
+      "partnerships_acquisitions": [
+        "Investment in Island Investment Holdings Ltd (UK-domiciled investment company) - 100% shareholding for Rs. 146.65 million",
+        "Partial disposal of Galle Face Capital Partners PLC - reduced holding from 67.4% to 28.1%"
+      ],
+      "geographic_expansion": [
+        "Investment in Island Investment Holdings Ltd domiciled in the United Kingdom which invests in equity and debt instruments in overseas markets"
+      ],
+      "regulatory_dependencies": [
+        "Subject to income taxes and transfer pricing regulations with uncertainties requiring management judgment",
+        "Compliance with CSE listing rules and Companies Act requirements",
+        "Future alignment with Personal Data Protection Act (PDPA) expected for IT systems"
+      ],
+      "segment_info": [
+        "Shaw Wallace & Hedges Limited: Investment holding company with subsidiaries owning significant land parcels in Colombo for future development - 39.2% shareholding",
+        "The Cargo Boat Investment Company Ltd: Engaged in equity investments both quoted and unquoted, owns 21% each of shareholding companies controlling Cargo Boat Development Company PLC - 27% shareholding",
+        "Galle Face Capital Partners PLC: Investment trust managing portfolio of listed equity, debt instruments, private equity and alternate asset classes - 28.1% shareholding"
+      ],
+      "all_risks": [
+        "Strategic risks from poor business strategies or failure to adapt to external changes",
+        "Operational risks from internal process failures, human error, equipment breakdown",
+        "Financial risks including credit, liquidity, interest rate and foreign exchange exposures",
+        "Technology and data risks from IT system failure, cyber security threats, data protection breaches",
+        "Environmental, regulatory & ESG risks from environmental regulations, stakeholder expectations, climate-related events",
+        "Legal & regulatory compliance risks leading to fines and penalties",
+        "Internal control failures causing reputational damage",
+        "Market risks affecting fair value of financial instruments due to interest rate and market price changes"
+      ]
+    }
   },
   "HBS": {
     "company": "hSenid Business Solutions PLC",
@@ -601,8 +961,8 @@
         "value": 5420000000,
         "yoy_change": 57
       },
-      "eps": null,
-      "nav": null,
+      "eps": 19.11,
+      "nav": 128.58,
       "dividend_per_share": null,
       "roe": 15.05,
       "debt_to_equity": 0.0385
@@ -624,7 +984,58 @@
     ],
     "chairman_outlook": "ACL Cables PLC is poised for even greater heights as we step into 2025/2026, with confidence that our strategic roadmap coupled with Sri Lanka's economic momentum will unlock new opportunities. We are building an enduring legacy of excellence through innovation, trust, and operational excellence, positioning ourselves to capitalize on the nation's economic resurgence and infrastructure development boom.",
     "sector": "Capital Goods",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Diversification: Reducing dependency on the local market by expanding exports and exploring new geographic regions",
+        "Innovation: Leveraging cutting-edge technologies to enhance product offerings and manufacturing processes",
+        "Sustainability: Aligning with global sustainability trends to meet the growing demand for eco-friendly solutions",
+        "Building on success with a forward-looking strategy for 2025/2026",
+        "Confident that strategic roadmap, coupled with Sri Lanka's economic momentum, will unlock new opportunities"
+      ],
+      "capex_plans": [
+        "Capital expenditure for 2024/25 was Rs. 307 million which was mainly funded by debt",
+        "Investments in manufacturing capabilities and distribution networks enhanced the Company's ability to serve both domestic and international markets",
+        "Group will continue to direct investments toward strengthening its value added product offerings and export-oriented businesses",
+        "Sustainable manufacturing methods will be prioritised in investment decisions"
+      ],
+      "partnerships_acquisitions": [
+        "Cable Solutions PLC was listed in the Colombo Stock Exchange (CSE) in July 2024, making it the latest additions to the Public Listed Entities of ACL Group",
+        "ACL Cables PLC acquired 51% stake of Cable Solutions Pvt Ltd",
+        "Strategic investment in Resus Energy PLC, further solidifying its presence in the renewable energy value chain"
+      ],
+      "geographic_expansion": [
+        "Export to customers in more than 10 countries across the world including Sweden, United Kingdom, Germany, Switzerland, Kuwait, United Arab Emirates, India, USA, Maldives, Singapore, Mauritius, Australia, New Zealand",
+        "Export revenues grew by 10.31%, as we expanded our footprint in emerging markets like Bangladesh, Maldives, and East Africa",
+        "Aim to increase our footprint in the already established international markets and branch out into new regions",
+        "Global trend on diversification of supply chain would benefit ACL by leveraging already established customer networks in overseas"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with ISO 9001:2015 and ISO 14001 Environmental Management System certificate",
+        "Environmental Protection License (EPL) from the Central Environment Authority",
+        "Preparing for the adoption of SLFRS S1 and S2 sustainability reporting standards",
+        "Implementation of carbon taxes and stricter emission standards can increase operational costs"
+      ],
+      "segment_info": [
+        "Three main segments: Export, Institution (project market), and Retail Market",
+        "Manufacturing cables segment revenue: 38,148,827 thousand with external sales of 37,403,421 thousand",
+        "Manufacturing PVC compound segment revenue: 2,441,286 thousand with external sales of 83,479 thousand",
+        "Others segment revenue: 1,592,889 thousand",
+        "Ceylon Electricity Board accounts for more than 10% of sales from both the Group and Company's total turnover"
+      ],
+      "all_risks": [
+        "Information Technology and Cyber Security Risk",
+        "Country Risk - adverse economic factors such as Political, Economic, Social, Technological, Environmental, and Legal",
+        "Business Probity Risk - unethical behavior, fraudulent invoicing or bribery",
+        "Operational Risk from people, systems and processes",
+        "Credit Risk from customer defaults or delayed payments",
+        "Exchange Rate Risk from USD/LKR volatility affecting imported raw materials",
+        "Human Resource Risk from loss of key executives and skilled workforce",
+        "Health and Safety Risk in manufacturing operations",
+        "Sustainability and Climate Related Risks including physical and transition risks",
+        "Liquidity Risk from payment delays and working capital issues"
+      ]
+    }
   },
   "SEYB": {
     "company": "Seylan Bank PLC",
@@ -661,7 +1072,68 @@
     ],
     "chairman_outlook": "As we progress into 2026, our corporate strategy will focus on agile and resilient banking operations closely aligned with evolving customer needs, with digitalisation remaining at the heart of our growth agenda. We will remain focused on key value creation drivers through disciplined execution and innovation, consistently meeting stakeholder expectations while ensuring long-term growth, trust and shared prosperity.",
     "sector": "Banks",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "GDP growth projected between 4% and 5% in 2026",
+        "Digital economy contribution target of over 12% of GDP by 2030 (from current 4%)",
+        "USD 15 billion digital economic value target by 2030",
+        "Liquidity Coverage Ratio maintained above 120% minimum requirement",
+        "Net Stable Funding Ratio maintained above 120% minimum requirement"
+      ],
+      "capex_plans": [
+        "Solar power generation panels installation at 10 branches and strategic offsite KIOSK locations",
+        "25 new offsite CRMs to be installed in 2026",
+        "Expansion of CRM network with additional Cash Recycle Machines",
+        "Head Office building floors refurbishment to enhance working environment",
+        "Increased investments in Fixed Asset (CAPEX) and IT infrastructure",
+        "Strategic branch relocations to optimize physical presence"
+      ],
+      "partnerships_acquisitions": [
+        "Partnership with Bloomberg for BMatch Platform enhancing FX trading transparency",
+        "Strategic partnerships with Trade Associations in Gampaha, Kalagedihena and Kurunegala",
+        "Continued partnership with Universal Concept of Mental Arithmetic System (UCMAS)",
+        "Banking partner for Sri Lanka Export Development Board organized marine summit",
+        "Official Banking Partner for NCE Exporter Awards for fourth consecutive year",
+        "Silver Sponsor partnership with Industrial Development Board Industry Expo",
+        "Partnership with Central Bank of Sri Lanka regional offices for financial literacy programs"
+      ],
+      "geographic_expansion": [
+        "Two new branches opened during 2025",
+        "Second Trade Hub launched in Pettah during 2025",
+        "Leasing Hub opened in Kalubowila",
+        "Over 20 off-site ATM/CRM locations deployed within single year",
+        "Expansion of physical-digital footprint through multiple touchpoints"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with Basel III requirements for capital adequacy",
+        "CBSL Sustainable Finance Roadmap 2.0 implementation",
+        "SLFRS S1 and S2 sustainability disclosure standards compliance",
+        "Adherence to Banking Act Direction No. 13 of 2021",
+        "Financial Consumer Protection Regulations (FCPR) compliance",
+        "Anti-corruption legislation alignment and policy implementation"
+      ],
+      "segment_info": [
+        "Retail Banking Division encompasses Housing, Pawning, Cards, Leasing, Personal Loans, Loans against property and Bancassurance",
+        "SME banking with facilities up to LKR 25 Mn with 72-hour credit decisions pilot initiative",
+        "Corporate Banking including Corporate Credit Branches and International Trade Services",
+        "Seylan Private Banking premium proposition with metal credit card launch",
+        "Islamic Banking Unit with Diminishing Musharaka facility offerings",
+        "Treasury operations including Treasury Bills and Bonds, Repo and Reverse Repo, Foreign Exchange services"
+      ],
+      "all_risks": [
+        "Credit risk from counterparty failure to meet contractual obligations",
+        "Market risk from adverse movements in interest rates, exchange rates, and equity prices",
+        "Liquidity risk affecting funding stability and operational continuity",
+        "Operational risk including system downtime, staff turnover, customer complaints",
+        "Technology risk including system vulnerabilities and cyber security threats",
+        "Climate-related physical risks from extreme weather events and chronic climate impacts",
+        "Climate-related transition risks from policy changes, regulatory shifts, and market transitions",
+        "Regulatory compliance risks from evolving banking regulations and disclosure requirements",
+        "Concentration risk from geographical, sectoral, and single borrower exposures",
+        "Foreign exchange risk from currency volatility and open position exposures"
+      ]
+    }
   },
   "CFIN": {
     "company": "Central Finance Company PLC",
@@ -679,7 +1151,7 @@
       "nav": 242.82,
       "dividend_per_share": 6.5,
       "roe": 11.34,
-      "debt_to_equity": null
+      "debt_to_equity": 0.9
     },
     "management_plans": [
       "Pursue controlled, quality-driven credit expansion targeting tourism, agriculture, and MSMEs sectors",
@@ -698,7 +1170,59 @@
     ],
     "chairman_outlook": "Sri Lanka enters a phase of macroeconomic stabilisation with cautious optimism for 2025, supported by easing inflation, lower interest rates, and improved investor sentiment expected to drive stronger credit demand. CF's capital strength, operational resilience, and proven legacy of responsible lending provide the backbone to fuel the next phase of growth despite global uncertainties. The Company remains committed to strengthening bonds with all stakeholders while maintaining the highest standards of transparency, risk management, and long-term value creation.",
     "sector": "Diversified Financials",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "GDP growth projection of 3%+ for Sri Lanka in 2025",
+        "26% credit portfolio expansion target achieved (surpassed)",
+        "85% term deposit renewal ratio maintained",
+        "Gross NPL ratio target to remain below 2.76%"
+      ],
+      "capex_plans": [
+        "Rs. 52 Mn invested in software development in 2024/25",
+        "Rs. 18 Mn worth of rooftop solar systems installation across branch network with 80 kw generation capacity",
+        "Open 10 new branches in short term (1 year)",
+        "Branch renovation and vehicle yard facility improvements ongoing",
+        "Investment in IT infrastructure upgrades including cloud transition"
+      ],
+      "partnerships_acquisitions": [
+        "Signed Participation Agreement with National Credit Guarantee Institution Limited (NCGIL) - Rs. 37.78 Mn investment",
+        "Partnership with International Finance Corporation (IFC) for SME training programs",
+        "Collaboration with Sri Lanka Cancer Society (SLCS) - Rs. 500 donation per credit contract since December 2024",
+        "Partnership with LankaPay for access to over 1,000 ATMs"
+      ],
+      "geographic_expansion": [
+        "70 out of 103 branches (68%) located outside Western Province",
+        "Focus on strengthening market reach in rural communities",
+        "Island-wide branch network optimization with 6 branch relocations in 2024/25"
+      ],
+      "regulatory_dependencies": [
+        "CBSL policy rate changes impacting interest rate environment",
+        "50% loan-to-value (LTV) cap on vehicle financing constrains growth potential",
+        "Recent increase in stamp duty on leasing products affects competitiveness",
+        "Vehicle import restrictions lifted in February 2025 creating opportunities",
+        "Compliance with Finance Business Act Direction No. 05 of 2021 on Corporate Governance",
+        "SLFRS S1 & S2 implementation planned for 2025/26 reporting cycle"
+      ],
+      "segment_info": [
+        "Credit and Lending: 24.5% loan book growth, Rs. 69.40 Bn portfolio",
+        "Leasing portfolio: Rs. 57 Bn (grew by Rs. 12 Bn)",
+        "80% of lending portfolio comprises loans to micro enterprises",
+        "20% of micro lending granted to women",
+        "Deposits: Rs. 42.12 Bn (declined from Rs. 44.2 Bn strategically)",
+        "Vehicle Hire: Achieved revenue targets despite import restrictions"
+      ],
+      "all_risks": [
+        "Credit Risk: Economic recovery pace affecting borrower repayment capacity",
+        "Market Risk: Interest rate volatility and equity price fluctuations",
+        "Liquidity Risk: Managing funding mix and maturity profiles",
+        "Operational Risk: Fraud, cybersecurity threats, system disruptions",
+        "Strategic Risk: Regulatory changes, competitive dynamics, disruptive technologies",
+        "ESG Risk: Climate-related risks and sustainability requirements under SLFRS S1 & S2",
+        "Global uncertainty: Geopolitical tensions and trade policy changes affecting Sri Lankan economy",
+        "Sector-specific: LTV restrictions and stamp duty impacts on NBFI competitiveness"
+      ]
+    }
   },
   "HVA": {
     "company": "HVA FOODS PLC",
@@ -712,11 +1236,11 @@
         "value": -139830000,
         "yoy_change": 57.1
       },
-      "eps": null,
-      "nav": null,
+      "eps": -0.78,
+      "nav": -0.29,
       "dividend_per_share": null,
-      "roe": null,
-      "debt_to_equity": null
+      "roe": 1.99,
+      "debt_to_equity": -17.11
     },
     "management_plans": [
       "Scaling the herbal infusion business in partnership with German supplier Mueggenburg to expand market reach and introduce new product categories in the wellness space",
@@ -735,7 +1259,59 @@
     ],
     "chairman_outlook": "The company's focus for 2025/26 will be continued execution of diversification and customer consolidation strategy, with tea flavouring and herbal segments scaled up to capture more value in traditional and new markets. Full-year benefits of restructured finance function and cost optimization programmes are eagerly awaited, while focus on domestic market through targeted retail, modern trade and tourism-led initiatives will be accelerated. Unless significant and unforeseen global disruptions arise, this strategy remains HVA Foods' path to regain profitability and deliver sustained value to shareholders.",
     "sector": "Food Beverage & Tobacco",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Full-year benefits expected from restructured finance function and cost optimisation programmes",
+        "Continued execution of diversification and customer consolidation strategy",
+        "Tea flavouring and herbal segments to be scaled up to capture more value in traditional and new markets",
+        "Focus on domestic market through targeted retail, modern trade and tourism-led initiatives to be accelerated"
+      ],
+      "capex_plans": [
+        "Investment in digital infrastructure including full ERP system integration",
+        "Investments in modern machinery and automation to improve reliability",
+        "Strategic investments in R&D, brand-building and marketing intelligence",
+        "Investments in visually compelling, sustainable packaging solutions"
+      ],
+      "partnerships_acquisitions": [
+        "Partnership with leading German manufacturer Mueggenburg for herbal infusions business",
+        "Partnership with German flavour manufacturer for tea flavouring expertise",
+        "Strengthening direct-to-market relationships with key international buyers, distributors and retailers",
+        "Collaborations with tea sommeliers, wellness advocates and digital influencers"
+      ],
+      "geographic_expansion": [
+        "Identifying high-growth territories across Asia, the Middle East and the West",
+        "Customised market entry strategies ranging from product localisation and channel partnerships to brand activations",
+        "Reduced reliance on Russian market by diversifying to include Europe and Far East regions",
+        "Strong presence at leading international trade exhibitions and B2B forums"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with food safety, labelling, organic certification and sustainability regulations",
+        "Maintaining certifications including Rainforest Alliance, USDA Organic, EU Organic, JAS Organic, ISO 22000:2018, Halal Certification",
+        "Monitoring changes in global trade policies and tariff realignments",
+        "Regular consultation with tax and legal advisors for policy changes"
+      ],
+      "segment_info": [
+        "Bulk tea segment: Mixed performance with growth in Europe offset by decline in Far Eastern markets",
+        "Tea packs segment: Largest revenue contributor, primarily private-label products for international clients",
+        "Tea bags segment: Continued export market focus with new herbal tea bags introduced in Q4",
+        "Herbal infusions segment: New business launched in Q4 with German partner Mueggenburg",
+        "Iced tea concentrates: Renewed domestic market focus with improved retail visibility",
+        "Spices segment: Profitable trading operation leveraging existing export infrastructure"
+      ],
+      "all_risks": [
+        "Strategic risk from global macroeconomic uncertainties and shifting consumer preferences",
+        "Operational risk from supply chain disruptions, labour shortages, machinery downtime",
+        "Financial risk from currency depreciation, interest rate shifts, inflation and tax policy changes",
+        "Regulatory and compliance risk from sudden regulatory changes or non-compliance",
+        "Reputational risk from quality issues, unethical sourcing or customer dissatisfaction",
+        "Environmental and climate risk from unpredictable rainfall, droughts and temperature changes",
+        "Talent and skills risk from limited pipeline of skilled professionals in tea industry",
+        "Continued reliance on Middle East market exposure to regional tensions",
+        "Global freight price volatility and elevated shipping costs",
+        "High per-kilogram production costs due to labour-intensive processes and limited mechanisation"
+      ]
+    }
   },
   "WAPO": {
     "company": "Galle Face Capital Partners PLC",
@@ -809,7 +1385,59 @@
     ],
     "chairman_outlook": "The Chairman expects continued growth momentum with Sri Lanka tourism projected to reach 2.6-3.0 million arrivals in 2025 and Maldives targeting 2.5 million tourists. The positive macroeconomic fundamentals in Sri Lanka, including 5% GDP growth and stable interest rates, combined with infrastructure developments like the BIA airport expansion, position the company well for sustainable long-term growth despite potential headwinds from geopolitical tensions and volatile oil prices.",
     "sector": "Consumer Services",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Sri Lankan Government target of 3 million tourist arrivals in 2025 (46% increase over 2024)",
+        "Maldives target of 2.5 million tourists in 2025, building upon 2 million arrivals in 2024",
+        "Tourism Goods and Services Tax (TGST) increase from 16% to 17% with effect from 1 July 2025"
+      ],
+      "capex_plans": [
+        "Rs. 1,113 Mn invested in property, plant, and equipment in 2024/25",
+        "Kandy Myst by Cinnamon launched in February 2025 with Rs. 496 Mn investment",
+        "Routine capital expenditure plan reviewed annually based on cash availability",
+        "Focus on asset-light expansion model to preserve cash"
+      ],
+      "partnerships_acquisitions": [
+        "Kandy Myst by Cinnamon joint venture with Indra Traders (Pvt) Ltd - 40% stake retained by John Keells Hotels",
+        "Partnership with Global Hotel Alliance (GHA) - joined world's largest alliance of independent hotel brands",
+        "Access to GHA DISCOVERY loyalty programme connecting over 30 million members",
+        "Cinnamon Hospitality Academy established with Swiss Hotel Management Academy (SHMA)",
+        "Strategic partnerships with NSBM Green University, Indian School of Hospitality, and Cornell University"
+      ],
+      "geographic_expansion": [
+        "Strengthening global presence of Cinnamon brand through GHA membership",
+        "Partnered with bed banks in UK and India, making progress in Germany",
+        "MICE promotion in the UK market",
+        "Focus on expansion in South Asian region positioning"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with Personal Data Protection Act No. 09 of 2022",
+        "Adherence to IMF-EFF programme requirements",
+        "Bandaranaike International Airport expansion project completion anticipated by 2027",
+        "Velana International Airport expansion phase I scheduled for completion in 3Q 2025",
+        "LEED certification requirements for all new construction and refurbishments"
+      ],
+      "segment_info": [
+        "Sri Lankan Resort Cluster: 9 properties with 1,237 keys",
+        "Maldivian Resort Cluster: 4 properties with 450 keys",
+        "Maldivian cluster accounted for 64% of Group's total assets",
+        "Sri Lanka segment EBITDA increased 51% to Rs. 1,500 Mn",
+        "Maldives segment EBITDA decreased 11% to USD 17.5 Mn"
+      ],
+      "all_risks": [
+        "Geopolitical tensions and conflicts affecting key feeder markets",
+        "Macroeconomic pressures and currency volatility",
+        "Climate change impacts including altered landscapes and natural disasters",
+        "Labour and talent scarcity with competitive market conditions",
+        "Cybersecurity and data protection risks",
+        "Supply chain disruptions due to global events",
+        "Changes in consumer preferences post-pandemic",
+        "Intensifying competition in hospitality sector",
+        "Regulatory changes including tax policy modifications",
+        "Interest rate fluctuations affecting financing costs"
+      ]
+    }
   },
   "JETS": {
     "company": "JETWING SYMPHONY PLC",
@@ -826,7 +1454,7 @@
       "eps": 0.72,
       "nav": 7.08,
       "dividend_per_share": null,
-      "roe": null,
+      "roe": 10.6,
       "debt_to_equity": 1.23
     },
     "management_plans": [
@@ -845,7 +1473,57 @@
     ],
     "chairman_outlook": "The Chairman believes now is the critical time to attract the 'right tourists' who respect culture, value environment, and contribute meaningfully to the economy, moving beyond limiting 3-star mentality to embrace 5-star potential. Public and private sector stakeholders must work together to elevate Sri Lanka as a destination that is economically empowering, environmentally respectful, and globally admired through decisive collective action.",
     "sector": "Consumer Services",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Company plans to achieve 5-star positioning potential for Sri Lanka tourism destination",
+        "Target to elevate destination beyond 3-star mindset to premium 5-star offering",
+        "Commitment to attract 'right tourist' who respects culture and contributes meaningfully to economy"
+      ],
+      "capex_plans": [
+        "Property, Plant and Equipment additions of LKR 353 Mn in 2024/25, indicating continued investment levels",
+        "Capital Work-in-Progress of LKR 42 Mn as of March 2025 for ongoing projects",
+        "Management focuses on ability to defer non-essential capital expenditure based on cash flow scenarios"
+      ],
+      "partnerships_acquisitions": [
+        "All hotels managed by Jetwing Hotels Ltd as managing agents",
+        "Jetwing Hotels Ltd managed Jetwing Lake and Jetwing Surf & Safari for two consecutive years without charging management fees",
+        "Group maintains long-term relationships with major tour operators",
+        "Well represented at international trade fairs and increased registration with Online Travel Agents"
+      ],
+      "geographic_expansion": [
+        "Seven hotels across diverse landscapes from eastern coastline to cultural heartlands and vibrant cities",
+        "Properties span from Colombo to Kandy, Dambulla, Wellawaya, Yala, and Pottuvil covering key tourism regions",
+        "Focus on Sri Lanka as premium destination with unique positioning in each location"
+      ],
+      "regulatory_dependencies": [
+        "Tourism industry dependent on government fiscal consolidation measures and interest rate policies",
+        "Operations subject to environmental regulations and ISO 14001:2015 Environmental Management Systems compliance",
+        "Hotels comply with HACCP/ISO 22000 food safety standards",
+        "Income tax rates and regulations affecting subsidiary companies vary by location and business type"
+      ],
+      "segment_info": [
+        "Properties categorized into Jetwing Luxury Reserves (Jetwing Surf & Safari, Jetwing Kandy Gallery, Jetwing Jungle Lodge)",
+        "Jetwing Premium Hotels segment (Jetwing Yala, Jetwing Kaduruketha, Jetwing Lake, Jetwing Colombo Seven)",
+        "Jetwing Yala contributes 34% of group revenue, Jetwing Colombo Seven 23%, Jetwing Lake 22%, Jetwing Kandy Gallery 10%",
+        "Combined installed solar capacity of 1,075 kW across properties"
+      ],
+      "all_risks": [
+        "Infectious diseases impact on travel demand and operational costs",
+        "Political, economic and environmental instability affecting tourism",
+        "Competitive pressure from existing hotels, new entrants, and home sharing services",
+        "Climate change and extreme weather events damaging infrastructure",
+        "Resource scarcity in energy and water increasing operational costs",
+        "Employee retention challenges with migration to overseas jobs",
+        "Cybersecurity risks including loss of data and revenue",
+        "Food safety and physical security incidents affecting reputation",
+        "Exchange rate volatility on foreign currency transactions",
+        "Interest rate fluctuations affecting borrowing costs",
+        "Liquidity risk in meeting financial obligations",
+        "Inflation reducing profitability and return on investment",
+        "Geopolitical tensions and social unrest reducing international arrivals"
+      ]
+    }
   },
   "JINS": {
     "company": "Janashakthi Insurance PLC",
@@ -882,7 +1560,78 @@
     ],
     "chairman_outlook": "The Board is confident in the Company's optimistic five-year growth plan. As we remodel our business to meet new IFRS and Risk-Based Capital guidelines, we remain focused on harnessing digital transformation and AI to drive efficiency and stakeholder value. We remain firmly focused on strengthening our position as a leading force in the life insurance industry, guided by uncompromising standards of financial integrity and sustainable value creation.",
     "sector": "Insurance",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Five-year growth plan optimistic trajectory",
+        "2026 Budget aligned with Five-Year Strategic Plan",
+        "Six new branches opening plan within growth hub Districts",
+        "10 Window Offices deployment to enhance customer proximity in underserved regions",
+        "Expanding corporate partnerships with over 20 financial institutions",
+        "Regular New Business target to outperform industry average by twofold",
+        "Regular Life Renewal portfolio target to maintain high growth",
+        "NPS target to exceed +18 through enhanced customer experience",
+        "Customer Effort Score (CES) launch in Q1 2026 to measure service friction",
+        "100% digital adoption continuation through Green Insurance initiative"
+      ],
+      "capex_plans": [
+        "LKR 265 Mn investment in state-of-the-art Head Office transition",
+        "LKR 236 Mn technology investment in 2025 for AI and digital infrastructure",
+        "LKR 8.84 Mn allocated toward green initiatives and infrastructure upgrades",
+        "Rooftop solar power installation planned by 2026 for Head Office",
+        "Five full-service branches launch across key growth hub Districts",
+        "Advanced cybersecurity solutions including NAC, PAM, Edge Firewall, and Endpoint Encryption"
+      ],
+      "partnerships_acquisitions": [
+        "24 financial institutions integrated through bespoke BFSI solutions for instant policy issuance",
+        "Strategic partnerships with global reinsurers for enhanced risk-carrying capacity",
+        "International consultancy firm partnership for Five-Year Strategic Plan implementation",
+        "Neptune Recycling partnership for structured paper waste management",
+        "Expansion of bancassurance partnerships targeting 521% growth",
+        "Referrals Management Solution platform expansion for agent-customer community growth"
+      ],
+      "geographic_expansion": [
+        "Second alternate window office opened in Kandy",
+        "75+ locations operation across island-wide network",
+        "42 branches rebranded with enhanced visibility",
+        "Branch network expansion to 76 locations maintained",
+        "Out-of-home visibility enhancement across 50+ railway stations and multiple bus shelters",
+        "Geographic focus through multi-channel distribution approach"
+      ],
+      "regulatory_dependencies": [
+        "IFRS 17 reporting compliance and business remodeling",
+        "Risk-Based Capital (RBC) guidelines adaptation",
+        "IRCSL regulatory framework full compliance maintained",
+        "Personal Data Protection Act (PDPA) strict adherence",
+        "Reinsurance Risk Transfer Programme submission within statutory deadline",
+        "Corporate governance compliance with CSE and ICASL requirements"
+      ],
+      "segment_info": [
+        "Corporate Business achieved 67% growth",
+        "Bancassurance Life segment expanded by 521%",
+        "Customer Retention Unit contributed LKR 1.17 Bn including revival LKR 0.85 Bn",
+        "CRU 18% share of Company's renewal income",
+        "MCFP increased by 30% demonstrating strong sales momentum",
+        "Regular New Business recorded 61% surge outperforming industry average by twofold",
+        "Agency force expansion to 110 personnel to cover all branches"
+      ],
+      "all_risks": [
+        "Interest rate volatility impact on investment income and profit margins",
+        "Global reinsurance market tightening and increased pricing for climate risks",
+        "Cyclone Ditwah and climate-related mortality and morbidity risks",
+        "Rising cost of living impacting policy renewals and premium collections",
+        "Intense competition for specialized insurance and actuarial talent",
+        "Cyber resilience and data privacy risks from increased digital transactions",
+        "Supply chain disruptions and inflationary pressure on service costs",
+        "Economic downturns, inflation, and currency fluctuations impacting consumer purchasing power",
+        "Policy lapses and payment defaults during uncertain economic conditions",
+        "Regulatory complexity and high cost of regulatory transitions",
+        "Global economic uncertainties impacting broader financial sector",
+        "Network Access Control and cybersecurity threats to digital ecosystem",
+        "Endpoint Encryption requirements for data protection at user level",
+        "Climate change, demographic shifts, and regulatory change risks requiring scenario planning"
+      ]
+    }
   },
   "LCBF": {
     "company": "LCB FINANCE PLC",
@@ -919,7 +1668,55 @@
     ],
     "chairman_outlook": "The year 2025/26 will be defined by government policies targeting growth in export, tourism and agriculture sectors, alongside continued foreign exchange inflows from migrant worker remittances. The company remains committed to its long-term vision of being a resilient and trusted finance company, with focus on rural community development and strict adherence to governance practices while monitoring ESG compliance requirements.",
     "sector": "Diversified Financial Services",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "10% reduction in electricity and water usage by 2028",
+        "35% female representation in Senior Management roles",
+        "40% female participation in the workforce by 2028",
+        "100% ESG training compliance at board and Senior Management levels",
+        "Zero workplace injury incidents target"
+      ],
+      "capex_plans": [
+        "Investment in solar power systems at selected branches",
+        "Enhanced IT infrastructure and core banking systems upgrades",
+        "Continued investment in digital platforms and mobile financing solutions",
+        "Branch modernization and expansion infrastructure"
+      ],
+      "partnerships_acquisitions": [
+        "Partnerships with global institutions such as the IFC and UNDP for capacity building and climate action",
+        "Collaborations with fintech companies to expand market reach",
+        "Partnerships with certified sustainable vendors in procurement",
+        "Partnerships with licensed waste management vendors for recycling"
+      ],
+      "geographic_expansion": [
+        "Island-wide mobile financing platform to reach remote areas",
+        "Continued branch network expansion beyond current 21 branches",
+        "Focus on suburban and semi-urban communities expansion"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with Central Bank of Sri Lanka's Sustainable Finance Roadmap",
+        "Adherence to Finance Business Act requirements",
+        "Implementation of Masterplan Phase II for Finance Companies sector consolidation (3-year plan commencing March 2025)",
+        "Compliance with CSE ESG guidelines for listed entities"
+      ],
+      "segment_info": [
+        "Loans segment: Focus on SME, agriculture, and microfinance segments",
+        "Lease and Hire Purchase: Strategic growth segment with 123% income increase",
+        "Priority sectors: Small and medium enterprises, self-employed women entrepreneurs, trade finance, lease finance, and gold loans",
+        "Green finance products including Solar Loan scheme"
+      ],
+      "all_risks": [
+        "Macroeconomic headwinds and continued volatility",
+        "Climate change risks affecting agriculture and other climate-sensitive sectors",
+        "Credit risk from stressed economic conditions impacting construction, transport and consumer sectors",
+        "Regulatory risk from potential changes in capital adequacy requirements",
+        "Operational risk from digital transformation and cybersecurity threats",
+        "Interest rate risk in changing monetary policy environment",
+        "Liquidity risk management in expanding operations",
+        "ESG compliance risks as sustainability requirements evolve"
+      ]
+    }
   },
   "ATLL": {
     "company": "Amana Takaful Life PLC",
@@ -974,7 +1771,7 @@
       "nav": 38,
       "dividend_per_share": null,
       "roe": -102,
-      "debt_to_equity": null
+      "debt_to_equity": 58
     },
     "management_plans": [
       "Diversify project portfolio by penetrating niche markets including cable-laying ships, service operation vessels, and LNG carriers",
@@ -993,7 +1790,63 @@
     ],
     "chairman_outlook": "We remain cautiously optimistic and are guided by a forward-looking strategy aimed at strengthening our presence in high-growth sectors while deepening regional integration and expanding infrastructure to support long-term sustainable growth. Despite facing one of the most challenging years in company history, we successfully navigated global uncertainties by focusing on innovation, specialization, and operational agility, positioning ourselves to transform challenges into opportunities as we continue shaping the maritime industry in Sri Lanka and beyond.",
     "sector": "Capital Goods",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "USD 30 million minimum equity infusion from new strategic investor",
+        "Plan to strengthen presence in high-growth niches including hybrid technology vessels and offshore energy support ships by 2025",
+        "99% dry dock occupancy target maintained",
+        "Target to expand into greener shipbuilding using hybrid propulsion systems"
+      ],
+      "capex_plans": [
+        "Rs. 451.3 million invested in capital assets during 2024 for yard productivity and infrastructure enhancement",
+        "Construction of dedicated workshop facility at Hambantota Port for afloat repair services",
+        "Acquisition of South Pier and Guide Pier 2 to accommodate increased drydocking demand",
+        "Investment in advanced fabrication technologies and 3D modeling for design process",
+        "Purchase of specialized equipment: balancing machine, telescopic boom trucks, hydraulic press brake machine, forklift trucks",
+        "Two major infrastructure projects: HIPG Workshop Complex and extension of Guide Pier 2"
+      ],
+      "partnerships_acquisitions": [
+        "Advanced negotiations with new strategic investor to acquire Onomichi Dockyard's shares following December 2024 exit",
+        "40 formal enquiries received from local and foreign investors with 5 final offers (2 local, 3 foreign entities)",
+        "Process to find investor initiated with goal of USD 30 million minimum infusion through rights issue"
+      ],
+      "geographic_expansion": [
+        "Expanded afloat repair services to additional locations: Galle, Hambantota, and Trincomalee",
+        "Workshop facility construction at Hambantota Port for regional afloat repair capability",
+        "Aggressive market entry efforts in India, Middle East, Southeast Asia, and Europe",
+        "Focus on specialized markets including Spanish trawlers and French fishing fleet",
+        "Entry into cable-laying ship market with French client Louis Dreyfus"
+      ],
+      "regulatory_dependencies": [
+        "BOI (Board of Investment) licensed enterprise status",
+        "Compliance with Sri Lanka Accounting Standards",
+        "ISO certifications: ISO 9001:2015, ISO 14001:2015, ISO 45001:2018, ISO 50001:2018",
+        "Classification society approvals: DNV-GL, ABS, BV, ClassNK, Lloyd's Registry",
+        "Transfer pricing compliance under Inland Revenue Act No. 24 of 2017",
+        "CSE listing rules compliance including Related Party Transaction requirements"
+      ],
+      "segment_info": [
+        "Ship repair segment: 56% of total revenue, targeting niche markets including cable-laying vessels",
+        "Shipbuilding segment: 35% of total revenue, focus on hybrid eco bulk carriers for European market",
+        "Heavy engineering: 7% of revenue, targeting Maldives market with underwater structures",
+        "Subsidiary DGES: Rs. 1,910.4 million revenue with Rs. 90.7 million net profit",
+        "Subsidiary DTS: Rs. 432.7 million revenue, plans to expand steel-related operations",
+        "Ceylon Shipping Agency Singapore: SGD 5.0 million revenue"
+      ],
+      "all_risks": [
+        "Financial risks: High borrowing costs up to 29% locally and 12% for USD loans due to poor credit rating",
+        "Market risks: Global competition from China, India, Pakistan, Indonesia, Malaysia, Vietnam, Thailand",
+        "Operational risks: Resource shortages, skilled worker emigration, transportation challenges",
+        "Currency risks: Sharp exchange rate fluctuations affecting financial planning",
+        "Supply chain risks: Global disruptions, soaring raw material costs for steel, machinery",
+        "Credit risks: Sri Lankan bank guarantees rejected by international clients post-sovereign default",
+        "Regulatory risks: Environmental compliance, safety regulations, tax law changes",
+        "Technology risks: Need to keep up with hybrid vessel technology and digitalization",
+        "Geopolitical risks: Red Sea disruptions, Ukraine conflict affecting supply chains",
+        "Liquidity risks: Current liabilities exceed current assets by Rs. 8,710.8 million"
+      ]
+    }
   },
   "SCAP": {
     "company": "Softlogic Capital PLC",
@@ -1067,7 +1920,81 @@
     ],
     "chairman_outlook": "The outlook for global growth remains cautiously optimistic with the IMF projecting 3.3% growth, while Sri Lanka's economic trajectory is expected to remain on course despite potential moderation from Cyclone Ditwah impacts. Sampath Bank will continue executing its strategic agenda, scaling digitalised solutions and maintaining customer centricity as defining pillars, with advanced data analytics increasingly shaping personalised customer value propositions and innovative digital products.",
     "sector": "Banks",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Short-term: Achieve double-digit growth in advances and launch new ESG-linked loan products while maintaining capital ratios comfortably above regulatory minimum",
+        "Medium-term: Grow SME and Retail portfolios at double-digit rates, reduce cost to income ratio to below industry average and achieve significant digital revenue contribution",
+        "Long-term: Be recognised as Sri Lanka's best bank across all customer segments while achieving net-zero in operational footprint and consistently deliver above industry Return on Equity",
+        "Return on average assets (after tax) target: Over 1.00%",
+        "Return on average equity (after tax) target: Over 16.00%",
+        "Growth in profit target: Over 15.00%",
+        "Growth in total assets target: Over 15.00%",
+        "Capital Adequacy Ratios target: 2% buffer over regulatory minimum requirement",
+        "Liquidity coverage ratio target: Over 120.00%",
+        "Renewable Energy Financing portfolio expected to record net growth of approximately 50% in 2026",
+        "Green Deposits portfolio projected to increase approximately thirty-fold during 2026"
+      ],
+      "capex_plans": [
+        "Rs 111 Mn allocated specifically for climate risk management initiatives for financial year 2026, representing a 178% increase from previous year",
+        "Capital expenditure for physical infrastructure upgrades/relocations (e.g., flood barriers, branch re-locations)",
+        "Rs 960 Mn invested in IT software",
+        "Rs 4 Bn invested in PPE"
+      ],
+      "partnerships_acquisitions": [
+        "Strategic collaboration with Central Depository System",
+        "Partnership with Dialog Axiata PLC for 'eZ Banking' service",
+        "Partnership with Paycorp International (Pvt) Limited for real-time payment and settlement",
+        "Direct connectivity to UnionPay International payment gateway",
+        "Partnership with IUCN to support community resilience initiatives",
+        "Partnerships with authorised vehicle dealers and importers for leasing opportunities",
+        "Partnerships with the Entrepreneurs' Organisation for strategic collaboration",
+        "Title sponsorship at the Ceylon Golf League",
+        "Exclusive banking partner sponsorship at Mercedes-Benz Fashion Week and Women's Chamber of Industry and Commerce Ramp Up 2025 Fashion Show"
+      ],
+      "geographic_expansion": [
+        "443 new recruits hired outside the Western Province",
+        "Four Private Banking units established outside capital of Colombo",
+        "Plan to establish new Private Banking hubs to enhance accessibility",
+        "Seven Private Banking units established in key areas",
+        "Expansion to new geographies in medium to long term for international operations and education services",
+        "Growth of offshore loan book mainly through diversification to new geographies including ASEAN countries"
+      ],
+      "regulatory_dependencies": [
+        "Designated as Domestic Systemically Important Bank (D-SIB) with additional 1% capital buffer requirement across all tiers",
+        "Compliance with SLFRS Sustainability Disclosure Standards S1 and S2",
+        "Adherence to Central Bank of Sri Lanka's Sustainable Finance Roadmap 2.0",
+        "Compliance with Banking Act Direction No. 05 of 2024 on Corporate Governance",
+        "Alignment with ISO 14001:2015 Environmental Management System",
+        "Compliance with decreased single borrower limits presenting challenges for larger corporates",
+        "Subject to shareholder approval for Rs 20 Bn debenture issuance"
+      ],
+      "segment_info": [
+        "SME and Retail Banking: 56% of asset base, 49% of profit before tax",
+        "Corporate Banking: 20% of asset base, 24% of profit before tax",
+        "Treasury: 24% of asset base, 27% of profit before tax",
+        "Corporate Banking gross loan portfolio grew by 34.0%",
+        "SME and Retail Banking gross loan portfolio increased by 20%",
+        "Rupee denominated loan growth was 28% amounting to Rs 226.6 Bn",
+        "Foreign currency denominated loan growth was 23% recording increase of Rs 32.5 Bn",
+        "FCBU growth of domestic loan book driven by import substitution projects",
+        "Transaction banking established as distinct business vertical"
+      ],
+      "all_risks": [
+        "Extreme weather events identified as material climate-related physical risk",
+        "GHG emission quantification and transition planning identified as material transition risk",
+        "Geoeconomic uncertainty causing investors to adopt 'wait and see' stance",
+        "Global trade tensions, tariff escalations, and structural impediments",
+        "Currency volatility and trade uncertainties persisting",
+        "Cyclone Ditwah adverse impact moderating short-term recovery momentum",
+        "Competition within property management industry intensifying",
+        "Highly competitive environment in stock broking with pressure on margins",
+        "Market volatility affecting capital market participation",
+        "Operational risks from climate-induced disruptions to branches, ATMs, data centers",
+        "Credit risk from borrower vulnerability to floods, droughts and storms",
+        "Market risk from reduced asset values vulnerable to physical risks"
+      ]
+    }
   },
   "SIRA": {
     "company": "Sierra Cables PLC",
@@ -1085,7 +2012,7 @@
       "nav": 11.56,
       "dividend_per_share": null,
       "roe": 17.96,
-      "debt_to_equity": null
+      "debt_to_equity": 0.22
     },
     "management_plans": [
       "Focus on accelerating export sales while venturing into pure trading to strengthen global presence",
@@ -1104,7 +2031,53 @@
     ],
     "chairman_outlook": "Building on strong performance this year, we are confident in our ability to sustain and accelerate growth in the near future. With improvements in the macroeconomic environment, we are strategically positioned to seize emerging opportunities across both domestic and international markets, with enhanced focus on export portfolio expansion anticipated to create an avenue for entry into untapped global markets. We will continue to leverage deep industry expertise and advanced technologies, positioning ourselves as a trusted and quality-driven cable and wire manufacturer.",
     "sector": "Capital Goods",
-    "updated": "2026-03"
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Aim to source 70% of Sri Lanka's electricity from renewables by 2030",
+        "Target 3,805MW from solar power, 1,475MW from wind power, 1,100MW in Battery Energy Storage System (BESS) capacity, and 700MW from Pumped Storage Plants (PMP)",
+        "Government plans to attract LKR 4.3 trillion (USD 11.3 billion) in investments over the next eight years for renewable energy goals"
+      ],
+      "capex_plans": [
+        "Significant steps taken to refine production processes through adoption of technologically advanced machinery",
+        "Installation of 1MW solar system with generated electricity diverted to national grid",
+        "Existing ERP system upgrade to SAP",
+        "Relocation of pipe manufacturing plant to Africa to support supply of high-quality HDPE and uPVC pipes and fittings"
+      ],
+      "partnerships_acquisitions": [
+        "Strategic partnership with Brown & Company PLC within dealer market segment",
+        "Alliance with AIESEC at University of Moratuwa through Energy Management 'Switch of 13.0' project",
+        "Maintains joint venture Cables PTE Limited in Fiji",
+        "Operates subsidiary Sierra Cables East Africa Limited in Kenya"
+      ],
+      "geographic_expansion": [
+        "Export expansion to USA, Maldives, Europe, Africa, and Pacific Region with 48% growth in export market",
+        "Exports increased from 9% to 12% of total turnover, with primary focus on USA market",
+        "Dollar-denominated sales represented 18% of total turnover",
+        "Strong market presence in neighboring Asian countries, Eastern Europe, Oceania, North America, and multiple regions across Africa",
+        "Assigned sales representative to Sierra sales operations in the Maldives"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with ISO 9001, ISO 14001, ISO 45001 certifications",
+        "Adherence to Sri Lanka Standards (SLS) including SLS 412, 733, 750, 1186, 1542, SLS 1504-2-11, SLS 1504-2-31",
+        "Compliance with global benchmarks: BS, AS/NZS, NFC, JIS, UL, and IEC standards",
+        "UL44 certification obtained enabling Company to meet high international standards for commercial and residential power distribution in USA",
+        "Compulsory Test Report certification by LCIE laboratory in France"
+      ],
+      "segment_info": [
+        "Four key customer segments: Projects Market (apartments, hotels, commercial buildings, housing projects, mega infrastructure), Dealer Market (local distribution channels, agents, distributors), Institutional Category (government tenders for CEB/LECO, telecommunication providers), Exports Market (Asia, East Europe, North America, Africa, Oceania)",
+        "Operates manufacturing plant in Fiji through joint venture",
+        "Sierra Cables East Africa Limited subsidiary for Kenya operations"
+      ],
+      "all_risks": [
+        "Financial Risk (High): Escalating cable prices, unpredictable currency fluctuations, higher lending rates affecting borrowing costs",
+        "Market Risk (High): Decline in local construction industry, substandard products in market shrinking domestic market share",
+        "Customer Risk (Medium): Economic hardships impacting purchasing power, customer retention and loyalty decline",
+        "Employee Risk (Medium): Migration of talented employees, loss of critical skills and expertise",
+        "Inventory & Supply Chain Risk (Medium): Dependency on imported raw materials, poor inventory management leading to production delays",
+        "Information Risk (Medium): Real time accurate information impacts on management decisions, loss of sensitive information leading to competitive disadvantage"
+      ]
+    }
   },
   "NDB": {
     "company": "National Development Bank PLC",
@@ -1122,7 +2095,7 @@
       "nav": 201.51,
       "dividend_per_share": null,
       "roe": 13.49,
-      "debt_to_equity": null
+      "debt_to_equity": 1.46
     },
     "management_plans": [
       "Execute five-year strategic transformation programme targeting 2030 through three levers: Strengthen, Simplify, and Scale-Up",
@@ -1141,6 +2114,1138 @@
     ],
     "chairman_outlook": "Sri Lanka's economy has transitioned to a new era of growth after prolonged stress, with NDB positioned to be a key catalyst in the country's journey by prioritising capital flows towards high-impact sectors. The strategic focus will shift toward consolidating NDB's position as a fully-fledged financial services Group capable of delivering comprehensive solutions across banking, investment, capital market, wealth management, equity and allied services to build a dynamic, agile, and customer-centric institution.",
     "sector": "Banks",
+    "updated": "2026-03",
+    "forward_guidance": {
+      "management_targets": [
+        "Strategic Roadmap 2030 with ultimate strategic objectives of outperforming market and gaining market share, improved profitability, and superior customer experience",
+        "GSS+ Bond issuance of up to LKR 16.0 Bn planned for 2026 to fund green, blue, social, sustainable and sustainability-linked financing projects",
+        "Return on equity target above 12.5%",
+        "Return on assets target above 2%",
+        "Cost to income ratio target below 40%",
+        "Growth in profit after tax target above 20%",
+        "Growth in total assets target above 15%"
+      ],
+      "capex_plans": [
+        "Continued investments in IT infrastructure including core banking modernisation and digital transformation",
+        "Investment in process engineering and digitisation capabilities",
+        "Hardware and software infrastructure upgrades including enterprise storage capabilities expansion",
+        "Deployment of Identity Access Management (IAM) system",
+        "Implementation of dedicated Treasury system to replace legacy systems",
+        "Investment in AI-driven solutions and advanced data analytics capabilities"
+      ],
+      "partnerships_acquisitions": [
+        "Partnership with John Keells Properties for 100% home loan financing solution",
+        "Strategic partnerships with United Motor Lanka PLC for vehicle financing",
+        "Collaboration with Women Entrepreneurs Finance Initiative (We-Fi)",
+        "Partnership with National Credit Guarantee Institution (NCGI) scheme",
+        "Strengthened correspondent banking relationships with banks in Europe and Southeast Asia",
+        "Partnerships with multilateral development agencies including IFC, ADB, and NORFUND"
+      ],
+      "geographic_expansion": [
+        "NDB Wealth Management opened first branch in Jaffna with second branch in Kandy",
+        "Continued operations in Bangladesh through NDB Capital Limited",
+        "Cross-border financing transactions in Maldives including USD 18 Mn revolving credit facility and USD 10 Mn term loan",
+        "Regional expansion focus in South and East Asia markets",
+        "Offshore lending momentum to capture emerging opportunities across South and East Asia"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with CBSL's Sustainable Finance Roadmap 2.0",
+        "Implementation of SLFRS S1 and S2 Sustainability Reporting Standards",
+        "Adherence to Basel III capital adequacy requirements with minimum ratios",
+        "Compliance with Financial Consumer Protection Regulations (FCPR)",
+        "GSS+ Bond issuance subject to due regulatory approval",
+        "Alignment with ISO 27035 for Information Security Incident Management standards"
+      ],
+      "segment_info": [
+        "Retail Banking contributes 22% to Group Gross Loans and 56% to Group Total Deposits",
+        "Wholesale Banking contributes 34% to Group Gross Loans and 22% to Group Total Deposits",
+        "Business Banking (SME) portfolio reached LKR 124.7 Bn with over 25% YoY growth",
+        "Project & Infrastructure Financing focused on renewable energy and cross-border projects",
+        "NDB Shareek (Islamic Banking) delivered 47% growth in total assets",
+        "Capital Markets operations through subsidiaries including NDB Investment Bank, NDB Wealth Management, and NDB Securities"
+      ],
+      "all_risks": [
+        "Climate-related physical and transition risks affecting borrower resilience and portfolio performance",
+        "Cybersecurity threats and operational risks in increasingly digital environment",
+        "Interest rate volatility and global monetary policy uncertainty affecting margins",
+        "Credit concentration risks in vulnerable sectors during economic recovery phases",
+        "Regulatory changes and evolving capital requirements influencing growth strategies",
+        "Intensifying competition from banks and fintech players compressing spreads",
+        "Currency fluctuation risks impacting foreign exchange operations and offshore portfolio",
+        "Liquidity risk from potential deposit volatility and funding cost pressures",
+        "Technology obsolescence risks requiring continuous infrastructure investment",
+        "Operational risks from manual processes and potential system integration complexities",
+        "Environmental risks from climate events as demonstrated by Cyclone Ditwah impact",
+        "Market risk from government securities portfolio and investment volatility",
+        "Reputational risk from ESG expectations and sustainable finance requirements"
+      ]
+    }
+  },
+  "AAF": {
+    "company": "Asia Asset Finance PLC",
+    "year": "2024/25",
+    "financials": {
+      "revenue": {
+        "value": 6901000000,
+        "yoy_change": 4.97
+      },
+      "net_profit": {
+        "value": 441000000,
+        "yoy_change": 28.17
+      },
+      "eps": 3.55,
+      "nav": 30.43,
+      "dividend_per_share": null,
+      "roe": 12.35,
+      "debt_to_equity": 8.47
+    },
+    "management_plans": [
+      "Open 20 new branches in FY 2025/26, focusing on unbanked areas for geographical expansion",
+      "Continue digital transformation initiatives to enhance customer experience and operational efficiency",
+      "Expand product diversification beyond flagship Gold Loan products to broaden customer solutions",
+      "Migrate regional offices to solar power, making them energy self-sufficient following head office example",
+      "Strengthen risk management and governance frameworks for resilience and sustainable growth",
+      "Focus on financial inclusion through women's empowerment lending and underserved community support"
+    ],
+    "key_risks": [
+      "Rising global gold prices increasing risk exposure on pledged gold assets and reducing affordability for new borrowers",
+      "High cost involved in regulatory and technological adaptation due to evolving compliance requirements",
+      "Persistent high NPLs and capital pressures affecting sector stability",
+      "Volatile financial markets creating liquidity management challenges, especially post-April 2025 market correction",
+      "Currency volatility and elevated sovereign debt limiting fiscal flexibility and external financing access"
+    ],
+    "chairman_outlook": "Good governance and enhancing value proposition will remain top priority. The company is embarking on product diversification beyond flagship Gold Loans, expanding geographical footprint with new branches in unbanked areas, and digitalisation as core strategy for customer experience enhancement and cost optimisation while sustainability continues as priority area.",
+    "forward_guidance": {
+      "management_targets": [
+        "Open 20 new branches in FY 2025/26",
+        "Continue digital transformation initiatives for customer experience enhancement",
+        "Expand product diversification journey offering broader solutions beyond Gold Loans",
+        "Achieve geographical expansion focusing on unbanked areas",
+        "Maintain digitalisation as core business strategy for customer experience and cost optimisation",
+        "Focus on sustainable growth through branch expansion and digital integration",
+        "Strengthen competitive edge through product offering diversification",
+        "Enhance risk management and governance frameworks for transparency and sustainable growth"
+      ],
+      "capex_plans": [
+        "20 new branch openings planned for FY 2025/26",
+        "Solar power migration for regional offices to make them energy self-sufficient",
+        "Continue investment in advanced technology platforms and AI-driven solutions",
+        "Investment in automation for process optimisation",
+        "Enhanced investment in IT infrastructure and cybersecurity measures"
+      ],
+      "partnerships_acquisitions": [
+        "Celebrating 10 years with Muthoot Finance Limited India as parent company",
+        "Strategic partnerships with real estate professionals for mortgage products",
+        "Collaborations with dealers and manufacturers for leasing market expansion",
+        "Established partnerships with Western Union and Ria for remittance services",
+        "Partnership with Sooriyan FM for regional marketing campaigns"
+      ],
+      "geographic_expansion": [
+        "20 new branches planned for FY 2025/26 with preference for unbanked areas",
+        "Added 15 branches during FY 2024/25 with focus on Sabaragamuwa and Uva regions",
+        "Reached milestone of 100 active branches across Sri Lanka",
+        "Strategic expansion in semi-urban and rural areas for financial inclusion",
+        "Relocated 4 branches for enhanced visibility and accessibility"
+      ],
+      "regulatory_dependencies": [
+        "Licensed by Central Bank of Sri Lanka as deposit-taking institution",
+        "Compliance with CBSL guidelines and directives",
+        "Adherence to Code of Best Practice on Corporate Governance",
+        "Compliance with Personal Data Protection Act requirements",
+        "Regulatory requirement to maintain Capital Adequacy Ratio above 8.5%"
+      ],
+      "segment_info": [
+        "Gold Loans: Surpassed Rs. 20 Bn loan base, remains flagship product",
+        "Micro Mortgages: Reached Rs. 5 Bn driven by market penetration and regional outreach",
+        "Fixed Deposits: Achieved Rs. 19,976 Mn, 38.81% YoY growth",
+        "Leasing: Positioned for digital growth with Digital Karaliyata campaign",
+        "Total loan portfolio expanded by Rs. 10.09 Bn to reach Rs. 29.16 Bn",
+        "Customer deposit base grew to Rs. 20.004 Bn"
+      ],
+      "all_risks": [
+        "Rising global gold prices increasing risk exposure on pledged gold assets and reducing affordability for new borrowers",
+        "High cost involved in regulatory and technological adaptation due to evolving compliance requirements",
+        "Persistent high NPLs and capital pressures affecting sector stability",
+        "Volatile financial markets creating liquidity management challenges, especially post-April 2025 market correction",
+        "Currency volatility and elevated sovereign debt limiting fiscal flexibility and external financing access",
+        "Cautious consumer behaviour following stock market sentiment decline post-April 7, 2025",
+        "Cost management challenges considering high regulatory and technological adaptation costs",
+        "Global trade tensions and U.S. tariff policy impacts creating business investment uncertainty",
+        "Dependence on external financing and vulnerability to external disruptions",
+        "Competition from other institutions adopting gold loan-centric business models",
+        "Inflationary pressures and policy uncertainty affecting business confidence",
+        "Elevated poverty rate of 24.5% affecting customer affordability and loan demand"
+      ]
+    },
+    "sector": "Diversified Financials",
+    "updated": "2026-03"
+  },
+  "AAIC": {
+    "company": "Softlogic Life Insurance PLC",
+    "year": "2025",
+    "financials": {
+      "revenue": {
+        "value": 40075000000,
+        "yoy_change": 26.9
+      },
+      "net_profit": {
+        "value": 4680000000,
+        "yoy_change": 3.5
+      },
+      "eps": 14.79,
+      "nav": 43.2,
+      "dividend_per_share": 4.5,
+      "roe": 39.0,
+      "debt_to_equity": 0
+    },
+    "management_plans": [
+      "Acquire 100% stake in Allianz Life Insurance Lanka Limited to expand market share and add approximately 1,000 advisors and 200 staff members",
+      "Achieve over 20% growth in Gross Written Premium targeting Rs 40+ billion annually",
+      "Maintain capital adequacy ratio above 160% while targeting over 20% Return on Equity",
+      "Expand AI-powered digital transformation across underwriting, claims processing and customer engagement",
+      "Launch preventive health solutions including AI-powered Health Score platform using facial recognition technology",
+      "Target 30% female representation at Senior Manager level and 45% female representation across total headcount excluding sales"
+    ],
+    "key_risks": [
+      "Exposure to macroeconomic volatility including inflation and currency fluctuations",
+      "Climate-related risks from natural disasters such as Cyclone Ditwah causing widespread damage",
+      "Intense industry competition with over 10 licensed life insurers competing for market share",
+      "High attrition among sales force requiring accelerated recruitment and training of new advisors",
+      "Technology-related risks including cyber threats, infrastructure obsolescence and high transition costs to new technologies"
+    ],
+    "chairman_outlook": "Sri Lanka's macroeconomic environment has stabilized with GDP growth of 4.5-5%, inflation moderated to 2-3%, and Treasury bill rates returning to single digits. The restoration of economic stability has enhanced consumer confidence and facilitated market recovery, positioning the life insurance industry for sustained growth through 2026-2028 as the country progresses through structural reforms under the IMF programme.",
+    "forward_guidance": {
+      "management_targets": [
+        "Achieve over 20% Gross Written Premium growth annually through 2028",
+        "Maintain Return on Equity above 20% consistently",
+        "Target Annualised New Business Premium growth exceeding 20% per year",
+        "Keep expense ratio below 15% by 2028 through operational efficiency improvements",
+        "Maintain capital adequacy ratio above 160% minimum regulatory requirement",
+        "Achieve claims settlement ratio above 90% within one day",
+        "Target system downtime of 0% and zero data breach incidents",
+        "Maintain customer satisfaction NPS score above 57",
+        "Achieve persistency ratio of 85% for Year 1 policies",
+        "Target advisor productivity of Rs 2.2 million ANBP per agent by 2028"
+      ],
+      "capex_plans": [
+        "USD 15 million funding agreement with Norfund and OP Finnfund expected to be drawn down in first half of 2026",
+        "Rs 96 million investment in R&D and digital transformation during 2025",
+        "Investment in AI and digital platforms for underwriting, claims processing and customer engagement",
+        "Technology infrastructure upgrades to support digital transformation initiatives",
+        "Investment in preventive health technology including AI-powered Health Score platform"
+      ],
+      "partnerships_acquisitions": [
+        "100% acquisition of Allianz Life Insurance Lanka Limited (formerly known as Allianz Life Insurance Lanka Limited) completed in July 2025",
+        "Strategic partnerships with Dialog Telecom for mobile insurance distribution",
+        "Collaboration with Sri Lanka Postal Department for micro insurance expansion",
+        "Banking partnerships including public and private banks for alternate distribution channels",
+        "Partnerships with international development finance institutions including Norfund, OP Finnfund and Munich Re",
+        "Membership with Partnership for Carbon Accounting Financials (PCAF) for financed emissions calculation"
+      ],
+      "geographic_expansion": [
+        "Expansion of micro insurance into Southern and Sabaragamuwa provinces through postal network",
+        "Opened 8 new branches in 2025 bringing total to 159 branches",
+        "Added 38 customer access points through acquisition",
+        "Long-term measured expansion into selective offshore markets to diversify earnings and reduce concentration risk"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with IRCSL capital adequacy requirements maintaining minimum 120% ratio",
+        "Implementation of SLFRS 17 financial reporting standards",
+        "Mandatory compliance with SLFRS S1 and S2 sustainability disclosure standards",
+        "Adherence to Insurance Regulatory Commission framework for ESG and green financing initiatives",
+        "Compliance with updated solvency, capital and consumer protection frameworks",
+        "Alignment with IRCSL vision to increase insurance penetration by 2030"
+      ],
+      "segment_info": [
+        "Agency channel contributed 61% of GWP with Rs 23.4 billion, targeting 57% mix",
+        "Alternate channel achieved Rs 12.5 billion GWP with 25% growth, holding market leading positions in international health and group health",
+        "Micro Mobile channel recorded Rs 2.5 billion GWP with 35% growth through Dialog and postal partnerships",
+        "Subsidiary Softlogic Life Insurance Lanka Limited delivered Rs 3.4 billion GWP with 22.5% growth rate",
+        "Group Life portfolio optimised to restore margin profile through disciplined underwriting and pricing measures",
+        "Universal Life products increased 4% in product mix compared to previous year",
+        "Health insurance maintaining market leadership position with strong customer base growth"
+      ],
+      "all_risks": [
+        "Exposure to macroeconomic volatility including inflation and currency fluctuations",
+        "Climate-related risks from natural disasters such as Cyclone Ditwah causing widespread damage",
+        "Intense industry competition with over 10 licensed life insurers competing for market share",
+        "High attrition among sales force requiring accelerated recruitment and training of new advisors",
+        "Technology-related risks including cyber threats, infrastructure obsolescence and high transition costs to new technologies",
+        "Market share concentration risk with dependence on Sri Lankan domestic market",
+        "Regulatory compliance costs and reputational risk due to non-compliance with evolving requirements",
+        "Interest rate risk from persistent low market interest rates affecting investment returns",
+        "Credit risk from investment portfolio exposure to various asset classes",
+        "Liquidity risk from potential cash flow mismatches between assets and liabilities",
+        "Mortality and morbidity risks from changing demographic and health patterns",
+        "Lapse risk from policy surrenders and non-payment of premiums",
+        "Expense risk from rising operational costs amid business expansion",
+        "Reinsurance risk from availability and cost of appropriate reinsurance coverage",
+        "Cyber security risks from increasing digitalization and data privacy requirements",
+        "Climate physical risks including increased frequency and severity of natural disasters",
+        "Climate transition risks from policy changes and shifting to low-carbon economy",
+        "Sustainability-related risks affecting reputation and stakeholder relationships",
+        "Operational risks from process failures, human errors and system breakdowns",
+        "Strategic risks from incorrect business decisions and market positioning",
+        "Conduct risks affecting customer treatment and fair outcomes",
+        "Concentration risks from geographic and product line dependencies",
+        "Emerging risks from technological disruption, social changes and regulatory evolution"
+      ]
+    },
+    "sector": "Insurance",
+    "updated": "2026-03"
+  },
+  "ABAN": {
+    "company": "ABANS ELECTRICALS PLC",
+    "year": "2024/25",
+    "financials": {
+      "revenue": {
+        "value": 6707213593,
+        "yoy_change": 9.53
+      },
+      "net_profit": {
+        "value": 500159228,
+        "yoy_change": 14.0
+      },
+      "eps": 97.87,
+      "nav": 530.33,
+      "dividend_per_share": 15.0,
+      "roe": 18.45,
+      "debt_to_equity": 0.0488
+    },
+    "management_plans": [
+      "Prioritize volume expansion in manufacturing segment by offering competitive pricing to penetrate deeper into the market and increase market share",
+      "Scale up injection molding operations to supply plastic components to Group companies and external clients, creating a new revenue stream",
+      "Strengthen after-sales services by enhancing technician training and certification programs to elevate total value proposition",
+      "Expand Fast Service Zones to further elevate speed and quality of service delivery",
+      "Recruit new franchisees for Uva and Southern Provinces to expand service coverage and ensure faster response times",
+      "Continue digitalization strategy by systematically replacing manual operations with digital solutions to enhance efficiencies and productivity"
+    ],
+    "key_risks": [
+      "Access to skilled labor shortage and talent migration posing recruitment challenges for specialized roles",
+      "Energy uncertainty including recent increase in tariffs by Ceylon Electricity Board which could reduce demand for electronics goods",
+      "Lower rooftop solar tariff rates and delays in CEB approvals for new solar installations could slow growth in solar energy segment",
+      "Potential U.S. tariffs on Sri Lankan exports could lead to decline in export revenue and pressure exchange rate",
+      "Rising geopolitical tensions in Middle East may drive up global oil prices, increasing inflation and dampening demand for white goods"
+    ],
+    "chairman_outlook": "Despite rising unpredictability from various challenges, Abans Electricals is well-prepared with a robust and flexible growth strategy aimed at sustaining long-term value creation for all stakeholders. The company will focus on maintaining bottom-line growth through volume expansion, competitive pricing, and strengthening after-sales services while leveraging digitalization initiatives to boost productivity and efficiency.",
+    "forward_guidance": {
+      "management_targets": [
+        "Prioritize volume expansion in manufacturing segment by offering competitive pricing to penetrate deeper into the market and increase market share",
+        "Scale up injection molding operations to supply plastic components to Group companies and external clients, creating a new revenue stream",
+        "Enhance technician training and certification programs to elevate total value proposition",
+        "Expand Fast Service Zones to further elevate speed and quality of service delivery",
+        "Recruit new franchisees for Uva and Southern Provinces to expand service coverage",
+        "Continue digitalization strategy by systematically replacing manual operations with digital solutions",
+        "Explore new opportunities beyond rooftop installations to diversify and expand renewable energy portfolio"
+      ],
+      "capex_plans": [
+        "Invested over LKR 115.33 million in expanding and developing manufacturing infrastructure",
+        "Invested LKR 19.59 million for tools and LKR 25.92 million in IT related hardware",
+        "Continue investments in plant and machinery to expand capacity for manufacturing plastic components",
+        "Strategic investments in computer equipment including laptops to boost system performance"
+      ],
+      "partnerships_acquisitions": [
+        "No specific partnerships or acquisitions mentioned in forward-looking context"
+      ],
+      "geographic_expansion": [
+        "Recruit new franchisees for Uva and Southern Provinces to expand service coverage and ensure faster response times to customer requests"
+      ],
+      "regulatory_dependencies": [
+        "Delays in CEB approvals for new solar installations could slow growth in solar energy segment",
+        "Lower rooftop solar tariff rates affecting solar segment performance",
+        "Concerted effort by government needed to enhance infrastructure for renewable energy development",
+        "Ceylon Electricity Board tariff increases could reduce demand for electronics goods"
+      ],
+      "segment_info": [
+        "Manufacturing segment revenue increased by 4.64% primarily driven by volume growth despite downward pricing adjustments",
+        "Services segment recorded sharp 35.10% increase supported by strengthening human resources and service center renovations",
+        "Solar segment revenue grew by 9.26% alongside increase in solar power connections despite intense competition and regulatory challenges",
+        "Solar business faced extreme price competition due to rapid growth of new entrants and frequent tariff revisions",
+        "Manufacturing segment passing price benefits from positive macroeconomic conditions to customers in form of price reductions",
+        "After-sales service segment achieving substantial increase from enhanced customer service experience"
+      ],
+      "all_risks": [
+        "Changes in Government Policies and Regulations including VAT rate of 18% imposed on solar systems",
+        "Upward revisions in tariffs by Ceylon Electricity Board may reduce demand for electronic goods",
+        "Lower rooftop solar tariff rates and delays in CEB approvals for new solar installations",
+        "Purchasing power of consumers remaining cautious despite economic stability",
+        "Market competition in white goods retail and solar installations with new entrants and rising competition",
+        "Consumer preferences shifting toward energy saving products and personalized technology-driven solutions",
+        "Reputational risk from uncontrollable events or negative public perception including quality concerns and service delays",
+        "Currency risk from fluctuations in foreign exchange rates affecting import costs",
+        "Liquidity risk regarding availability of sufficient funds for short and medium-term obligations",
+        "Credit risk and repayment delays when counterparties do not meet obligations",
+        "Interest rate risk from changes in rates affecting borrowing costs",
+        "Supply chain risk from failure of key suppliers and service providers interrupting operations",
+        "Information Technology risk from system failures disrupting operations and decision-making",
+        "People related risk from failure to retain key staff resulting in skill gaps",
+        "Health and Safety risk to employees' psychological and physical health reducing productivity",
+        "Access to skilled labor shortage with persistent shortage of skilled professionals",
+        "Growing trend among youth toward non-traditional career paths reducing talent pool for technical positions",
+        "Energy uncertainty and recent increase in tariffs by Ceylon Electricity Board",
+        "Potential U.S. tariffs on Sri Lankan exports leading to decline in export revenue",
+        "Rising geopolitical tensions in Middle East driving up global oil prices and inflation",
+        "Heightened competition in white goods retail market exerting downward pressure on prices",
+        "Geopolitical risks including ongoing Middle East conflict disrupting global supply chains",
+        "Employee dissatisfaction from inadequate compensation or safety measures causing supply chain disruption",
+        "Physical risks from boiling temperatures affecting manufacturing efficiency and increasing operational costs"
+      ]
+    },
+    "sector": "Consumer Durables & Apparel",
+    "updated": "2026-03"
+  },
+  "ABL": {
+    "company": "Amana Bank PLC",
+    "year": "2024",
+    "financials": {
+      "revenue": {
+        "value": 15399562000,
+        "yoy_change": -11
+      },
+      "net_profit": {
+        "value": 1774666000,
+        "yoy_change": 28
+      },
+      "eps": 3.22,
+      "nav": 41.45,
+      "dividend_per_share": 1.2,
+      "roe": 8.0,
+      "debt_to_equity": null
+    },
+    "management_plans": [
+      "Capitalize on opportunities following full removal of import restrictions expected in 2025, especially in trade-related businesses",
+      "Launch National Digital Economy Strategy 2030 to enhance digital capabilities and remain at forefront of innovation",
+      "Implement Sustainability Management System (SMS) to mitigate Environmental and Social risks",
+      "Expand Self-Banking Centre network with 7 new SBCs already established, reaching total of 34 centres",
+      "Grow SME portfolio through value chain financing, targeting distributors and suppliers of large corporates",
+      "Obtain Visa approval for POS terminal installation to achieve primary status and drive CASA deposit growth"
+    ],
+    "key_risks": [
+      "Regulatory changes delaying client repayment obligations affecting recovery process",
+      "Net Finance Margins under pressure as asset repricing outpaces deposit liabilities in declining rate environment",
+      "Competitive pressure in credit markets especially in SME segment during first half of year",
+      "Geopolitical tensions affecting global commodity prices despite improving supply conditions",
+      "Climate-related physical risks requiring evaluation especially in Sri Lanka's vulnerable environment"
+    ],
+    "chairman_outlook": "As the Country repositions itself for sustained growth in the years ahead, Amana Bank stands ready to seize new opportunities and build upon its legacy of growth and resilience. With a solid foundation in place, we are committed to leveraging this momentum to strengthen our market position and continue upholding highest standards of governance.",
+    "forward_guidance": {
+      "management_targets": [
+        "Capitalize on opportunities following full removal of import restrictions expected in 2025, especially in trade-related businesses",
+        "Launch National Digital Economy Strategy 2030 to enhance digital capabilities",
+        "Implement Sustainability Management System (SMS) to mitigate Environmental and Social risks in 2025",
+        "Review Economic Sustainability during 2025 and set targets for financing portfolio based on intensities",
+        "Reduce Emissions intensities by 5% during 2025 (excluding Finance Emission)",
+        "Regular contribution to OrphanCare based on Profits of 2025 approved by Board",
+        "Fund set up to encourage entrepreneurship and women empowerment up to LKR 100 million in 2025",
+        "Obtain PCIDSS certification for global standard security of payment card information",
+        "Obtain Visa approval for POS terminal installation to achieve primary status",
+        "Promote Business Plus value proposition more aggressively in 2025 to increase CASA and expand SME wallet share",
+        "4% annual growth for Bank Wide Minimum Capital Adequacy Ratio as per Risk Appetite Statement",
+        "Medium Term Target: Improve profitability in line with Industry",
+        "Long Term Target: Consistent above industry growth, both in advances and deposits, towards gaining market share",
+        "Impaired financing and advances (Stage 3) ratio to be less than 5% of Financing Portfolio or industry average whichever is less",
+        "Exposure to top 20 borrowers will not exceed 35% of Gross Advances Portfolio",
+        "Limit granting of facilities to lower graded customers, Bank will strive to maintain its exposures to 'D' category below 10% of total portfolio",
+        "Advance to Deposit ratio ideally to be maintained in line with Board approved Strategic Plan"
+      ],
+      "capex_plans": [
+        "7 new Self-Banking Centres (SBCs) established in 2024, total network grown to 34",
+        "Investment in redundancy systems to improve connectivity and minimize downtime for core banking",
+        "Implementation of robust new Network Access Control system for data protection",
+        "Multiple process automations commenced in 2024 for improved turnaround time and resource optimization",
+        "Installation of POS terminals pending Visa approval",
+        "IoT prototype model for measuring Indoor Air Quality at regular intervals planned for 2025",
+        "LKR 75 Mn invested to install ATMs and CDMs, covering the entire network",
+        "Average CAPEX of setting up new SBCs is on average 80% less than the CAPEX involved in setting up a new branch",
+        "Investment in eco-friendly branches and energy-efficient operations requiring ongoing capital expenditure",
+        "Substantial capital expenditure required for digital banking platforms and automation"
+      ],
+      "partnerships_acquisitions": [
+        "Partnership with Biodiversity Sri Lanka for 'Life to Our Mangroves' five-year project to restore 1 hectare of degraded mangrove land",
+        "Partnership with Cleantech (Pvt) Ltd for sustainable waste management initiative for paper and PET bottle recycling",
+        "Strengthened partnerships with property developers to promote home financing solutions",
+        "Value chain financing targeting supplier and distributor networks of large corporates",
+        "Collaboration with leading corporates for OrphanCare project valued partnerships",
+        "Strategic partnership with the Institute of Bankers of Sri Lanka (IBSL) as an official training partner",
+        "Partnership with AB Securitas in 2023 has allowed significant acceleration of SBC expansion strategy",
+        "Tie up with leading property developers to drive home finance solutions",
+        "Partnerships with leading solar agents strengthened to drive solar financing product",
+        "Partnership with South Eastern University of Sri Lanka (SEUSL) for Industry Training Programme",
+        "Continued partnership with UTO EduConsult for Season 3 of EntreMindz",
+        "Partnership with Royal College to launch the Capital Market Club"
+      ],
+      "geographic_expansion": [
+        "7 new Self-Banking Centres (SBCs) established in 2024 strengthening reach across country",
+        "Strategic positioning of SBCs in under-served regions to advance financial inclusion",
+        "Branch-led campaign for agriculture sector financing in Central and Eastern regions",
+        "Aggressive campaign to penetrate SME segment particularly in Western province",
+        "Expansion of export trade services to attract new customers and grow market share",
+        "7 new Self-Banking Centres (SBCs) opened in 2024 in North Western, North Central, Central and Eastern provinces",
+        "Relocation of the Puttalam branch to a new and improved location",
+        "SBC network has grown to 34, surpassing traditional branch network of 33",
+        "Future expansion through low-cost SBC model to serve underbanked areas"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with new CSE listing rules on Corporate Governance implemented in 2024",
+        "Implementation of New Banking Act Direction No. 24 of 2024 governance requirements",
+        "SLFRS S1 & S2 reporting requirements with December 2025 target timeline for top 100 listed companies",
+        "Central Bank Guidelines for Indoor Air Quality in Sri Lanka (2022) compliance",
+        "Priority sectors identified in Central Bank Guideline number 05 of 2022 for credit decisions",
+        "Regulatory changes affecting recovery of collateral-based facilities impacting asset quality",
+        "Visa approval pending for POS terminal installation",
+        "Compliance with new CSE listing rules on Corporate Governance issued in 2024",
+        "Compliance with Banking Act Direction No. 24 of 2024",
+        "Awaiting Visa approval for installation of POS terminals",
+        "Full removal of import restrictions expected within 2025 will open new opportunities",
+        "Alignment with CBSL's Financial Literacy Road Map 2024-2028",
+        "Implementing PCIDSS certification for card business security"
+      ],
+      "segment_info": [
+        "SME segment delivered robust performance with growth recording LKR 11.9 billion for the year",
+        "Corporate advances book gained healthy traction with 11% growth recording LKR 4.7 billion growth",
+        "Retail advances book expanding by impressive 22% year-on-year driven by Leasing, Housing and Personal Finance",
+        "Business Banking financing income LKR 8,850 million in 2024 vs LKR 10,581 million in 2023 (-16%)",
+        "Business Banking gross advances LKR 87,441 million in 2024 vs LKR 70,934 million in 2023 (+23%)",
+        "Tourism sector exponential growth presented compelling opportunity for deeper exposure",
+        "Apparel sector revival in Sri Lanka offered new growth avenues with factories resuming local operations",
+        "SME segment delivered robust performance with growth recording LKR 11.9 billion",
+        "Corporate advances book grew by 11% recording growth of LKR 4.7 billion",
+        "Retail advances portfolio expanded by impressive 22% year-on-year",
+        "Vehicle leasing achieved 54% growth despite import restrictions",
+        "Home financing portfolio registered 29% growth",
+        "Solar financing portfolio showed substantial 240% increase year on year",
+        "Special focus on export and service industries expected in 2025"
+      ],
+      "all_risks": [
+        "Credit Risk affecting Financial Stability, Capital Adequacy and Banking Convenience",
+        "Market Risk impacting Financial Stability and support for Retail/SME sectors",
+        "Liquidity Risk affecting Financial Stability and Capital Adequacy",
+        "Operational Risk affecting Governance, Model Compliance, Service Reliability, Customer Convenience, Information Security, and HR matters",
+        "Sustainability Risk impacting Banking Convenience, Business Ethics, and Environmental Footprint",
+        "Regulatory changes delaying client repayment obligations affecting recovery process",
+        "Net Finance Margins under pressure as asset repricing outpaces deposit liabilities in declining rate environment",
+        "Competitive pressure in credit markets especially in SME segment during first half of year",
+        "Geopolitical tensions affecting global commodity prices despite improving supply conditions",
+        "Climate-related physical risks requiring evaluation especially in Sri Lanka's vulnerable environment",
+        "Reversal of rules governing recovery of collateral-based facilities posed significant challenge on asset quality",
+        "Import restrictions affecting trade-related business opportunities until full removal expected in 2025",
+        "Data security risks requiring ISO 27001:2022 certification and PCIDSS compliance",
+        "Indoor air quality health-related risks requiring monitoring and IoT implementation",
+        "Waste management sustainability challenges requiring proper segregation and recycling initiatives",
+        "Credit costs may hamper sustained profitability during asset growth pursuit",
+        "Digital banking investment benefits may take time to materialize",
+        "Conventional banks entering Islamic banking may intensify competition",
+        "Customers may be drawn to competitors offering attractive pricing",
+        "Skilled employees may be attracted by better remuneration packages from competitors",
+        "Sustainability investments may marginally impact profitability",
+        "Operational disruptions from digital transformation initiatives",
+        "Heightened cyber security threats and fraud risks",
+        "Third-party vendor risks requiring strengthened oversight",
+        "Sustainability Risk from adverse Environmental, Social, and Governance factors",
+        "Climate change and resource depletion risks",
+        "Regulatory compliance costs and operational complexity from evolving environmental regulations"
+      ]
+    },
+    "sector": "Banks",
+    "updated": "2026-03"
+  },
+  "AFS": {
+    "company": "Alpha Fire Services PLC",
+    "year": "2024/25",
+    "financials": {
+      "revenue": {
+        "value": 416270509,
+        "yoy_change": 27
+      },
+      "net_profit": {
+        "value": 39421695,
+        "yoy_change": 60
+      },
+      "eps": 1.04,
+      "nav": 4.72,
+      "dividend_per_share": 0.15,
+      "roe": 22.02,
+      "debt_to_equity": 0.56
+    },
+    "management_plans": [
+      "Expand internationally with Maldives identified as promising first step for regional growth",
+      "Complete consolidation of operations and staff at new Polgasowita premises to reduce rental overheads and enhance efficiency",
+      "Broaden trading operations beyond imports for internal projects to evaluate opportunities in external trading",
+      "Continue expansion of B2C product portfolio with fire blankets, portable extinguishers and gas pipeline solutions for households",
+      "Strengthen human resource capacity with competitive remuneration and career development opportunities",
+      "Focus on providing fire protection solutions to multinational and large-scale industrial facilities"
+    ],
+    "key_risks": [
+      "Recruiting and retaining skilled technicians as qualified workers seek opportunities overseas",
+      "Intense competition from smaller companies offering lower contract prices",
+      "Global geopolitics and logistics challenges delaying imported goods and impacting costs",
+      "Fluctuating cost of business due to electricity increases, wage hikes and tax hikes impacting profitability",
+      "Business disruption due to industry reliance on limited experts, clientele and suppliers"
+    ],
+    "chairman_outlook": "Alpha Fire Services PLC delivered outstanding results with 60% profit growth, positioned strongly for continued expansion across domestic and international markets. The completion of new Polgasowita premises and overseas expansion plans, particularly in the Maldives, will strengthen our regional presence and operational efficiency. While construction sector recovery creates new opportunities, we remain focused on maintaining our reputation for quality and reliability while diversifying our portfolio and revenue streams.",
+    "forward_guidance": {
+      "management_targets": [
+        "Revenue growth target of 27% achieved, aiming to sustain momentum with Rs. 99 million order book",
+        "Profit before tax increased by 63% to Rs. 56.8 million",
+        "Monthly inquiries rose by 24% placing increased demand on resources",
+        "Project pipeline expanded by 69% to Rs. 99 million at year-end",
+        "12% increase in project-related revenue from long-standing customers",
+        "Order book closed at over Rs. 99 million ensuring robust pipeline for year ahead",
+        "Retained over Rs. 400 million in confirmed orders at close of year"
+      ],
+      "capex_plans": [
+        "Investment in new inventory and workshop facilities at Polgasowita premises completed",
+        "Capital expenditure of Rs. 10.2 million on property, plant and equipment during the year",
+        "Workshop facility consolidation to centralize operations and reduce rental overheads",
+        "Modern workshop facility equipped with latest technologies and periodically upgraded"
+      ],
+      "partnerships_acquisitions": [
+        "Actively pursuing partnerships in the Maldives as entry point to broader regional growth",
+        "Exploring opportunities in external trading to diversify revenue streams",
+        "Introduced new B2C market products: fire blankets, consumer range fire extinguishers, domestic gas pipe solutions",
+        "Digital and traditional marketing campaigns rolled out for new consumer product range"
+      ],
+      "geographic_expansion": [
+        "Overseas expansion with Maldives identified as promising first step",
+        "Challenges related to logistics, regulations and market entry being proactively addressed",
+        "Looking beyond Sri Lanka for regional expansion opportunities",
+        "Initiative integral to strategy to diversify portfolio and strengthen regional presence"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with CIDA EM1 (ICTAD) status requirements",
+        "ISO 9001:2015 certification maintenance",
+        "NFPA (National Fire Protection Association) membership compliance",
+        "Government alignment of national fire safety regulations with international standards",
+        "Tightening regulations and increased compliance requirements creating opportunities"
+      ],
+      "segment_info": [
+        "Project supply and installation services recorded Rs. 331 million in new projects",
+        "Service revenue contributed Rs. 54.18 million accounting for 13% of total revenue",
+        "Product supply revenue of Rs. 30.5 million and service revenue of Rs. 54.8 million showing healthy growth",
+        "Most profitable categories were Project, Supply and Services segments",
+        "Supply and services grew consistently reinforcing balanced business model",
+        "FM Approved factory fire system completed for multinational client to global standards"
+      ],
+      "all_risks": [
+        "People risk: Recruiting and retaining skilled technicians as qualified workers seek overseas opportunities",
+        "Market risk: Intense competition from smaller companies offering lower contract prices",
+        "Supply chain risk: Global geopolitics and logistics challenges delaying imported goods and impacting costs",
+        "Financial risk: Fluctuating cost of business due to electricity increases, wage hikes, tax hikes impacting profitability",
+        "Cost of living risk: Increased raw materials and commodities cost affecting demand as consumers focus on essential needs",
+        "Business continuity risk: Threat of business disruption due to industry reliance on limited experts, clientele and suppliers",
+        "Compliance and regulatory risks: Risks from non-compliance of industry benchmarks and government regulations",
+        "Labor market challenges: Rising wages with minimum wage increase from Rs. 21,000 to Rs. 27,000 in April 2025 and Rs. 30,000 from 2026",
+        "Foreign employment impact: 5.8% increase in foreign employment departures affecting available labor pool",
+        "Economic dependency: Construction sector recovery dependency for fire safety industry growth"
+      ]
+    },
+    "sector": "Capital Goods",
+    "updated": "2026-03"
+  },
+  "AFSL": {
+    "company": "Abans Finance PLC",
+    "year": "2024/25",
+    "financials": {
+      "revenue": {
+        "value": 3457210000,
+        "yoy_change": 20.75
+      },
+      "net_profit": {
+        "value": 425756000,
+        "yoy_change": 308
+      },
+      "eps": 5.78,
+      "nav": 47.53,
+      "dividend_per_share": null,
+      "roe": 12.94,
+      "debt_to_equity": null
+    },
+    "management_plans": [
+      "Strategically position as a medium-sized finance company with portfolio exceeding Rs. 20 billion",
+      "Focus expansion in core areas particularly small-ticket leasing products such as motorbikes and three-wheelers",
+      "Enhance value of gold loan and four-wheeler portfolios with balanced and diversified asset base",
+      "Implement cross-selling to existing customer base with tailored financial solutions",
+      "Grow savings and investment segment by promoting savings culture among customers",
+      "Convert all existing centers into branches as key turning point in client service"
+    ],
+    "key_risks": [
+      "Asset quality deterioration in vehicle leasing and SME lending segments with elevated credit risk",
+      "Lack of parate execution rights hampering ability to recover collateral from defaulting borrowers",
+      "Sector vulnerability to external shocks, exchange rate volatility, and sudden shifts in fiscal or monetary policy",
+      "Liquidity constraints experienced by smaller NBFIs struggling to meet capital adequacy norms",
+      "Cybersecurity and data protection risks requiring comprehensive three-year strategic mitigation"
+    ],
+    "chairman_outlook": "With a robust capital base, expanding asset portfolio, and consistent profitability, Abans Finance PLC is well-positioned to explore new growth avenues and address evolving customer needs in the financial services sector. The company is moving towards a paperless workplace with most transactions completed on tabs and customized software developed internally.",
+    "forward_guidance": {
+      "management_targets": [
+        "Target to become medium-sized finance company with portfolio exceeding Rs. 20 billion",
+        "Expand portfolio further especially in emerging segments such as EV financing and micro-enterprise support",
+        "Achieve retention ratio improvement from current 79.85%",
+        "Reduce staff turnover further from 33% reduction achieved in FY 2024/25",
+        "Implement Phase II of NBFI sector reforms including updates to Finance Business and Leasing Acts",
+        "Maintain strong capital base supported by 'A–(lka)' credit rating from Fitch Ratings"
+      ],
+      "capex_plans": [
+        "Strategic expansion plan for Gold Loan product across entire branch network",
+        "Investment in digital transformation to improve customer experience and operational scalability",
+        "Upgrades to critical internal systems and core banking system refresh",
+        "Enhancements to branch infrastructure to support expanding digital service offerings",
+        "Investment in modern disaster recovery and backup systems",
+        "WAN optimization solution implementation across branch network"
+      ],
+      "partnerships_acquisitions": [
+        "Gold Loan product launched December 2024 starting at Gampaha branch with phased rollout planned",
+        "Electric vehicle financing portfolio increased by nearly LKR 1 billion",
+        "Diversification into unregistered vehicle financing with lifting of vehicle import restrictions",
+        "Introduction of refinance facilities for existing clients with satisfactory payment history"
+      ],
+      "geographic_expansion": [
+        "Enhance geographic reach through selective branch expansion and agent networks",
+        "Phased rollout plan for Gold Loan product in high-potential regions across the country",
+        "Nineteen branches extending visibility through backing of parent company Abans PLC's 400 outlets"
+      ],
+      "regulatory_dependencies": [
+        "Implementation of CBSL Phase II NBFI sector reforms",
+        "Updates to Finance Business and Leasing Acts strengthening governance and risk oversight",
+        "Compliance with new Assessment of Fitness and Propriety of Key Responsible Persons guidelines",
+        "Adherence to Corporate Governance Direction No.5 of 2021 requirements",
+        "Continued rollout of digital tools such as GovPay launched in early 2025"
+      ],
+      "segment_info": [
+        "Net interest income surged 72% to Rs. 2.09 billion reflecting effective risk management",
+        "Customer deposits grew to Rs. 8.45 billion from Rs. 6.37 billion indicating rising public trust",
+        "Total loans and advances to customers increased 43.93% to Rs. 11.07 billion",
+        "Gold loan business commenced December 2024 with higher advance rates and low interest",
+        "Leasing remains core business with focus on registered two-wheelers and three-wheelers",
+        "Four-wheeler leasing recorded moderate increase with mixed marketing strategy"
+      ],
+      "all_risks": [
+        "Asset quality deterioration in vehicle leasing and SME lending segments with elevated credit risk",
+        "Lack of parate execution rights hampering ability to recover collateral from defaulting borrowers",
+        "Sector vulnerability to external shocks, exchange rate volatility, and sudden shifts in fiscal or monetary policy",
+        "Liquidity constraints experienced by smaller NBFIs struggling to meet capital adequacy norms",
+        "Cybersecurity and data protection risks requiring comprehensive three-year strategic mitigation",
+        "Credit risk concentration requiring continuous diversification efforts",
+        "Market risk from collateral value fluctuations requiring frequent stress testing",
+        "Operational risk from system failures requiring business continuity planning",
+        "Technology risks from digital transformation requiring robust security frameworks",
+        "Regulatory compliance risks from evolving NBFI sector regulations",
+        "Interest rate risk from monetary policy changes affecting funding costs",
+        "Reputation risk from corporate governance and ethical conduct issues"
+      ]
+    },
+    "sector": "Diversified Financials",
+    "updated": "2026-03"
+  },
+  "AGAL": {
+    "company": "Agalawatte Plantations PLC",
+    "year": "2024",
+    "financials": {
+      "revenue": {
+        "value": 4839661000,
+        "yoy_change": -5.4
+      },
+      "net_profit": {
+        "value": 781489000,
+        "yoy_change": 47.0
+      },
+      "eps": 5.0,
+      "nav": 28.0,
+      "dividend_per_share": 3.5,
+      "roe": null,
+      "debt_to_equity": 0
+    },
+    "management_plans": [
+      "Continue replanting program with 340.68 hectares planned for 2025 after completing 307.36 hectares of rubber replanting in 2024",
+      "Expand diversified crop cultivation on feasible lands including coconut, cinnamon, coffee and other ancillary crops for sustainable growth",
+      "Continue investment in Rs 775 million for replanting, factory renovations and infrastructure upgrades to enhance productivity",
+      "Implement best agricultural practices and standards to improve productivity, quality and operational efficiency",
+      "Focus on value addition and operational efficiencies through continuous development of core plantation businesses",
+      "Source planting materials from four central nurseries established at Ambetenna, Clyde, Niriella and Peenkande Estates"
+    ],
+    "key_risks": [
+      "Crude oil price fluctuations and supply chain disruptions affecting cost of sales and profitability",
+      "Climatic changes, unfavorable weather patterns and natural disasters leading to loss of crop and increased production costs",
+      "Increase in labor costs and wage rates not linked to output affecting cost effectiveness and productivity",
+      "Political instability, government regulation changes and domestic market uncertainties impacting operations",
+      "Circular Spot Leaf Disease (PESTA) affecting rubber production and tree health disrupting tapping operations"
+    ],
+    "chairman_outlook": "Despite global uncertainties, Sri Lanka shows positive signs of recovery with government policies aimed at restoring microeconomic stability forming foundation for sustained economic growth. The company will invest in replanting rubber and tea, focusing on productivity, quality and operational efficiency through good agricultural practices.",
+    "forward_guidance": {
+      "management_targets": [
+        "Complete replanting of 340.68 hectares in 2025",
+        "Continue Rs 775 million annual investment program for replanting and infrastructure",
+        "Enhance productivity and improve quality through best agricultural practices",
+        "Achieve operational efficiency improvements through value addition initiatives",
+        "Maintain positive cash flows from operations through cost management strategies"
+      ],
+      "capex_plans": [
+        "Rs 775 million investment in replanting, factory renovations and infrastructure upgrades during 2024",
+        "Rs 60.8 million invested in building renovations, plant and machinery upgrades, vehicle acquisitions and equipment enhancements",
+        "Rs 566.8 million investment in rubber productivity and efficiency measures including re-planting 307.3 hectares",
+        "Rs 131.9 million spent on re-planting costs for 24.9 hectares of tea and maintaining 102.86 hectares"
+      ],
+      "partnerships_acquisitions": [
+        "Continue joint venture operations with AEN Palm Oil Processing (Pvt) Ltd for palm oil processing and selling",
+        "Maintain 33.33% stake in AEN Palm Oil Processing (Private) Limited"
+      ],
+      "geographic_expansion": [
+        "Operations concentrated in planting districts of Nuwara Eliya, Ratnapura and Kalutara with no specific geographic expansion mentioned"
+      ],
+      "regulatory_dependencies": [
+        "Compliance with government policies on oil palm cultivation including cultivation ban",
+        "Dependence on Tea Board recommendations for crop valuation formulas",
+        "Subject to land acquisition by government under Land Acquisition Act affecting 289.46 hectares across multiple estates"
+      ],
+      "segment_info": [
+        "Tea segment revenue decreased 21% to Rs 1,797 million but gross profit increased to Rs 161 million from Rs 73 million in 2023",
+        "Rubber segment revenue increased 24% to Rs 939 million despite 9.7% production decline to 1.16 million kilos",
+        "Oil Palm segment revenue decreased to Rs 1,069 million with segmental profit declining to Rs 605 million from Rs 754 million",
+        "AEN Palm Oil Processing joint venture contributed Rs 90.2 million profit share with Rs 50.3 million dividend received"
+      ],
+      "all_risks": [
+        "Crude oil price fluctuations impacting cost of sales and profitability",
+        "Supply chain disruptions and competitor effects on auction prices",
+        "Government regulation changes and political instability",
+        "Foreign market domestic instability affecting operations",
+        "Interest rate fluctuations affecting financial performance",
+        "Climatic changes and unfavorable weather patterns causing crop loss",
+        "Natural disasters causing physical damage to employees, residents, cultivation fields and factories",
+        "Increase in labor costs and wage rates not linked to output",
+        "Worker migration and high staff turnover increasing labor costs",
+        "Shortage of skilled/unskilled labor and lower labor productivity",
+        "Credit risk from possibility of defaulting payments and liquidity issues",
+        "Risk of land acquisition by government reducing cultivation extent",
+        "Circular Spot Leaf Disease (PESTA) affecting rubber production and tree health",
+        "Long-term effects of banned chemical fertilizers and agrochemicals impacting crop yields",
+        "Ineffective accounting and information systems causing delays and non-compliance",
+        "Risk of fraud, misappropriation of assets and misstatements",
+        "Legal and regulatory compliance risks leading to penalties and reputation loss",
+        "Information technology and cyber security risks including data loss"
+      ]
+    },
+    "sector": "FOOD BEVERAGE & TOBACCO",
+    "updated": "2026-03"
+  },
+  "AGPL": {
+    "company": "Agarapatana Plantations PLC",
+    "year": "2024/25",
+    "financials": {
+      "revenue": {
+        "value": 7219000000,
+        "yoy_change": 1
+      },
+      "net_profit": {
+        "value": 790000000,
+        "yoy_change": 74
+      },
+      "eps": 1.58,
+      "nav": 8.5,
+      "dividend_per_share": 1.5,
+      "roe": 19,
+      "debt_to_equity": null
+    },
+    "management_plans": [
+      "Commence reviewing APL's existing agroeconomic conditions to develop a detailed roadmap to systematically infuse scientific agricultural and management practices",
+      "Implement a fully-fledged cloud based ERP system for real time data access and improved management decision making",
+      "Install digital weighing machines in all estates with direct bank account payment system for workers",
+      "Obtain Occupational Health and Safety Certification for all tea factories",
+      "Complete bio-tea manufacturing project at Udaveriya Estate for organic tea production",
+      "Upgrade existing tea centres into premium tourism products and create new high-end tourism offerings"
+    ],
+    "key_risks": [
+      "Climate change impacts causing declining tea yields and extreme weather conditions",
+      "Labour outmigration and shortage of skilled workers affecting productivity",
+      "Rising operational costs including 35% wage increase and input cost inflation",
+      "Global tea market price volatility due to geopolitical conflicts in Middle East",
+      "Aging tea crops and soil degradation reducing long-term productivity"
+    ],
+    "chairman_outlook": "APL has maintained a steady strategic direction with almost all financial indicators showing gradual improvements. The company is now aligning to a stable growth trajectory against the backdrop of improving macro-economic conditions. Long-term sustainability requires government extension of the 53-year lease agreement to facilitate planning for plantation companies and safeguard shareholder interests.",
+    "forward_guidance": {
+      "management_targets": [
+        "Achieve full carbon neutrality by 2028 through Climate Positive and Carbon Neutral initiatives",
+        "Install solar panels in 3 more factories in 2025/26 to save Rs. 40 million per annum in electricity costs",
+        "Systematically replace older seedling fields with high yielding VP cultivar",
+        "Expand mechanised tea plucking from current 10% to higher percentages across estates",
+        "Transform Udaveriya Estate into modern organic tea manufacturing facility",
+        "Achieve Net Zero carbon emissions by 2028",
+        "Reduce carbon emissions by 10% through renewable energy adoption",
+        "Implement zero waste to landfill policy with 50% waste diversion target"
+      ],
+      "capex_plans": [
+        "Rs. 300 million allocated for solar panel installation in 10 tea factories",
+        "Rs. 214 million invested in solar panels for seven factories in current year",
+        "Factory development investments of Rs. 26 million in current year",
+        "Upgrading Diyagama West mini hydro plant",
+        "Fully automate Diyagama West tea factory",
+        "Complete automation of Hauteville, Balmoral, Dambatanne, Glenanore and Nayabedde factories",
+        "Investment in specialised machinery for organic tea manufacturing at Udaveriya",
+        "Infrastructure investments for premium tourism facilities at tea centres"
+      ],
+      "partnerships_acquisitions": [
+        "Working with bank to develop special debit/shopping card for estate employees",
+        "Collaboration with National Child Protection Authority and Labour Department",
+        "Partnership with Plantation Human Development Trust for housing development",
+        "Registration with Sri Lanka Carbon Credit Exchange for carbon credits",
+        "Cooperation with Tea Research Institute for technical knowledge transfer",
+        "Exploring export opportunities for organic tea products"
+      ],
+      "geographic_expansion": [
+        "Expansion of tea tourism portfolio in Haputale, Dambatenna, Glenanore regions",
+        "Development of tourism infrastructure near Horton Plains entrance",
+        "Upgrading Viharagala factory in Glenanore Estate into premium retail outlet",
+        "Plans for top tier restaurants at Dambatenna and Haputale for sustainable tea tourism"
+      ],
+      "regulatory_dependencies": [
+        "Government extension of 53-year lease agreement for Regional Plantation Companies",
+        "Government policy direction needed for future of tea plantations",
+        "Compliance with Sri Lanka Sustainability Disclosure Standards",
+        "Adherence to Rainforest Alliance certification requirements",
+        "Environmental Protection License renewals and compliance",
+        "Tea Board of Sri Lanka regulatory compliance"
+      ],
+      "segment_info": [
+        "Waverly Power (Pvt) Ltd contributed Rs. 67 million to group revenue from hydropower",
+        "Subsidiary recorded profit before tax of Rs. 53 million vs Rs. 15 million in 2023/24",
+        "Agras region recorded estate level profit of Rs. 552 million vs Rs. 145 million previous year",
+        "Uva region recorded profit of Rs. 497 million vs Rs. 207 million previous year",
+        "Total tea production declined 7% to 6.3 million kgs due to adverse weather",
+        "Average tea prices increased from Rs. 976 per kg to Rs. 1,098 per kg"
+      ],
+      "all_risks": [
+        "Climate change impacts causing declining tea yields and extreme weather conditions",
+        "Labour outmigration and shortage of skilled workers affecting productivity",
+        "Rising operational costs including 35% wage increase and input cost inflation",
+        "Global tea market price volatility due to geopolitical conflicts in Middle East",
+        "Aging tea crops and soil degradation reducing long-term productivity",
+        "Geopolitical uncertainty from Middle East and Russian-Ukraine conflicts affecting shipping costs",
+        "Global competition with India displacing Sri Lanka as 3rd largest tea exporter",
+        "Rupee appreciation reducing benefit from currency depreciation",
+        "Market interest rate fluctuations affecting borrowing costs",
+        "Water scarcity and resource depletion from climate change",
+        "Regulatory changes and policy uncertainty for plantation sector",
+        "Dependency on monocrop tea cultivation limiting diversification options",
+        "Soil fertility decline from over 150 years of cultivation",
+        "Energy cost pressures and supply chain disruptions",
+        "Labour relations and industrial disputes risk",
+        "Commodity price volatility affecting input costs",
+        "Environmental compliance costs and sustainability requirements"
+      ]
+    },
+    "sector": "Food, Beverage & Tobacco",
+    "updated": "2026-03"
+  },
+  "AGST": {
+    "company": "AGSTAR PLC",
+    "year": "2024/25",
+    "financials": {
+      "revenue": {
+        "value": 9522312686,
+        "yoy_change": 24
+      },
+      "net_profit": {
+        "value": -366611326,
+        "yoy_change": -329
+      },
+      "eps": -0.75,
+      "nav": 16.48,
+      "dividend_per_share": null,
+      "roe": -4.56,
+      "debt_to_equity": null
+    },
+    "management_plans": [
+      "Scaling up mobile soil testing laboratory programme to cover all agricultural districts nationwide",
+      "Launch custom-blended, crop-specific fertiliser products tailored to different agroecological zones",
+      "Establish AgStar as the strategic agri-hub within Browns Group's ecosystem with synergies across product development",
+      "Maintain disciplined fail-fast test marketing strategy for seed varieties to ensure only viable products progress to commercialisation",
+      "Strengthen partnerships with banks and development organisations to enhance financing options for smallholder farmers",
+      "Launch large-scale corporate social responsibility projects centered on farmer education, community resilience and sustainable practices"
+    ],
+    "key_risks": [
+      "Economic conditions and macroeconomic volatility reducing customer spending and demand volatility",
+      "Regulatory and compliance risk including product registration cancellations and operating license suspensions",
+      "Climate and weather risk disrupting agricultural demand patterns and causing crop failures affecting customer base",
+      "Supply chain and logistics disruptions causing stock-outs, delivery delays and increased transportation costs",
+      "Foreign exchange and import risk leading to cost escalation from currency depreciation and margin compression"
+    ],
+    "chairman_outlook": "AgStar remains confident in its direction and ability to deliver long-term value with vision firmly embedded in strategic outlook, poised to become central input provider for Browns' agriculture portfolio as well as wider national farming ecosystem. The Group is fully aligned with national policy direction and continues to invest in capabilities, technology and people to evolve into fully integrated agri-solutions provider.",
+    "forward_guidance": {
+      "management_targets": [
+        "Scale up mobile soil testing laboratory programme to cover all agricultural districts",
+        "Establish AgStar as the most profitable and respected agri-inputs company driven by innovation and sustainability",
+        "Complete integration of Browns Group's agricultural businesses with AgStar to unlock synergies across product development, distribution and knowledge services",
+        "Focus on consolidation, innovation and deeper commitment to farmer-centric market engagement in 2025/26 and beyond",
+        "Maintain moderate risk appetite aligned with strategic objectives for market expansion and innovation",
+        "Drive operational efficiency, product innovation, and differentiated market offerings focusing on smart agri-tech solutions"
+      ],
+      "capex_plans": [
+        "Planned capacity expansion at Ekala facility incorporating advanced green building principles",
+        "Strategic technology investment planning for digital transformation challenges",
+        "Investment in next-generation, environmentally conscious crop protection and fertiliser products",
+        "Development of digital agriculture platform and cloud-based system migration"
+      ],
+      "partnerships_acquisitions": [
+        "Partnerships with global seed suppliers expanded enabling technology transfer and enhancing genetic diversity",
+        "Partnerships with leading financial institutions including Commercial Bank and Hatton National Bank to facilitate accessible financing",
+        "Strategic partnerships with technology providers for innovation pipeline management",
+        "Technology partnership strategies for competitive advantage"
+      ],
+      "geographic_expansion": [
+        "Focus on expanding market presence in hybrid seed technology and precision farming solutions across Sri Lankan agricultural districts",
+        "Strengthen and expand dealer network, particularly onboarding A-grade dealers specialising in paddy, vegetable and tea sectors"
+      ],
+      "regulatory_dependencies": [
+        "Government policy alignment with production-oriented economy and IMF reform agenda",
+        "Transition from subsidy-driven procurement to open market system coupled with cash grants",
+        "Intensified regulatory oversight in crop protection space targeting curtailment of illegal imports and counterfeit products",
+        "Enforcement of regulations creating more level playing field encouraging competition on innovation, service and trust"
+      ],
+      "segment_info": [
+        "Fertiliser segment recorded 33% growth to Rs. 7.77 billion driven by strategic distribution expansion and Browns Fertiliser rebranding",
+        "Crop Solutions revenue declined 15% to Rs. 1.13 billion but underwent strategic realignment integrating operations under Browns Agri Solutions",
+        "Seeds segment experienced 28% revenue decline to Rs. 233 million but preserved margins through disciplined cost management",
+        "Agri Technology delivered remarkable 252% revenue growth to Rs. 428 million driven by strong demand for machinery and irrigation solutions",
+        "Smart farming technologies including drone-based services, coated fertilisers, and post-harvest solutions positioned as long-term differentiators"
+      ],
+      "all_risks": [
+        "Economic conditions and macroeconomic volatility reducing customer spending and foreign exchange pressures",
+        "Regulatory and compliance risk including product registration cancellations, operating license suspensions, financial penalties",
+        "Innovation and competitive positioning threats from market share erosion, price competition, technology disruption",
+        "Supply chain and logistics disruptions causing stock-outs, quality control challenges, vendor dependency risks",
+        "Climate and weather risk disrupting agricultural demand, crop failures, natural disaster impacts",
+        "Operational process and control risks including process inefficiencies, internal control failures, ERP system disruptions",
+        "Foreign exchange and import risk causing cost escalation, working capital strain, margin compression",
+        "Funding and liquidity risk constraining working capital and strategic project funding",
+        "Credit and receivables risk from delayed collections, bad debt provisions, customer defaults",
+        "Cybersecurity and data privacy risks including system downtime, data breaches, reputational damage",
+        "Technology disruption challenges from digital transformation, legacy system obsolescence",
+        "Environmental and sustainability risks from regulatory compliance failures, brand reputation damage",
+        "Social responsibility and community impact risks affecting social license to operate",
+        "Talent retention and capability risks from critical knowledge loss, leadership pipeline gaps",
+        "Workplace safety and quality risks from employee incidents, product quality failures",
+        "Climate transition risks from carbon pricing, sustainable agriculture requirements",
+        "Digital transformation risks from precision agriculture adoption, data analytics integration",
+        "Geopolitical and trade risks from regional trade agreement changes, supply chain restructuring"
+      ]
+    },
+    "sector": "Materials",
+    "updated": "2026-03"
+  },
+  "AHPL": {
+    "company": "Asian Hotels and Properties PLC",
+    "year": "2024/25",
+    "financials": {
+      "revenue": {
+        "value": 10362000000,
+        "yoy_change": -4
+      },
+      "net_profit": {
+        "value": 85300000,
+        "yoy_change": 10
+      },
+      "eps": -0.1,
+      "nav": 68.9,
+      "dividend_per_share": 0.5,
+      "roe": -0.15,
+      "debt_to_equity": 0.07
+    },
+    "management_plans": [
+      "Strengthen our strategic focus on operational efficiency, revenue diversification, and prudent cost management to sustain financial performance and shareholder returns",
+      "Continue alignment of the Company's strategic priorities with shareholder expectations by driving sustainable growth, enhancing transparency, and delivering consistent value",
+      "Blend authentic Sri Lankan warmth with globally benchmarked service standards through personalised experiences, digital innovations, and agile service delivery models",
+      "Leverage strategic pricing, data analytics, and dynamic distribution models to capture shifting demand patterns from key global markets such as India, the UK and Australia",
+      "Continue to embed a culture of operational discipline and innovation to drive sustainable efficiencies through streamlining processes, adopting new technologies, and reinforcing SOP compliance",
+      "Further strengthen talent management agenda by prioritising continuous learning, employee wellbeing, and inclusive leadership through enhanced career pathways"
+    ],
+    "key_risks": [
+      "Fluctuations in tourist arrivals due to global/local geopolitical events",
+      "Rising attrition due to global talent migration and continuing local brain drain",
+      "Intense competition from emerging hotels and alternative hospitality platforms",
+      "Currency depreciation increasing costs of imported goods and services",
+      "Climate change risk and supply chain issues"
+    ],
+    "chairman_outlook": "We are confident that the positive trend in arrivals will continue, as also seen in the forward bookings for our hotel properties. Despite the strengthening of the Rupee, Sri Lanka remains an affordable tourist destination with wide-ranging value proposition that appeals to broader traveller demographics continuing to enhance its attractiveness as a destination.",
+    "forward_guidance": {
+      "management_targets": [
+        "Foster an inclusive, equitable, and diverse work environment - Increase female participation in the workforce by 18%",
+        "Increase women in leadership positions by 21%",
+        "Reduce energy consumption by 2% per guest night from 2023/24 base year",
+        "50% reduction of single-use guest facing plastic from 2021/22 base year",
+        "Reduce water consumption by 2% per guest night from 2023/24 base year",
+        "90% waste to be diverted from landfills",
+        "50% of suppliers to be assessed using the Cinnamon Supplier Impact Assessment",
+        "Completion of 400 volunteer hours for community empowerment",
+        "25% of businesses led by women, persons with disabilities (PWDs) and indigenous people",
+        "Board of Directors declared a final dividend of Rs. 0.50 per share for financial year ended 31 March 2025"
+      ],
+      "capex_plans": [
+        "Rs. 972 Mn capital expenditure during the year",
+        "Strategic initiatives are underway to optimise space utilisation at Cinnamon Grand - consolidation of hotel operations into one wing out of the two",
+        "Plans are in motion to unlock further value within existing premises by creating new usable spaces to accommodate growing guest demand",
+        "Continued upgrades to rooms, dining amenities and facilities to remain competitive amidst influx of newer properties in Colombo",
+        "Continued capital investments made in ensuring the upkeep of the property"
+      ],
+      "partnerships_acquisitions": [
+        "Cheers Pub relocated to the Premier Wing, driving revenue from the restaurant up by 40%",
+        "Launch of world-class IT platforms for property management (PMS) and point of sales (POS)",
+        "Launch of 'Eat App' for in-house guests in February 2024",
+        "Collaborating with Octave, the Data and Advanced Analytics Centre of Excellence, to develop use cases focusing on energy and targetted online marketing",
+        "Unified Data Lake House implemented for Commercial teams providing multiple dashboards and reporting views",
+        "Partnership with Sri Lanka Sumithrayo for Colleague Assistance Program ensuring employee support",
+        "Strategic partnerships with global travel platforms and airline operators"
+      ],
+      "geographic_expansion": [
+        "Enhanced Global Sales Officers network in key source markets such as India, the UK, Australia and Japan to drive more business volumes",
+        "Comprehensive business promotions done in key source markets to attract more guests from respective markets",
+        "5 Global Sales Offices maintaining reach in key international markets"
+      ],
+      "regulatory_dependencies": [
+        "Government tourism incentives and budgetary focus on reviving the tourism sector offering growth potential",
+        "Fast-track construction of new airport terminal - BIA expansion project aims to boost annual passenger handling capacity from 6 million to 15 million with completion anticipated by 2027",
+        "SLTDA projected two growth scenarios for tourist arrivals in 2025 - conservative scenario anticipates 2.6 million arrivals while optimistic scenario targets 3.0 million arrivals",
+        "Government of Sri Lanka aims to attract 3 million tourists in 2025 generating approximately USD 5 billion in revenue",
+        "Long-term vision to welcome 5 million tourists annually by 2030 with projected earnings between USD 8.5 billion and USD 10 billion"
+      ],
+      "segment_info": [
+        "Cinnamon Grand Colombo named 'Best 5-Star Hotel' and Nuga Gama received 'Most Authentic Sri Lankan Cuisine Restaurant' at Sri Lanka Tourism Awards 2024",
+        "Rooms revenue Rs. 3,151 Mn with 61% occupancy rate and 53,803 room nights",
+        "Food & Beverage revenue Rs. 6,042 Mn representing 58% of total revenue",
+        "Rental Income from Investment Property Rs. 323 Mn with 1% increase",
+        "Crescat Boulevard mall - 53 outlets with 74% occupancy covering 115,111 Sq Ft area",
+        "95% Global Review Index score and 60% Net Promoter Score",
+        "4.7 score on TripAdvisor ranking 7th among Colombo City Hotels"
+      ],
+      "all_risks": [
+        "Fluctuations in tourist arrivals due to global/local geopolitical events",
+        "Macroeconomic instability in Sri Lanka impacting disposable incomes and business travel",
+        "Currency depreciation increasing costs of imported goods and services",
+        "Intense competition from emerging hotels and alternative hospitality platforms",
+        "Rising utility and energy costs affecting profitability",
+        "Health risks or pandemics disrupting travel and operations",
+        "Dependence on international travel segments vulnerable to external shocks",
+        "Regulatory changes affecting tourism, environment, or labour laws",
+        "Security concerns impacting destination image and guest confidence",
+        "Climate change and environmental risks affecting long-term sustainability",
+        "Rising attrition due to global talent migration and continuing local brain drain",
+        "Increased competition for skilled hospitality talent in Colombo's growing five-star segment",
+        "Skills mismatch in adapting to evolving guest expectations and digital platforms",
+        "Difficulty in attracting younger talent due to perception gaps around hospitality careers",
+        "Reputational risk arising from lapses in labour practices or human rights issues",
+        "Impact of global geopolitical tensions on staffing expatriates",
+        "Challenges in maintaining DEI amidst rapid workforce changes",
+        "Consumer behaviour changes",
+        "Condition of property and efficient functioning of equipment and machinery",
+        "Brand reputation impact",
+        "Inflation risk",
+        "Exchange rate risk",
+        "Digital innovation and technological transformation challenges",
+        "Operational resilience to incidents or disruption or control breakdown",
+        "Supply chain issues and supply chain shortages",
+        "Fraud and anti-corruption risks",
+        "Technology, data and cyber security risk"
+      ]
+    },
+    "sector": "Consumer Services",
     "updated": "2026-03"
   }
 }

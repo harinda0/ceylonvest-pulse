@@ -89,9 +89,10 @@ def test_resolve_input_none():
 
 
 def test_all_tickers_have_cse_symbol():
-    """Every ticker in TICKER_TO_CSE should have .N0000 suffix."""
+    """Every ticker in TICKER_TO_CSE should have .N0000 or .X0000 suffix."""
     for ticker, symbol in TICKER_TO_CSE.items():
-        assert symbol.endswith(".N0000"), f"{ticker}: {symbol} missing .N0000"
+        assert symbol.endswith(".N0000") or symbol.endswith(".X0000"), \
+            f"{ticker}: {symbol} missing .N0000/.X0000 suffix"
 
 
 def test_all_aliases_map_to_valid_tickers():

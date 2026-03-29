@@ -205,6 +205,7 @@ def generate_main_card(
     mention_velocity: float = 0,
     is_pump_alert: bool = False,
     pump_alert_text: str = "",
+    parent_group: str | None = None,
 ) -> BytesIO:
     WIDTH = 800
     PAD = 30
@@ -218,6 +219,8 @@ def generate_main_card(
     h += 30                   # brand bar
     h += SECTION_GAP
     h += 48                   # ticker + company
+    if parent_group:
+        h += 20                   # group label
     h += 12
     h += 52                   # price + change pill
     h += SECTION_GAP
@@ -251,7 +254,11 @@ def generate_main_card(
     draw.text((PAD, y), ticker, fill=TEXT_PRIMARY, font=FONT_TICKER)
     tw = draw.textlength(ticker, font=FONT_TICKER)
     draw.text((PAD + tw + 14, y + 14), company_name, fill=TEXT_MUTED, font=FONT_COMPANY)
-    y += 48 + 12
+    y += 48
+    if parent_group:
+        draw.text((PAD, y), f"Part of {parent_group}", fill=PURPLE, font=FONT_LABEL)
+        y += 20
+    y += 12
 
     # Price + change pill
     price_str = f"LKR {last_price:,.2f}"
@@ -1372,6 +1379,175 @@ def generate_sector_card(
     _draw_footer(draw, y, WIDTH, PAD)
     actual_h = y + 34
     img = img.crop((0, 0, WIDTH, actual_h))
+
+    buf = BytesIO()
+    img.save(buf, format="PNG", quality=95)
+    buf.seek(0)
+    return buf
+
+
+# ==========================================================================
+# Sector stocks listing card
+# ==========================================================================
+
+def generate_sector_stocks_card(
+    sector: str,
+    stocks: list[dict],
+) -> BytesIO:
+    """Generate a card listing all stocks in a sector with live prices.
+    stocks: [{ticker, company_name, last_price, change, change_pct, market_cap}, ...]
+    """
+    WIDTH = 800
+    PAD = 30
+    INNER = WIDTH - 2 * PAD
+    ROW_H = 34
+
+    stocks = sorted(stocks, key=lambda s: s.get("market_cap") or 0, reverse=True)
+
+    h = 24 + 50 + 12 + 24 + len(stocks) * ROW_H + 12 + 40
+    img = Image.new("RGB", (WIDTH, h), BG)
+    draw = ImageDraw.Draw(img)
+    y = 24
+
+    # Header
+    draw.rectangle([(0, 0), (WIDTH, 4)], fill=BLUE)
+    draw.text((PAD, y), "SECTOR STOCKS", fill=TEXT_DIM, font=FONT_BRAND)
+    draw.text((WIDTH - PAD, y + 1), f"{len(stocks)} stocks", fill=TEXT_DIM, font=FONT_TINY, anchor="rt")
+    y += 26
+    draw.text((PAD, y), sector, fill=TEXT_PRIMARY, font=FONT_TICKER)
+    y += 32 + 12
+
+    # Column headers
+    col_ticker = PAD + 10
+    col_name = PAD + 80
+    col_price = PAD + INNER - 290
+    col_change = PAD + INNER - 170
+    col_mcap = PAD + INNER - 60
+
+    draw.text((col_ticker, y), "TICKER", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_price, y), "PRICE", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_change, y), "CHANGE", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_mcap, y), "MCAP", fill=TEXT_DIM, font=FONT_LABEL)
+    y += 24
+
+    for s in stocks:
+        _rounded_rect(draw, (PAD, y, WIDTH - PAD, y + ROW_H - 2), BG_SURFACE, radius=4)
+        draw.text((col_ticker, y + 7), s["ticker"], fill=TEXT_PRIMARY, font=FONT_SECTION)
+
+        name = s.get("company_name") or ""
+        if len(name) > 20:
+            name = name[:17] + "..."
+        draw.text((col_name, y + 8), name, fill=TEXT_MUTED, font=FONT_TINY)
+
+        price = s.get("last_price")
+        if price:
+            draw.text((col_price, y + 7), f"{price:,.2f}", fill=TEXT_PRIMARY, font=FONT_SECTION)
+        else:
+            draw.text((col_price, y + 7), "N/A", fill=TEXT_DIM, font=FONT_SECTION)
+
+        chg_pct = s.get("change_pct")
+        if chg_pct is not None:
+            sign = "+" if chg_pct >= 0 else ""
+            color = GREEN if chg_pct >= 0 else RED
+            draw.text((col_change, y + 7), f"{sign}{chg_pct:.1f}%", fill=color, font=FONT_SECTION)
+        else:
+            draw.text((col_change, y + 7), "N/A", fill=TEXT_DIM, font=FONT_SECTION)
+
+        draw.text((col_mcap, y + 7), _format_num(s.get("market_cap")), fill=TEXT_SECONDARY, font=FONT_TINY)
+        y += ROW_H
+
+    y += 8
+    _draw_footer(draw, y, WIDTH, PAD)
+    img = img.crop((0, 0, WIDTH, y + 34))
+
+    buf = BytesIO()
+    img.save(buf, format="PNG", quality=95)
+    buf.seek(0)
+    return buf
+
+
+# ==========================================================================
+# Group / conglomerate card
+# ==========================================================================
+
+def generate_group_card(
+    group_name: str,
+    parent_ticker: str,
+    stocks: list[dict],
+) -> BytesIO:
+    """Generate a card listing all companies in a business group with live prices.
+    stocks: [{ticker, company_name, last_price, change, change_pct, market_cap}, ...]
+    """
+    WIDTH = 800
+    PAD = 30
+    INNER = WIDTH - 2 * PAD
+    ROW_H = 34
+
+    stocks = sorted(stocks, key=lambda s: (
+        0 if s["ticker"] == parent_ticker else 1,
+        -(s.get("market_cap") or 0),
+    ))
+
+    h = 24 + 50 + 12 + 24 + len(stocks) * ROW_H + 12 + 60
+    img = Image.new("RGB", (WIDTH, h), BG)
+    draw = ImageDraw.Draw(img)
+    y = 24
+
+    # Header
+    draw.rectangle([(0, 0), (WIDTH, 4)], fill=PURPLE)
+    draw.text((PAD, y), "BUSINESS GROUP", fill=TEXT_DIM, font=FONT_BRAND)
+    draw.text((WIDTH - PAD, y + 1), f"{len(stocks)} listed companies", fill=TEXT_DIM, font=FONT_TINY, anchor="rt")
+    y += 26
+    draw.text((PAD, y), group_name, fill=TEXT_PRIMARY, font=FONT_TICKER)
+    y += 32 + 12
+
+    col_ticker = PAD + 10
+    col_name = PAD + 80
+    col_price = PAD + INNER - 310
+    col_change = PAD + INNER - 190
+    col_mcap = PAD + INNER - 80
+
+    draw.text((col_ticker, y), "TICKER", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_price, y), "PRICE", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_change, y), "CHANGE", fill=TEXT_DIM, font=FONT_LABEL)
+    draw.text((col_mcap, y), "MCAP", fill=TEXT_DIM, font=FONT_LABEL)
+    y += 24
+
+    for s in stocks:
+        is_parent = s["ticker"] == parent_ticker
+        bg = BG_ACCENT if is_parent else BG_SURFACE
+        _rounded_rect(draw, (PAD, y, WIDTH - PAD, y + ROW_H - 2), bg, radius=4)
+
+        label = s["ticker"] + (" *" if is_parent else "")
+        draw.text((col_ticker, y + 7), label, fill=TEXT_PRIMARY, font=FONT_SECTION)
+
+        name = s.get("company_name") or ""
+        if len(name) > 22:
+            name = name[:19] + "..."
+        draw.text((col_name, y + 8), name, fill=TEXT_MUTED, font=FONT_TINY)
+
+        price = s.get("last_price")
+        if price:
+            draw.text((col_price, y + 7), f"LKR {price:,.2f}", fill=TEXT_PRIMARY, font=FONT_SECTION)
+        else:
+            draw.text((col_price, y + 7), "N/A", fill=TEXT_DIM, font=FONT_SECTION)
+
+        chg_pct = s.get("change_pct")
+        if chg_pct is not None:
+            sign = "+" if chg_pct >= 0 else ""
+            color = GREEN if chg_pct >= 0 else RED
+            draw.text((col_change, y + 7), f"{sign}{chg_pct:.1f}%", fill=color, font=FONT_SECTION)
+        else:
+            draw.text((col_change, y + 7), "N/A", fill=TEXT_DIM, font=FONT_SECTION)
+
+        draw.text((col_mcap, y + 7), _format_num(s.get("market_cap")), fill=TEXT_SECONDARY, font=FONT_TINY)
+        y += ROW_H
+
+    y += 4
+    draw.text((PAD + 10, y), "* Parent / holding company", fill=TEXT_DIM, font=FONT_TINY)
+    y += 20
+    _draw_footer(draw, y, WIDTH, PAD)
+    img = img.crop((0, 0, WIDTH, y + 34))
 
     buf = BytesIO()
     img.save(buf, format="PNG", quality=95)

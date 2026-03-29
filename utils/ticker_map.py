@@ -275,6 +275,30 @@ TICKER_TO_CSE = {
     "WIND": "WIND.N0000",
     "WLTH": "WLTH.N0000",
     "YORK": "YORK.N0000",
+    # --- Missing voting shares ---
+    "AINS": "AINS.N0000",
+    "INME": "INME.N0000",
+    # --- Non-voting shares (.X0000) ---
+    "AGST.X": "AGST.X0000",
+    "CDB.X": "CDB.X0000",
+    "CHL.X": "CHL.X0000",
+    "CIC.X": "CIC.X0000",
+    "CINS.X": "CINS.X0000",
+    "COCO.X": "COCO.X0000",
+    "COMB.X": "COMB.X0000",
+    "HNB.X": "HNB.X0000",
+    "HNBF.X": "HNBF.X0000",
+    "LGL.X": "LGL.X0000",
+    "LPL.X": "LPL.X0000",
+    "MAL.X": "MAL.X0000",
+    "NTB.X": "NTB.X0000",
+    "RHL.X": "RHL.X0000",
+    "SEMB.X": "SEMB.X0000",
+    "SEYB.X": "SEYB.X0000",
+    "SHOT.X": "SHOT.X0000",
+    "TESS.X": "TESS.X0000",
+    "TKYO.X": "TKYO.X0000",
+    "VLL.X": "VLL.X0000",
 }
 
 # Alias -> official ticker mapping
@@ -975,6 +999,35 @@ ALIASES = {
     "york": "YORK",
     "york arcade": "YORK",
     "york arcade holdings": "YORK",
+    # --- Missing voting shares ---
+    "ains": "AINS",
+    "arpico insurance": "AINS",
+    "inme": "INME",
+    "insureme": "INME",
+    "insureme insurance": "INME",
+    "insureme insurance brokers": "INME",
+    # --- Non-voting share aliases ---
+    # Pattern: "TICKER nv", "TICKER non voting", "TICKER.x", "TICKERx"
+    "agst nv": "AGST.X", "agst non voting": "AGST.X", "agst.x": "AGST.X", "agstx": "AGST.X",
+    "cdb nv": "CDB.X", "cdb non voting": "CDB.X", "cdb.x": "CDB.X", "cdbx": "CDB.X",
+    "chl nv": "CHL.X", "chl non voting": "CHL.X", "chl.x": "CHL.X", "chlx": "CHL.X", "durdans nv": "CHL.X",
+    "cic nv": "CIC.X", "cic non voting": "CIC.X", "cic.x": "CIC.X", "cicx": "CIC.X",
+    "cins nv": "CINS.X", "cins non voting": "CINS.X", "cins.x": "CINS.X", "cinsx": "CINS.X", "ceylinco nv": "CINS.X",
+    "coco nv": "COCO.X", "coco non voting": "COCO.X", "coco.x": "COCO.X", "cocox": "COCO.X", "renuka foods nv": "COCO.X",
+    "comb nv": "COMB.X", "comb non voting": "COMB.X", "comb.x": "COMB.X", "combx": "COMB.X", "combank nv": "COMB.X", "commercial bank nv": "COMB.X",
+    "hnb nv": "HNB.X", "hnb non voting": "HNB.X", "hnb.x": "HNB.X", "hnbx": "HNB.X", "hatton national bank nv": "HNB.X",
+    "hnbf nv": "HNBF.X", "hnbf non voting": "HNBF.X", "hnbf.x": "HNBF.X", "hnbfx": "HNBF.X", "hnb finance nv": "HNBF.X",
+    "lgl nv": "LGL.X", "lgl non voting": "LGL.X", "lgl.x": "LGL.X", "lglx": "LGL.X", "laugfs gas nv": "LGL.X",
+    "lpl nv": "LPL.X", "lpl non voting": "LPL.X", "lpl.x": "LPL.X", "lplx": "LPL.X", "laugfs power nv": "LPL.X",
+    "mal nv": "MAL.X", "mal non voting": "MAL.X", "mal.x": "MAL.X", "malx": "MAL.X", "malwatte nv": "MAL.X",
+    "ntb nv": "NTB.X", "ntb non voting": "NTB.X", "ntb.x": "NTB.X", "ntbx": "NTB.X", "nations trust nv": "NTB.X",
+    "rhl nv": "RHL.X", "rhl non voting": "RHL.X", "rhl.x": "RHL.X", "rhlx": "RHL.X", "renuka holdings nv": "RHL.X",
+    "semb nv": "SEMB.X", "semb non voting": "SEMB.X", "semb.x": "SEMB.X", "sembx": "SEMB.X", "smb finance nv": "SEMB.X",
+    "seyb nv": "SEYB.X", "seyb non voting": "SEYB.X", "seyb.x": "SEYB.X", "seybx": "SEYB.X", "seylan bank nv": "SEYB.X", "seylan nv": "SEYB.X",
+    "shot nv": "SHOT.X", "shot non voting": "SHOT.X", "shot.x": "SHOT.X", "shotx": "SHOT.X", "serendib hotels nv": "SHOT.X",
+    "tess nv": "TESS.X", "tess non voting": "TESS.X", "tess.x": "TESS.X", "tessx": "TESS.X", "tess agro nv": "TESS.X",
+    "tkyo nv": "TKYO.X", "tkyo non voting": "TKYO.X", "tkyo.x": "TKYO.X", "tkyox": "TKYO.X", "tokyo cement nv": "TKYO.X",
+    "vll nv": "VLL.X", "vll non voting": "VLL.X", "vll.x": "VLL.X", "vllx": "VLL.X", "vidullanka nv": "VLL.X",
 }
 
 # Sector classification
@@ -1246,6 +1299,30 @@ SECTORS = {
     "WIND": "Diversified",
     "WLTH": "Diversified",
     "YORK": "Diversified",
+    # --- Missing voting shares ---
+    "AINS": "Insurance",
+    "INME": "Insurance",
+    # --- Non-voting shares (same sector as voting) ---
+    "AGST.X": "Materials",
+    "CDB.X": "Finance",
+    "CHL.X": "Healthcare",
+    "CIC.X": "Materials",
+    "CINS.X": "Insurance",
+    "COCO.X": "Food & Beverage",
+    "COMB.X": "Banking",
+    "HNB.X": "Banking",
+    "HNBF.X": "Finance",
+    "LGL.X": "Energy",
+    "LPL.X": "Utilities",
+    "MAL.X": "Plantations",
+    "NTB.X": "Banking",
+    "RHL.X": "Diversified",
+    "SEMB.X": "Finance",
+    "SEYB.X": "Banking",
+    "SHOT.X": "Hotels",
+    "TESS.X": "Trading",
+    "TKYO.X": "Materials",
+    "VLL.X": "Utilities",
 }
 
 # Delisted stocks -- ticker -> (company_name, delisting_note)
@@ -1254,7 +1331,6 @@ DELISTED = {
     "EXPO": ("Expolanka Holdings", "Taken private and delisted from the CSE in 2024."),
     "NEST": ("Nestle Lanka", "Delisted from the CSE after a buyout in 2024."),
     "SFL": ("Softlogic Finance", "Rebranded as CRL (Capital Alliance). Use CRL instead."),
-    "AINS": ("Alliance Insurance", "Rebranded as ALLI (Alliance Finance). Use ALLI instead."),
 }
 
 # Aliases for delisted stocks (so users can find them by name too)
@@ -1262,7 +1338,6 @@ _DELISTED_ALIASES = {
     "expo": "EXPO", "expolanka": "EXPO", "expolanka holdings": "EXPO",
     "nest": "NEST", "nestle": "NEST", "nestle lanka": "NEST",
     "sfl": "SFL",
-    "ains": "AINS", "alliance insurance": "AINS",
 }
 
 
@@ -1361,6 +1436,12 @@ def get_sector(ticker: str) -> str:
 
 def get_company_name(ticker: str) -> str:
     """Get human-readable company name from ticker."""
+    # Non-voting shares: derive name from the voting share + suffix
+    if ticker.endswith(".X"):
+        base_ticker = ticker[:-2]  # e.g. "HNB.X" -> "HNB"
+        base_name = get_company_name(base_ticker)
+        return f"{base_name} (Non-Voting)"
+
     # Reverse lookup from aliases to find the longest name
     names = [alias for alias, t in ALIASES.items() if t == ticker]
     if names:

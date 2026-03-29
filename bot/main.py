@@ -29,7 +29,8 @@ from services.pulse_db import (
     remove_watchlist,
     get_watchlist,
 )
-from utils.card_generator import generate_main_card, generate_company_info_card, generate_technicals_card, generate_report_card, generate_compare_card, generate_sector_card
+from utils.card_generator import generate_main_card, generate_company_info_card, generate_technicals_card, generate_report_card, generate_compare_card, generate_sector_card, generate_sector_stocks_card, generate_group_card
+from utils.conglomerate_map import get_group_label, resolve_group, get_all_groups
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -74,6 +75,9 @@ def _welcome_keyboard() -> InlineKeyboardMarkup:
         ],
         [
             InlineKeyboardButton("Annual report", callback_data="welcome_report"),
+            InlineKeyboardButton("Business groups", callback_data="welcome_group"),
+        ],
+        [
             InlineKeyboardButton("My watchlist", callback_data="welcome_watchlist"),
         ],
     ])
@@ -248,6 +252,7 @@ async def _send_ticker_card(update: Update, ticker: str):
         pump_text = f"High velocity, {max_pct:.0f}% from {top}, no catalyst"
 
     # Generate the card image
+    group_label = get_group_label(ticker)
     card_buf = generate_main_card(
         ticker=ticker,
         company_name=company_name,
@@ -270,6 +275,7 @@ async def _send_ticker_card(update: Update, ticker: str):
         mention_velocity=velocity_data["velocity"],
         is_pump_alert=is_pump,
         pump_alert_text=pump_text,
+        parent_group=group_label,
     )
 
     # Inline keyboard for detail cards + TradingView chart
@@ -440,9 +446,10 @@ async def _handle_welcome_callback(query, data: str):
     """Handle welcome/help inline button presses."""
     responses = {
         "welcome_lookup": "Type /p followed by a ticker (e.g. /p JKH) or company name (e.g. /p kapruka)",
-        "welcome_sector": "Type /sector followed by sector name (e.g. /sector banking)",
+        "welcome_sector": "Type /sector followed by sector name (e.g. /sector banking)\nOr /sectors to see all available sectors.",
         "welcome_compare": "Type /compare TICKER1 TICKER2 (e.g. /compare JKH COMB)",
         "welcome_report": "Type /report followed by a ticker (e.g. /report COMB)",
+        "welcome_group": "Type /group followed by a group name (e.g. /group hayleys, /group JKH)",
     }
     if data in responses:
         await query.message.reply_text(responses[data])
@@ -857,9 +864,111 @@ async def compare_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_photo(photo=card_buf)
 
 
+async def sectors_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /sectors — list all available sectors with stock counts."""
+    from utils.ticker_map import SECTORS
+    from collections import Counter
+
+    counts = Counter(SECTORS.values())
+    lines = []
+    for sector_name, count in sorted(counts.items(), key=lambda x: -x[1]):
+        lines.append(f"  {sector_name} ({count})")
+
+    text = (
+        f"CSE Sectors — {len(counts)} sectors, {len(SECTORS)} stocks\n\n"
+        + "\n".join(lines)
+        + "\n\nUse /sector NAME to see all stocks in a sector."
+    )
+    await update.message.reply_text(text)
+
+
+def _resolve_sector_name(name: str) -> str | None:
+    """Resolve user input to a canonical sector name from ticker_map.SECTORS."""
+    from utils.ticker_map import SECTORS
+    from services.sector_benchmarks import resolve_sector as resolve_benchmark_sector
+
+    upper = name.upper().strip()
+    # Direct match against ticker_map sectors
+    all_sectors = set(SECTORS.values())
+    for s in all_sectors:
+        if s.upper() == upper:
+            return s
+    # Partial match
+    for s in all_sectors:
+        if upper in s.upper():
+            return s
+    # Common aliases
+    aliases = {
+        "BANKS": "Banking", "BANK": "Banking",
+        "HOTEL": "Hotels", "TOURISM": "Hotels",
+        "INSURANCE": "Insurance",
+        "ENERGY": "Energy", "POWER": "Energy",
+        "PLANTATION": "Plantations", "TEA": "Plantations", "RUBBER": "Plantations",
+        "MANUFACTURING": "Manufacturing",
+        "PROPERTY": "Property", "REAL ESTATE": "Property",
+        "CONSUMER": "Consumer",
+        "FINANCE": "Finance", "FINANCIAL": "Finance",
+        "HEALTH": "Healthcare", "HOSPITAL": "Healthcare",
+        "MATERIAL": "Materials",
+        "CONSTRUCTION": "Construction",
+        "TELECOM": "Telecom", "TELCO": "Telecom",
+        "UTILITIES": "Utilities", "UTILITY": "Utilities",
+        "BEVERAGE": "Beverages", "BEVERAGES": "Beverages",
+        "DIVERSIFIED": "Diversified",
+        "AUTO": "Automotive", "AUTOMOTIVE": "Automotive",
+        "TEXTILE": "Textiles", "TEXTILES": "Textiles",
+        "FOOD": "Food & Beverage",
+        "TRADING": "Trading",
+    }
+    if upper in aliases:
+        return aliases[upper]
+    return None
+
+
+def _get_sector_tickers(sector_name: str) -> list[str]:
+    """Get all tickers in a sector from ticker_map.SECTORS."""
+    from utils.ticker_map import SECTORS
+    return [t for t, s in SECTORS.items() if s == sector_name]
+
+
+async def _fetch_stocks_data(tickers: list[str]) -> list[dict]:
+    """Fetch live price data for a list of tickers. Returns list of stock info dicts."""
+    results = []
+    for ticker in tickers:
+        cse_symbol = get_cse_symbol(ticker)
+        if not cse_symbol:
+            continue
+        sector = get_sector(ticker)
+        company_name = get_company_name(ticker)
+        stock = get_stock_data(ticker, cse_symbol, sector, company_name)
+        if stock:
+            results.append({
+                "ticker": ticker,
+                "company_name": company_name,
+                "last_price": stock.last_price,
+                "change": stock.change,
+                "change_pct": stock.change_pct,
+                "market_cap": stock.market_cap,
+                "sector": sector,
+            })
+        else:
+            results.append({
+                "ticker": ticker,
+                "company_name": company_name,
+                "last_price": None,
+                "change": None,
+                "change_pct": None,
+                "market_cap": None,
+                "sector": sector,
+            })
+    return results
+
+
 async def sector_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle /sector NAME — show sector analysis with benchmarks."""
-    from services.sector_benchmarks import resolve_sector, get_sector_benchmark, get_all_sectors
+    """Handle /sector NAME — show all stocks in a sector with live prices.
+    Also shows benchmarks if annual report data exists for the sector.
+    """
+    from services.sector_benchmarks import resolve_sector as resolve_benchmark_sector, get_sector_benchmark
     from services.annual_reports import get_companies_by_sector
 
     args = context.args
@@ -868,11 +977,14 @@ async def sector_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         args = parts[1].split() if len(parts) > 1 else []
 
     if not args:
-        sectors = get_all_sectors()
-        sector_list = "\n".join(f"  {s}" for s in sorted(sectors))
+        # Show available sectors
+        from utils.ticker_map import SECTORS
+        from collections import Counter
+        counts = Counter(SECTORS.values())
+        lines = [f"  {s} ({c})" for s, c in sorted(counts.items(), key=lambda x: -x[1])]
         await update.message.reply_text(
-            f"Usage: /sector BANKING\n\n"
-            f"Available sectors:\n{sector_list}"
+            "Usage: /sector BANKING\n\n"
+            f"Available sectors:\n" + "\n".join(lines)
         )
         return
 
@@ -881,28 +993,86 @@ async def sector_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     sector_input = " ".join(args)
-    sector = resolve_sector(sector_input)
-    if not sector:
-        sectors = get_all_sectors()
-        sector_list = "\n".join(f"  {s}" for s in sorted(sectors))
+    sector_name = _resolve_sector_name(sector_input)
+
+    if not sector_name:
+        from utils.ticker_map import SECTORS
+        from collections import Counter
+        counts = Counter(SECTORS.values())
+        lines = [f"  {s} ({c})" for s, c in sorted(counts.items(), key=lambda x: -x[1])]
         await update.message.reply_text(
             f"Unknown sector: {sector_input}\n\n"
-            f"Available sectors:\n{sector_list}"
+            f"Available sectors:\n" + "\n".join(lines)
         )
         return
 
-    companies = get_companies_by_sector(sector)
-    if not companies:
-        await update.message.reply_text(f"No annual report data for sector: {sector}")
-        return
-
-    bench = get_sector_benchmark(sector)
-    if not bench:
-        await update.message.reply_text(f"Could not calculate benchmarks for: {sector}")
+    tickers = _get_sector_tickers(sector_name)
+    if not tickers:
+        await update.message.reply_text(f"No stocks found for sector: {sector_name}")
         return
 
     await update.message.chat.send_action("upload_photo")
-    card_buf = generate_sector_card(sector, companies, bench)
+
+    # Fetch live data for all stocks in the sector
+    stocks_data = await _fetch_stocks_data(tickers)
+
+    # Send sector stocks listing card
+    card_buf = generate_sector_stocks_card(sector_name, stocks_data)
+    await update.message.reply_photo(photo=card_buf)
+
+    # Also send benchmark card if available
+    bench_sector = resolve_benchmark_sector(sector_input)
+    if bench_sector:
+        companies = get_companies_by_sector(bench_sector)
+        bench = get_sector_benchmark(bench_sector)
+        if companies and bench:
+            bench_card = generate_sector_card(bench_sector, companies, bench)
+            await update.message.reply_photo(photo=bench_card)
+
+
+async def group_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle /group NAME — show all companies in a business group."""
+    args = context.args
+    if args is None and update.message and update.message.text:
+        parts = update.message.text.split(maxsplit=1)
+        args = parts[1].split() if len(parts) > 1 else []
+
+    if not args:
+        groups = get_all_groups()
+        from utils.conglomerate_map import CONGLOMERATE_MAP
+        lines = []
+        for gname in groups:
+            g = CONGLOMERATE_MAP[gname]
+            lines.append(f"  {g['parent']} — {g['name']} ({len(g['tickers'])} stocks)")
+        await update.message.reply_text(
+            "Usage: /group HAYLEYS\n\n"
+            f"Available groups:\n" + "\n".join(lines)
+        )
+        return
+
+    if _is_rate_limited(update.effective_user.id):
+        await update.message.reply_text("You're sending requests too fast. Please wait a moment.")
+        return
+
+    group_input = " ".join(args)
+    group = resolve_group(group_input)
+    if not group:
+        groups = get_all_groups()
+        from utils.conglomerate_map import CONGLOMERATE_MAP
+        lines = []
+        for gname in groups:
+            g = CONGLOMERATE_MAP[gname]
+            lines.append(f"  {g['parent']} — {g['name']} ({len(g['tickers'])} stocks)")
+        await update.message.reply_text(
+            f"Unknown group: {group_input}\n\n"
+            f"Available groups:\n" + "\n".join(lines)
+        )
+        return
+
+    await update.message.chat.send_action("upload_photo")
+
+    stocks_data = await _fetch_stocks_data(group["tickers"])
+    card_buf = generate_group_card(group["name"], group["parent"], stocks_data)
     await update.message.reply_photo(photo=card_buf)
 
 
@@ -926,6 +1096,8 @@ def main():
     app.add_handler(CommandHandler("report", report_command))
     app.add_handler(CommandHandler("compare", compare_command))
     app.add_handler(CommandHandler("sector", sector_command))
+    app.add_handler(CommandHandler("sectors", sectors_command))
+    app.add_handler(CommandHandler("group", group_command))
     app.add_handler(CommandHandler("brief", brief_command))
 
     # Catch uppercase /P and /PULSE (Telegram may not recognize as BOT_COMMAND)
