@@ -10,18 +10,18 @@
     ],
     "metrics": {
       "roe": {
-        "avg": -14.92,
-        "median": 12.18,
+        "avg": -11.66,
+        "median": 9.3,
         "min": -102,
         "max": 17.96,
-        "count": 4
+        "count": 5
       },
       "eps": {
-        "avg": -10.57,
-        "median": 1.68,
+        "avg": -7.85,
+        "median": 0.99,
         "min": -38,
         "max": 4.6,
-        "count": 3
+        "count": 4
       },
       "nav": {
         "avg": 31.15,
@@ -45,14 +45,14 @@
         "count": 2
       },
       "revenue_growth": {
-        "avg": 4.76,
-        "median": 11,
+        "avg": 4.96,
+        "median": 12,
         "min": -28.3,
         "max": 28.4,
         "count": 5
       },
       "profit_margin": {
-        "avg": 4.89,
+        "avg": 4.81,
         "median": 9.76,
         "min": -11.62,
         "max": 14.46,

@@ -5,34 +5,34 @@
     "financials": {
       "revenue": {
         "value": 354829000000,
-        "yoy_change": 11
+        "yoy_change": 12
       },
       "net_profit": {
-        "value": 6763000000,
-        "yoy_change": -39
+        "value": 5193000000,
+        "yoy_change": -49
       },
-      "eps": null,
+      "eps": 0.31,
       "nav": null,
       "dividend_per_share": 0.15,
-      "roe": null,
+      "roe": 1.4,
       "debt_to_equity": null
     },
     "management_plans": [
-      "Complete fit-out and opening of 113-key Nuwa hotel and casino at City of Dreams Sri Lanka by August 2025",
-      "Scale up WCT-1 terminal operations to achieve cash-positive position within first year with capacity of 1.6 million TEUs in phase 1",
-      "Accelerate NEV business expansion with BYD vehicles targeting material earnings contribution based on current order book",
-      "Expand Supermarket outlet network significantly beyond the 6 outlets opened in 2024/25",
-      "Complete VIMAN residential development construction and revenue recognition with 102 units remaining to be sold",
-      "Migrate core Group systems to S/4 Hana SAP platform to enhance decision-making and operational efficiency"
+      "Accelerated outlet openings in supermarket business given positive industry outlook and macroeconomic stability",
+      "NEV business expansion through broader product portfolio and enhanced sales and service networks including commercial vehicles segment",
+      "CODSL gaming space and Nuwa hotel opening scheduled for August 2025 to attract high-net-worth travellers",
+      "WCT-1 terminal expected to achieve cash-positive position within first year of operations with full completion by second half of 2026/27",
+      "Exploration of investment opportunities in emerging suburban areas of Colombo for property development",
+      "OCTAVE expansion of advanced analytics services to external clients starting with UK-based businesses"
     ],
     "key_risks": [
-      "Red Sea disruptions impacting global trade and container terminal volumes",
-      "Intensified competition in bunkering services causing margin contractions",
-      "Electricity tariff increases of 18% proposed by utility affecting business margins and profitability",
-      "Tourism demand volatility affecting hotel occupancies and integrated resort performance",
-      "Construction cost fluctuations and macroeconomic instability impacting property development projects"
+      "Macroeconomic and political environment volatility impacting business operations and consumer confidence",
+      "Global trade tensions and US tariff measures potentially affecting export demand and economic growth",
+      "Currency/exchange rate fluctuations on USD 207 million term loan at WPL and other foreign currency borrowings",
+      "Portfolio balance risk from overexposure to large-scale projects like CODSL affecting short-term returns",
+      "Regulatory environment changes including food regulations, advertising compliance and new tax frameworks"
     ],
-    "chairman_outlook": "The Group approaches the future with confidence as landmark investments in City of Dreams Sri Lanka and West Container Terminal begin yielding results, positioned to serve as catalysts for economic growth and reinforce Sri Lanka's position as a logistics and leisure hub. With the country's sovereign rating upgrade and political stability, focus must shift towards driving sustainable growth through strategic investments, PPPs, SOE divestments and addressing trade barriers. The Group remains confident these transformative investments will more than compensate for short-term ramp-up expenses, positioning for industry leadership and long-term growth.",
+    "chairman_outlook": "The Group is confident that the short term impact of ramp-up related expenses will be more than compensated by long term benefits and transformation from landmark investments like CODSL and WCT-1, positioning the Group for industry leadership and sustained growth. The much-anticipated sovereign rating upgrade and political stability provide a strong foundation for capitalizing on Sri Lanka's position as a logistics and leisure hub in the region.",
     "sector": "Capital Goods",
     "updated": "2026-03"
   },

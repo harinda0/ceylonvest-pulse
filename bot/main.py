@@ -61,33 +61,40 @@ def _is_rate_limited(user_id: int) -> bool:
     return False
 
 
+def _welcome_keyboard() -> InlineKeyboardMarkup:
+    """Build the inline keyboard for welcome/help messages."""
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton("Look up a stock", callback_data="welcome_lookup"),
+            InlineKeyboardButton("Market summary", callback_data="welcome_market"),
+        ],
+        [
+            InlineKeyboardButton("Sector analysis", callback_data="welcome_sector"),
+            InlineKeyboardButton("Compare stocks", callback_data="welcome_compare"),
+        ],
+        [
+            InlineKeyboardButton("Annual report", callback_data="welcome_report"),
+            InlineKeyboardButton("My watchlist", callback_data="welcome_watchlist"),
+        ],
+    ])
+
+
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /start command."""
     welcome = (
-        "Welcome to CeylonVest Pulse\n\n"
-        "Paste any CSE ticker or company name to get instant market intelligence.\n\n"
-        "Examples:\n"
-        "  KPHL\n"
-        "  kapruka\n"
-        "  john keells\n"
-        "  combank\n\n"
-        "Commands:\n"
-        "/p TICKER — Look up any stock or director (works in groups)\n"
-        "/report TICKER — Annual report summary\n"
-        "/compare TICKER1 TICKER2 — Side-by-side comparison\n"
-        "/sector BANKING — Sector analysis & benchmarks\n"
-        "/market — Today's market summary\n"
-        "/watchlist — View your watchlist\n"
-        "/addwatch TICKER — Add to watchlist\n"
-        "/removewatch TICKER — Remove from watchlist\n"
-        "/help — Show this message"
+        "Welcome to CeylonVest Pulse — AI-powered CSE market intelligence.\n\n"
+        "Paste any ticker or tap a button below to get started."
     )
-    await update.message.reply_text(welcome)
+    await update.message.reply_text(welcome, reply_markup=_welcome_keyboard())
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle /help command."""
-    await start_command(update, context)
+    """Handle /help command — same welcome with inline buttons."""
+    welcome = (
+        "CeylonVest Pulse — AI-powered CSE market intelligence.\n\n"
+        "Paste any ticker or tap a button below."
+    )
+    await update.message.reply_text(welcome, reply_markup=_welcome_keyboard())
 
 
 async def market_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -429,12 +436,97 @@ async def send_director_summary(update: Update, director: dict):
     await update.message.reply_text(text)
 
 
+async def _handle_welcome_callback(query, data: str):
+    """Handle welcome/help inline button presses."""
+    responses = {
+        "welcome_lookup": "Type /p followed by a ticker (e.g. /p JKH) or company name (e.g. /p kapruka)",
+        "welcome_sector": "Type /sector followed by sector name (e.g. /sector banking)",
+        "welcome_compare": "Type /compare TICKER1 TICKER2 (e.g. /compare JKH COMB)",
+        "welcome_report": "Type /report followed by a ticker (e.g. /report COMB)",
+    }
+    if data in responses:
+        await query.message.reply_text(responses[data])
+        return
+
+    if data == "welcome_market":
+        # Trigger /market inline
+        from services.cse_api import fetch_market_summary
+        summary = fetch_market_summary()
+        if not summary:
+            await query.message.reply_text("Could not fetch market data. Try again shortly.")
+            return
+        text = "CSE Market Summary\n\n"
+        aspi = summary.get("aspi")
+        if aspi:
+            val = float(aspi.get("value", aspi.get("indexValue", 0)))
+            chg = float(aspi.get("change", 0))
+            pct = float(aspi.get("percentage", aspi.get("changePercentage", 0)))
+            sign = "+" if chg >= 0 else ""
+            text += f"ASPI: {val:,.2f} ({sign}{chg:,.2f} / {sign}{pct:.2f}%)\n"
+        snp = summary.get("snp")
+        if snp:
+            val = float(snp.get("value", snp.get("indexValue", 0)))
+            chg = float(snp.get("change", 0))
+            pct = float(snp.get("percentage", snp.get("changePercentage", 0)))
+            sign = "+" if chg >= 0 else ""
+            text += f"S&P SL20: {val:,.2f} ({sign}{chg:,.2f} / {sign}{pct:.2f}%)\n"
+        trade_raw = summary.get("trade")
+        if trade_raw and isinstance(trade_raw, list) and trade_raw and isinstance(trade_raw[0], list) and trade_raw[0]:
+            t = trade_raw[0][0]
+            turnover = float(t.get("marketTurnover", 0))
+            volume = float(t.get("volumeOfTurnOverNumber", 0))
+            trades = int(t.get("marketTrades", 0))
+            text += "\n"
+            if turnover:
+                if turnover >= 1e9:
+                    text += f"Turnover: LKR {turnover/1e9:.1f}B\n"
+                elif turnover >= 1e6:
+                    text += f"Turnover: LKR {turnover/1e6:.1f}M\n"
+                else:
+                    text += f"Turnover: LKR {turnover:,.0f}\n"
+            if volume:
+                if volume >= 1e6:
+                    text += f"Volume: {volume/1e6:.1f}M shares\n"
+                else:
+                    text += f"Volume: {volume:,.0f} shares\n"
+            if trades:
+                text += f"Trades: {trades:,}\n"
+        status = summary.get("status")
+        if status:
+            status_text = status.get("status", "")
+            if status_text:
+                text += f"\nMarket Status: {status_text}\n"
+        await query.message.reply_text(text)
+        return
+
+    if data == "welcome_watchlist":
+        user_id = query.from_user.id
+        tickers = get_watchlist(user_id)
+        if not tickers:
+            await query.message.reply_text(
+                "Your watchlist is empty.\nUse /addwatch TICKER to add stocks."
+            )
+        else:
+            text = "Your Watchlist\n\n"
+            for t in tickers:
+                text += f"  {t} — {get_company_name(t)}\n"
+            text += "\nTap any ticker name to view its Pulse card."
+            await query.message.reply_text(text)
+        return
+
+
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle inline keyboard button presses for detail cards."""
     query = update.callback_query
     await query.answer()
 
     data = query.data
+
+    # Welcome button callbacks (before ticker validation)
+    if data.startswith("welcome_"):
+        await _handle_welcome_callback(query, data)
+        return
+
     parts = data.split("_", 1)
     action = parts[0]
     ticker = parts[1] if len(parts) > 1 else None
@@ -600,22 +692,13 @@ async def handle_new_group(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     welcome = (
-        "Hey! I'm CeylonVest Pulse — your AI-powered CSE market intelligence assistant.\n\n"
-        "What I can do:\n\n"
-        "/p TICKER — Look up any of the 289 CSE-listed stocks\n"
-        "Examples: /p JKH  /p COMB  /p LOLC  /p LIOC\n\n"
-        "/p COMPANY NAME — Search by name instead of ticker\n"
-        "Examples: /p kapruka  /p dialog  /p sampath bank\n\n"
-        "/p DIRECTOR — See a director's portfolio\n"
-        "Examples: /p dhammika perera  /p dulith herath\n\n"
-        "/market — ASPI, S&P SL20 & sector indices\n"
-        "/watchlist — Track your favorite stocks\n\n"
-        "Try it now — type /p JKH"
+        "Welcome to CeylonVest Pulse — AI-powered CSE market intelligence.\n\n"
+        "Paste any ticker or tap a button below to get started."
     )
 
     chat_id = update.my_chat_member.chat.id
     try:
-        await context.bot.send_message(chat_id=chat_id, text=welcome)
+        await context.bot.send_message(chat_id=chat_id, text=welcome, reply_markup=_welcome_keyboard())
     except Exception as e:
         logger.error(f"Failed to send group welcome to {chat_id}: {e}")
 

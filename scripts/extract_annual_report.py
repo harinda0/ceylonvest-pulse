@@ -42,7 +42,7 @@ BASE_URL = "https://www.cse.lk/api/"
 CDN_URL = "https://cdn.cse.lk/"
 OUTPUT_PATH = Path(__file__).parent.parent / "data" / "annual_reports.json"
 MAX_PDF_PAGES = 150  # extract more pages to catch EPS/NAV/ROE in large reports
-TEXT_CHAR_LIMIT = 120_000  # Claude context budget (~30k tokens)
+TEXT_CHAR_LIMIT = 200_000  # Claude context budget (~50k tokens)
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -203,8 +203,26 @@ def download_pdf(url: str) -> bytes | None:
         return None
 
 
+_FINANCIAL_KEYWORDS = [
+    "earnings per share", "eps", "net asset value", "nav per share",
+    "return on equity", "roe", "debt to equity", "dividend per share",
+    "revenue", "net profit", "profit after tax", "chairman's statement",
+    "chairman's review", "outlook", "management discussion",
+    "financial highlights", "financial summary", "key performance",
+    "five year summary", "ten year summary",
+]
+
+
+def _page_financial_score(text: str) -> int:
+    """Score how many financial keywords a page contains."""
+    lower = text.lower()
+    return sum(1 for kw in _FINANCIAL_KEYWORDS if kw in lower)
+
+
 def extract_text_from_pdf(pdf_bytes: bytes) -> str | None:
-    """Extract text from PDF using pdfplumber. Returns concatenated text."""
+    """Extract text from PDF using pdfplumber.
+    Prioritizes pages with financial keywords to stay within the char limit.
+    """
     with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as f:
         f.write(pdf_bytes)
         tmp_path = f.name
@@ -212,25 +230,58 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str | None:
     try:
         with pdfplumber.open(tmp_path) as pdf:
             num_pages = len(pdf.pages)
-            if num_pages > MAX_PDF_PAGES:
-                logger.info(f"PDF has {num_pages} pages - extracting first {MAX_PDF_PAGES}")
-                pages = pdf.pages[:MAX_PDF_PAGES]
-            else:
-                pages = pdf.pages
-                logger.info(f"Extracting text from {num_pages} pages...")
+            pages_to_scan = min(num_pages, MAX_PDF_PAGES)
+            logger.info(f"PDF has {num_pages} pages - scanning first {pages_to_scan}")
 
-            texts = []
-            for page in pages:
+            # Extract text from all scanned pages
+            page_texts = []
+            for i, page in enumerate(pdf.pages[:pages_to_scan]):
                 text = page.extract_text()
-                if text:
-                    texts.append(text)
+                if text and text.strip():
+                    page_texts.append((i, text))
 
-            full_text = "\n\n".join(texts)
-            logger.info(f"Extracted {len(full_text):,} characters from {len(texts)} pages")
+            total_chars = sum(len(t) for _, t in page_texts)
+            logger.info(f"Extracted {total_chars:,} characters from {len(page_texts)} pages")
 
-            if len(full_text) > TEXT_CHAR_LIMIT:
-                logger.info(f"Truncating to {TEXT_CHAR_LIMIT:,} chars for Claude context")
-                full_text = full_text[:TEXT_CHAR_LIMIT]
+            if total_chars <= TEXT_CHAR_LIMIT:
+                # Everything fits
+                full_text = "\n\n".join(t for _, t in page_texts)
+                return full_text if full_text.strip() else None
+
+            # Budget exceeded — prioritize financial pages
+            # Split into high-priority (financial keywords) and normal pages
+            scored = [(i, text, _page_financial_score(text)) for i, text in page_texts]
+            high_priority = [(i, text) for i, text, score in scored if score >= 2]
+            normal = [(i, text) for i, text, score in scored if score < 2]
+
+            logger.info(f"Found {len(high_priority)} high-priority financial pages")
+
+            # Build output: high-priority pages first (by score desc), then normal pages
+            selected = []
+            char_count = 0
+
+            # Sort high-priority by score (highest first) to fit best pages in budget
+            hp_scored = [(i, text, _page_financial_score(text)) for i, text in high_priority]
+            hp_scored.sort(key=lambda x: x[2], reverse=True)
+
+            for i, text, _ in hp_scored:
+                if char_count + len(text) > TEXT_CHAR_LIMIT:
+                    continue
+                selected.append((i, text))
+                char_count += len(text)
+
+            # Fill remaining budget with normal pages (in order)
+            for i, text in normal:
+                if char_count + len(text) > TEXT_CHAR_LIMIT:
+                    continue
+                selected.append((i, text))
+                char_count += len(text)
+
+            # Sort by page number for coherent reading
+            selected.sort(key=lambda x: x[0])
+
+            full_text = "\n\n".join(t for _, t in selected)
+            logger.info(f"Final text: {len(full_text):,} chars from {len(selected)} pages (budget: {TEXT_CHAR_LIMIT:,})")
 
             return full_text if full_text.strip() else None
     except Exception as e:
