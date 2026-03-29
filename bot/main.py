@@ -666,14 +666,49 @@ async def send_technicals_card(query, ticker: str):
 
 
 async def send_insiders_text(query, ticker: str):
-    """Send insider info as text (MVP — upgrade to card later)."""
-    text = (
-        f"{ticker} Insider Activity\n\n"
-        "Director dealings and top 20 shareholder changes are "
-        "sourced from CSE quarterly filings.\n\n"
-        "This feature is coming soon — we're building the scraper "
-        "for CSE disclosure announcements."
-    )
+    """Send insider info — real director dealings from CSE quarterly reports."""
+    from services.director_dealings_scraper import get_recent_dealings, get_net_activity
+
+    dealings = get_recent_dealings(ticker, limit=10)
+    activity = get_net_activity(ticker, days=90)
+
+    text = f"{ticker} Insider Activity\n\n"
+
+    # Net activity summary
+    if activity["buy_count"] > 0 or activity["sell_count"] > 0:
+        signal = activity["signal"].upper()
+        text += f"90-day signal: {signal}\n"
+        if activity["buy_count"]:
+            qty = activity["net_buys"]
+            qty_str = f"{qty:,}" if qty < 1_000_000 else f"{qty/1_000_000:.1f}M"
+            text += f"  Buys: {activity['buy_count']} transactions ({qty_str} shares)\n"
+        if activity["sell_count"]:
+            qty = activity["net_sells"]
+            qty_str = f"{qty:,}" if qty < 1_000_000 else f"{qty/1_000_000:.1f}M"
+            text += f"  Sells: {activity['sell_count']} transactions ({qty_str} shares)\n"
+        text += "\n"
+
+    # Recent dealings
+    if dealings:
+        text += "Recent director dealings:\n\n"
+        for d in dealings:
+            action = "BUY" if d["deal_type"] == "buy" else "SELL"
+            qty = d["quantity"]
+            qty_str = f"{qty:,}" if qty < 1_000_000 else f"{qty/1_000_000:.1f}M"
+            line = f"  {action} {qty_str} shares"
+            if d.get("price"):
+                line += f" @ LKR {d['price']:.2f}"
+            line += f"\n  {d['director_name']}"
+            if d.get("deal_date"):
+                line += f" ({d['deal_date']})"
+            text += line + "\n\n"
+    else:
+        text += (
+            "No director dealings found in recent quarterly reports.\n\n"
+            "Data is extracted from CSE quarterly filings as they're published."
+        )
+
+    text += "\nSource: CSE quarterly report disclosures"
     await query.message.reply_text(text)
 
 
@@ -916,6 +951,8 @@ def main():
     from services.twitter_scraper import scrape as scrape_twitter
     from services.sentiment_scorer import score_pending
     from services.morning_brief import send_morning_brief
+    from services.announcements_scraper import scrape as scrape_announcements
+    from services.director_dealings_scraper import scrape as scrape_dealings
 
     def scrape_and_score():
         """Run all scrapers then score any new unscored mentions."""
@@ -939,6 +976,20 @@ def main():
         except RuntimeError:
             asyncio.run(send_morning_brief(app.bot))
 
+    def _scrape_announcements_sync():
+        """Check CSE for new financial filings."""
+        try:
+            scrape_announcements(bot=app.bot)
+        except Exception as e:
+            logger.error(f"Announcements scrape failed: {e}")
+
+    def _scrape_dealings_sync():
+        """Scan quarterly reports for director dealings."""
+        try:
+            scrape_dealings(bot=app.bot)
+        except Exception as e:
+            logger.error(f"Director dealings scrape failed: {e}")
+
     scheduler = BackgroundScheduler()
     scheduler.add_job(
         clear_cache,
@@ -957,6 +1008,18 @@ def main():
         CronTrigger(hour=3, minute=0, timezone="UTC"),  # 8:30 AM SLT = 3:00 AM UTC
         id="morning_brief",
         name="Send morning brief to free channel",
+    )
+    scheduler.add_job(
+        _scrape_announcements_sync,
+        CronTrigger(hour=12, minute=30, timezone="UTC"),  # 6:00 PM SLT = 12:30 PM UTC
+        id="announcements_scrape",
+        name="Check CSE for new financial filings",
+    )
+    scheduler.add_job(
+        _scrape_dealings_sync,
+        CronTrigger(hour=13, minute=30, timezone="UTC"),  # 7:00 PM SLT = 1:30 PM UTC
+        id="director_dealings_scrape",
+        name="Scan quarterly reports for director dealings",
     )
     scheduler.start()
 
