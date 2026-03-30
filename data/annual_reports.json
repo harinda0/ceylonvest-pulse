@@ -5,107 +5,163 @@
     "financials": {
       "revenue": {
         "value": 354829000000,
-        "yoy_change": 12
+        "yoy_change": 11.8
       },
       "net_profit": {
-        "value": 5193000000,
-        "yoy_change": -49
+        "value": 5326000000,
+        "yoy_change": -52.7
       },
-      "eps": 0.31,
-      "nav": 237.85,
-      "dividend_per_share": 0.15,
-      "roe": 1.4,
-      "debt_to_equity": 0.52
+      "eps": 0.61,
+      "nav": 36.07,
+      "dividend_per_share": null,
+      "roe": 24,
+      "debt_to_equity": null
     },
     "management_plans": [
-      "Accelerated outlet openings in supermarket business given positive industry outlook and macroeconomic stability",
-      "NEV business expansion through broader product portfolio and enhanced sales and service networks including commercial vehicles segment",
-      "CODSL gaming space and Nuwa hotel opening scheduled for August 2025 to attract high-net-worth travellers",
-      "WCT-1 terminal expected to achieve cash-positive position within first year of operations with full completion by second half of 2026/27",
-      "Exploration of investment opportunities in emerging suburban areas of Colombo for property development",
-      "OCTAVE expansion of advanced analytics services to external clients starting with UK-based businesses"
+      "Complete retail mall and final aspects of the 113-key Nuwa hotel at CODSL, scheduled to open in August 2025",
+      "Complete final equity tranche investment in WCT-1 at the Port of Colombo",
+      "Rollout additional supermarket outlets with significantly higher number planned for upcoming year than 2024/25",
+      "Strategic investments to expand impulse production of the Confectionery business to enable new product innovations",
+      "Explore extensions into adjacent confectionery categories leveraging existing manufacturing and distribution capabilities",
+      "Accelerate outlet expansion plan in the Supermarket business given positive outlook for the industry"
     ],
     "key_risks": [
-      "Macroeconomic and political environment volatility impacting business operations and consumer confidence",
-      "Global trade tensions and US tariff measures potentially affecting export demand and economic growth",
-      "Currency/exchange rate fluctuations on USD 207 million term loan at WPL and other foreign currency borrowings",
-      "Portfolio balance risk from overexposure to large-scale projects like CODSL affecting short-term returns",
-      "Regulatory environment changes including food regulations, advertising compliance and new tax frameworks"
+      "Macroeconomic and political environment instability",
+      "Regulatory environment changes including electricity tariff increases and compliance obligations",
+      "Financial exposure risks including interest rate risk, currency/exchange risk, credit and counterparty risk, and liquidity risk",
+      "Information technology and cyber security threats",
+      "Climate change and environmental risks affecting operations"
     ],
-    "chairman_outlook": "The Group is confident that the short term impact of ramp-up related expenses will be more than compensated by long term benefits and transformation from landmark investments like CODSL and WCT-1, positioning the Group for industry leadership and sustained growth. The much-anticipated sovereign rating upgrade and political stability provide a strong foundation for capitalizing on Sri Lanka's position as a logistics and leisure hub in the region.",
-    "sector": "Capital Goods",
-    "updated": "2026-03",
+    "chairman_outlook": "The Group approaches the future with confidence and optimism as landmark investments begin to yield results. The nation is on the path towards a sustained recovery with prevailing socioeconomic stability providing a strong foundation to accelerate business growth and broader economic expansion. Following a prolonged period of uncertainty, these improvements will enable driving greater investor confidence, economic resilience, and a sustained long term recovery.",
     "forward_guidance": {
       "management_targets": [
-        "USD 5 billion export revenue target by CY2030 for IT/BPM industry",
-        "40% female workforce representation target revised to 2029/30",
         "WCT-1 expected to achieve cash-positive position within first year of operations",
-        "Run rate of volumes in Q4 expected to enable WCT-1 earnings at breakeven"
+        "Run rate volumes in WCT-1 fourth quarter expected to enable earnings at breakeven if market dynamics remain",
+        "NEV business earnings expected to be material in context of Group performance based on current order book",
+        "Volumes expected to maintain growth momentum supported by low market penetration and higher consumer activity",
+        "Supermarket business growth in footfall through modern trade participation, promotions and enhanced customer offerings",
+        "Continue to adopt measured risk-conscious approach in Banking to capitalise on emerging opportunities while maintaining strong liquidity and asset quality",
+        "Residential sales momentum expected to continue or accelerate given completion of integrated resort and impending opening of gaming space",
+        "Tourist arrivals momentum expected to continue as seen in forward bookings for hotel properties",
+        "Tourism arrivals projected 2.6-3.0 million for CY2025",
+        "Fourth quarter run rate volumes expected to enable earnings at breakeven for WCT-1",
+        "BIA expansion capacity to increase from 6 million to 15 million passengers by CY2027",
+        "IT/BPM industry target of USD 5 billion export revenue by CY2030",
+        "Global commodity prices expected to reduce with Brent oil averaging USD 64 per barrel",
+        "Female workforce representation target revised to 2029/30 (from original 40% by 2025/26)",
+        "Nations Trust Bank ROE target of 24% for CY2024 achieved"
       ],
       "capex_plans": [
-        "Completion of retail mall and 113-key Nuwa hotel at CODSL",
+        "Rs.33.61 billion invested in CODSL during 2024/25 with completion near for retail mall and 113-key Nuwa hotel",
         "Final equity tranche in WCT-1 at Port of Colombo",
-        "Rollout of Supermarket outlets - number planned significantly higher than 2024/25",
-        "Strategic investments to expand impulse production in Confectionery business",
+        "Strategic investments to expand impulse production of Confectionery business",
+        "Rollout of Supermarket outlets with significantly higher number planned for upcoming year",
+        "Routine maintenance capital expenditure across all business units",
+        "Funding needs for expansion plans of businesses other than CODSL and WCT-1 to be managed through operating cash flows and borrowings within such businesses",
+        "Completion of retail mall and 113-key Nuwa hotel at City of Dreams Sri Lanka",
+        "Rollout of Supermarket outlets - significantly higher number planned than 2024/25",
         "Extensions into adjacent confectionery categories",
-        "Two-megawatt solar power system installation at JKW warehouse"
+        "Two-megawatt solar power system installation at JKW warehouse",
+        "Charging infrastructure development for New Energy Vehicles",
+        "WCT-1 full completion scheduled for 2H 2026/27"
       ],
       "partnerships_acquisitions": [
-        "Partnership with BYD Auto Industry Company Limited for New Energy Vehicles",
-        "JKCG chosen as BYD partner for commercial vehicles in Sri Lanka",
-        "UA established exclusive bancassurance partnership with Sampath Bank PLC in January 2025",
-        "Joint venture with Deutsche post for DHL air express",
-        "AP Moller partnership for Maersk Lanka",
-        "Inchcape Shipping Services partnership for IMMS",
-        "Partnership with RCPL to manufacture beverages under Elephant House brand in India",
-        "Kandy Myst by Cinnamon - 40% equity stake partnership with Indra Traders"
+        "Partnership with BYD Auto Industry Company Limited for New Energy Vehicles business showing strong order book",
+        "Kandy Myst by Cinnamon commenced operations in February 2025 through joint venture with Indra Traders (Private) Limited with KHL holding 40% equity stake",
+        "Union Assurance established exclusive bancassurance partnership with Sampath Bank PLC in January 2025",
+        "Continued strategic partnerships with SAP, Microsoft and UiPath in Information Technology business",
+        "Partnership with Reliance Consumer Products Limited to manufacture, market, distribute and sell beverages under Elephant House brand in India",
+        "Joint ventures with Deutsche post for DHL air express, AP Moller for Maersk Lanka and Inchcape Shipping Services for IMMS",
+        "Collaboration with Melco for CODSL including access to technical, marketing, branding and loyalty programmes expertise",
+        "Union Assurance exclusive bancassurance partnership with Sampath Bank PLC established January 2025",
+        "John Keells CG Auto partnership with BYD for commercial vehicles in Sri Lanka",
+        "Kandy Myst by Cinnamon joint development with Indra Traders (40% JKH equity stake)",
+        "Strategic partnerships with dealerships in Kandy and Galle for NEV business",
+        "OCTAVE commercial engagements outside the Group commenced Q3 2024/25",
+        "Gemini Corporation collaboration between Maersk and Hapag-Lloyd AG",
+        "Partnership with Reliance Consumer Products Limited for Elephant House brand in India"
       ],
       "geographic_expansion": [
-        "Beverage business focus on enhancing market reach in India through RCPL partnership",
-        "JKIT focus on expanding regionally and globally with strategic partnerships",
-        "Expansion into new markets regionally and globally for IT services",
-        "JKCG expansion through dealerships in Kandy and Galle"
+        "Information Technology business has brand presence in Middle East and North Africa (MENA) and Asia Pacific (APAC) regions",
+        "OCTAVE expanded advanced analytics services to external clients starting with businesses in United Kingdom in Q3 2024/25",
+        "Information Technology business pursuing expansion in India, Saudi Arabia, and Southeast Asia",
+        "Partnership with RCPL to manufacture and sell beverages under Elephant House brand in India market",
+        "Continue asset-light investment models as part of strategy to enhance Cinnamon footprint",
+        "India expansion through partnership with RCPL for Beverages business",
+        "OCTAVE serving overseas clients with predominant focus",
+        "JKIT expanding regionally and globally through strategic partnerships",
+        "Office automation expansion in Western Province and key regions",
+        "NEV business expansion through dealership network in key locations"
       ],
       "regulatory_dependencies": [
-        "Gaming space opening in August 2025 subject to regulatory approvals",
-        "15% income tax on IT services profits from foreign clients effective April 2025",
+        "Government removal of four-year restriction on private vehicle imports in February 2025 enabled NEV business launch",
+        "Electricity utility proposed 18% increase in tariffs currently under consideration which will impact margins if implemented",
+        "Implementation of cost-reflective pricing mechanism for key utilities with multiple downward revisions during the year",
+        "IMF-EFF programme conditions including tightening tax exemption framework and cost-recovery electricity pricing",
+        "Compliance with new food regulations and advertising requirements presenting adaptation challenges",
+        "Personal Data Protection Act No. 09 of 2022 requiring designation of Data Protection Officers and compliance measures",
+        "Gaming operations at City of Dreams Sri Lanka scheduled for August 2025 opening",
+        "Implementation of TRC initiative to blacklist unauthorised IMEI numbers",
+        "Electricity tariff proposed 18% increase in June 2025",
+        "15% income tax on foreign service profits effective April 2025",
         "18% VAT on digital services by non-resident suppliers effective October 2025",
-        "TRC initiative to blacklist unauthorised IMEI numbers expected to benefit Office Automation",
-        "New food labelling and advertising regulations prohibiting promotion to children under 12"
+        "Food labelling and advertising regulation effective January 2025",
+        "Motor vehicle import regulations including 18% VAT and revised duties"
       ],
       "segment_info": [
-        "Transportation: 42% stake in SAGT, 34% stake in WCT-1",
-        "WCT-1 shareholding: Adani Ports 51%, JKH 34%, Sri Lanka Ports Authority 15%",
-        "Consumer Foods: Beverages 16% CSD volume growth, Confectionery 22% volume growth",
-        "Retail: 138 supermarket outlets as at March 2025, NEV business launched",
-        "Leisure: 687-key Cinnamon Life hotel operational, 113-key Nuwa hotel opening August 2025",
-        "Property: 74% of residential units sold at Cinnamon Life towers",
-        "Financial Services: NTB 24% loan growth, UA 15% GWP growth"
+        "SAGT volumes grew 14% to 2.068 million TEUs with improved mix despite stronger Rupee translation impact",
+        "Consumer Foods EBITDA increased 34% driven by 16% volume growth in Beverages CSD and 22% growth in Confectionery",
+        "Supermarket business recorded 14.2% same store sales growth driven by increased customer footfall",
+        "Sri Lankan Resorts recorded increase in profitability while Maldivian Resorts impacted by bad debt provision from European tour operator insolvency",
+        "Nations Trust Bank loan portfolio grew 24% with Net Interest Margins at 6.94% and return on equity of 24%",
+        "Union Assurance recorded 15% growth in gross written premiums with annual life insurance surplus of Rs.3.00 billion",
+        "VIMAN residential development project has cumulative SPAs signed for 164 units with 102 units remaining to be sold across all launched phases",
+        "TRI-ZEN reached significant milestone with handover of approximately 85% of units sold, largest single handover in Sri Lanka during a year",
+        "City of Dreams Sri Lanka 687-key Cinnamon Life hotel operational October 2024",
+        "WCT-1 first phase capacity of 1.6 million TEUs operational Q4 2024/25",
+        "Full WCT-1 capacity of 3.2 million TEUs upon completion",
+        "Supermarket business 138 outlets as of March 2025",
+        "New Energy Vehicles business with six models and 16 variants",
+        "Maldivian Resorts segment outperformed 71% industry average occupancy",
+        "Consumer Foods volume growth: Beverages 16%, Confectionery 22%",
+        "Nations Trust Bank loan portfolio grew 24%"
       ],
       "all_risks": [
-        "Macroeconomic and political environment - Ultra-High risk",
-        "Regulatory environment changes - High risk",
-        "Human resources and talent management - High risk",
-        "Information technology risks - High risk",
-        "Portfolio balance risk - High risk",
-        "Supply chain disruptions - Medium risk",
-        "Financial exposure including exchange rate and interest rate volatility - Medium risk",
-        "Global competition - Medium risk",
-        "Environment and health & safety including climate risks - Medium risk",
-        "Reputation and brand image - Low risk",
-        "Geopolitical tensions impacting Red Sea shipping routes",
-        "India-Pakistan military tensions and regional stability concerns",
-        "Global trade tensions and US tariff measures",
-        "Volatile weather patterns impacting crops and fresh produce",
-        "Credit and counterparty risks",
-        "Liquidity risk",
-        "Competition in entry-level markets",
-        "Medical cost inflation affecting insurance claims",
-        "Policy lapse rates in insurance business",
-        "Talent flight and attrition in IT sector",
-        "Cross-skilling challenges in technology roles"
+        "Macroeconomic and political environment instability affecting business operations and consumer confidence",
+        "Regulatory environment changes including potential electricity tariff increases and evolving compliance requirements",
+        "Financial exposure risks including interest rate volatility, currency exchange fluctuations, credit and counterparty risks, and liquidity constraints",
+        "Information technology risks including cyber security threats, data protection breaches, and system failures",
+        "Climate change and environmental risks affecting physical assets, operations and supply chains",
+        "Reputational and brand image risks from operational failures or negative publicity",
+        "Competition intensity in various business segments affecting market share and profitability",
+        "Global geopolitical tensions including trade wars, regional conflicts, and shipping route disruptions",
+        "Supply chain disruptions affecting raw material availability and costs",
+        "Talent retention and human capital risks in competitive labor markets",
+        "Construction and project execution risks for major capital investments like CODSL and WCT-1",
+        "Tourism industry volatility affecting leisure businesses and related real estate developments",
+        "Banking sector risks including asset quality deterioration and regulatory capital requirements",
+        "Insurance sector risks including claim escalation and investment portfolio volatility",
+        "Foreign exchange translation risks on USD denominated assets and liabilities",
+        "Interest rate risk on floating rate debt and investment portfolios",
+        "Operational risks including health and safety incidents, environmental compliance failures",
+        "Technology disruption risks affecting traditional business models across industry groups",
+        "Global trade tensions and US tariff measures creating uncertainty",
+        "India-Pakistan geopolitical tensions affecting regional stability",
+        "Red Sea shipping disruptions continuing to impact global supply chains",
+        "Climate-related extreme weather causing economic losses exceeding USD 2 trillion",
+        "Macroeconomic and political environment changes",
+        "Supply chain disruptions and cost pressures",
+        "Financial exposure including exchange rate and interest rate volatility",
+        "Human resources and talent management challenges",
+        "Information technology and cybersecurity risks",
+        "Regulatory environment changes",
+        "Global competition pressures",
+        "Environment and health safety including climate risks",
+        "Reputation and brand image risks"
       ]
-    }
+    },
+    "sector": "Capital Goods",
+    "updated": "2026-03"
   },
   "KPHL": {
     "company": "KAPRUKA HOLDINGS PLC",
@@ -3844,7 +3900,7 @@
         "yoy_change": 2
       },
       "eps": 110.32,
-      "nav": 871.6,
+      "nav": null,
       "dividend_per_share": 20.0,
       "roe": 13,
       "debt_to_equity": null
@@ -13964,7 +14020,7 @@
         "yoy_change": 33.4
       },
       "eps": 105.57,
-      "nav": 607.55,
+      "nav": null,
       "dividend_per_share": null,
       "roe": 18.9,
       "debt_to_equity": null
@@ -17817,8 +17873,8 @@
         "value": 1074666000,
         "yoy_change": 93.35
       },
-      "eps": 357.51,
-      "nav": 4603,
+      "eps": null,
+      "nav": null,
       "dividend_per_share": 25.0,
       "roe": 8.27,
       "debt_to_equity": 3.97
@@ -18583,7 +18639,7 @@
         "yoy_change": -20.6
       },
       "eps": 64.26,
-      "nav": 444.43,
+      "nav": null,
       "dividend_per_share": 15.0,
       "roe": 14,
       "debt_to_equity": 0
@@ -26687,7 +26743,7 @@
         "yoy_change": -89
       },
       "eps": 2.38,
-      "nav": 270.81,
+      "nav": null,
       "dividend_per_share": null,
       "roe": 1,
       "debt_to_equity": null
@@ -28052,7 +28108,7 @@
         "yoy_change": 60.0
       },
       "eps": 16.38,
-      "nav": 285.27,
+      "nav": null,
       "dividend_per_share": null,
       "roe": 6.07,
       "debt_to_equity": 0.2

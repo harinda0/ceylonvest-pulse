@@ -111,6 +111,12 @@ IMPORTANT RULES:
 - All monetary values must be in LKR (Sri Lankan Rupees), NOT thousands or millions. Convert if needed.
   Example: "Revenue Rs. 228 Bn" = 228000000000, "Net Profit Rs. 18.5 Mn" = 18500000
 - yoy_change is year-over-year percentage change. Use positive for increase, negative for decrease.
+- NAV must be "net asset value PER SHARE" or "book value per share" — NOT total equity, NOT
+  consolidated net assets. Look for the per-share figure in financial highlights or per-share data tables.
+  IMPORTANT: If the company did a stock split or sub-division during or after the reporting period,
+  use the POST-SPLIT per-share figure. Many CSE companies (e.g. JKH, LOLC) did stock splits —
+  the NAV per share should be consistent with the current share count, not the old share count.
+- EPS must also be the post-split figure if a stock split occurred.
 - For management_plans: extract the TOP 6 most specific, actionable plans.
 - For forward_guidance: extract EVERYTHING — every plan, target, capex, partnership, risk, segment detail.
   Include specific numbers, dates, percentages where mentioned. This is raw material for news matching.
@@ -128,8 +134,12 @@ The following metrics are MISSING (null) and need to be found:
 {missing_fields}
 
 Search the report text carefully for:
-1. Earnings Per Share (EPS) — look in financial highlights, per-share data, income statement notes
-2. Net Asset Value per share (NAV) — look in balance sheet, per-share data, shareholder information
+1. Earnings Per Share (EPS) — look in financial highlights, per-share data, income statement notes.
+   Must be POST-SPLIT if a stock split occurred. Check for "restated" or "adjusted" EPS.
+2. Net Asset Value PER SHARE (NAV) — look in per-share data tables, financial highlights,
+   shareholder information. This must be the PER SHARE figure (total equity / number of shares),
+   NOT total net assets or consolidated equity. If a stock split occurred, use the POST-SPLIT
+   figure (i.e. based on the new, larger share count).
 3. Return on Equity (ROE) — look in financial summary, key performance indicators, management discussion
 4. Debt to Equity ratio — look in balance sheet analysis, capital structure, financial risk section
 
@@ -479,6 +489,50 @@ def _merge_pass2(result: dict, pass2: dict) -> dict:
     return result
 
 
+def _validate_nav(ticker: str, result: dict) -> dict:
+    """
+    Sanity-check NAV against the current stock price.
+    If NAV is more than 5x the stock price, it's likely a pre-stock-split
+    figure or total equity rather than per-share NAV. Null it out and warn.
+    """
+    nav = result.get("financials", {}).get("nav")
+    if nav is None:
+        return result
+
+    try:
+        # Add project root to path so imports work when script runs standalone
+        project_root = str(Path(__file__).parent.parent)
+        if project_root not in sys.path:
+            sys.path.insert(0, project_root)
+        from utils.ticker_map import get_cse_symbol, get_sector, get_company_name
+        from services.cse_api import get_stock_data
+        cse = get_cse_symbol(ticker) or ""
+        sec = get_sector(ticker) or ""
+        cn = get_company_name(ticker) or ""
+        stock = get_stock_data(ticker, cse, sec, cn)
+        if stock and stock.last_price and stock.last_price > 0:
+            ratio = nav / stock.last_price
+            if ratio > 5.0:
+                logger.warning(
+                    f"NAV sanity check FAILED for {ticker}: NAV={nav}, "
+                    f"price={stock.last_price}, ratio={ratio:.1f}x — "
+                    f"likely pre-split or total equity figure. Setting NAV to null."
+                )
+                result["financials"]["nav"] = None
+                result["_nav_rejected"] = {
+                    "original_value": nav,
+                    "stock_price": stock.last_price,
+                    "ratio": round(ratio, 1),
+                    "reason": "NAV > 5x stock price — likely pre-split or non-per-share figure",
+                }
+            else:
+                logger.info(f"NAV sanity check OK for {ticker}: NAV={nav}, price={stock.last_price}, P/B={1/ratio:.2f}x")
+    except Exception as e:
+        logger.warning(f"Could not validate NAV for {ticker}: {e}")
+
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Main pipeline
 # ---------------------------------------------------------------------------
@@ -540,7 +594,10 @@ def process_ticker(ticker: str) -> dict | None:
     else:
         logger.info("All critical metrics found in Pass 1")
 
-    # Step 6: Add metadata
+    # Step 6: Validate NAV against stock price
+    result = _validate_nav(ticker, result)
+
+    # Step 7: Add metadata
     if sector:
         result["sector"] = sector
     result["source_pdf"] = pdf_url
@@ -619,11 +676,13 @@ def main():
     existing = {}
     if OUTPUT_PATH.exists():
         try:
-            with open(OUTPUT_PATH) as f:
+            with open(OUTPUT_PATH, encoding="utf-8") as f:
                 existing = json.load(f)
             logger.info(f"Loaded {len(existing)} existing entries from {OUTPUT_PATH.name}")
         except Exception as e:
-            logger.warning(f"Could not load existing data: {e}")
+            logger.error(f"FATAL: Could not load existing data: {e}")
+            logger.error("Aborting to prevent data loss. Fix the file encoding and retry.")
+            sys.exit(1)
 
     # Process each ticker
     results = {}

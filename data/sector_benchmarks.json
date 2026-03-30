@@ -33,43 +33,43 @@
     ],
     "metrics": {
       "roe": {
-        "avg": 5.57,
-        "median": 14.71,
+        "avg": 6.52,
+        "median": 15.02,
         "min": -102,
         "max": 32.4,
         "count": 24
       },
       "eps": {
-        "avg": 27.34,
+        "avg": 27.35,
         "median": 2.7,
         "min": -38,
         "max": 422.84,
         "count": 27
       },
       "nav": {
-        "avg": 156.58,
-        "median": 50.99,
+        "avg": 132.4,
+        "median": 38,
         "min": -42.66,
         "max": 1667.71,
-        "count": 28
+        "count": 27
       },
       "dividend_per_share": {
-        "avg": 3.16,
-        "median": 1.5,
+        "avg": 3.33,
+        "median": 1.55,
         "min": 0,
         "max": 20.0,
-        "count": 19
+        "count": 18
       },
       "debt_to_equity": {
-        "avg": 9.03,
+        "avg": 9.46,
         "median": 0.47,
         "min": 0,
         "max": 58,
-        "count": 21
+        "count": 20
       },
       "revenue_growth": {
         "avg": 17.86,
-        "median": 8.5,
+        "median": 8.4,
         "min": -32,
         "max": 236,
         "count": 28
@@ -324,11 +324,11 @@
         "count": 20
       },
       "nav": {
-        "avg": 131.97,
-        "median": 42.63,
+        "avg": 94.99,
+        "median": 39.17,
         "min": -5.46,
-        "max": 871.6,
-        "count": 21
+        "max": 844.75,
+        "count": 20
       },
       "dividend_per_share": {
         "avg": 8.69,
@@ -416,11 +416,11 @@
         "count": 35
       },
       "nav": {
-        "avg": 166.4,
-        "median": 49.83,
+        "avg": 158.22,
+        "median": 49.3,
         "min": -0.78,
         "max": 1105.13,
-        "count": 35
+        "count": 34
       },
       "dividend_per_share": {
         "avg": 12.58,
@@ -662,11 +662,11 @@
         "count": 16
       },
       "nav": {
-        "avg": 95.39,
-        "median": 47.53,
+        "avg": 83.69,
+        "median": 42.1,
         "min": -62.18,
         "max": 371.27,
-        "count": 16
+        "count": 15
       },
       "dividend_per_share": {
         "avg": 2.02,
@@ -799,18 +799,18 @@
         "count": 28
       },
       "eps": {
-        "avg": 29.21,
-        "median": 11.17,
+        "avg": 18.27,
+        "median": 8.89,
         "min": 0.02,
-        "max": 357.51,
-        "count": 31
+        "max": 104.61,
+        "count": 30
       },
       "nav": {
-        "avg": 277.17,
-        "median": 52.81,
+        "avg": 132.98,
+        "median": 50.17,
         "min": 0.38,
-        "max": 4603,
-        "count": 31
+        "max": 721.16,
+        "count": 30
       },
       "dividend_per_share": {
         "avg": 6.59,
@@ -1498,11 +1498,11 @@
         "count": 2
       },
       "nav": {
-        "avg": 285.28,
-        "median": 285.28,
-        "min": 285.27,
+        "avg": 285.3,
+        "median": 285.3,
+        "min": 285.3,
         "max": 285.3,
-        "count": 2
+        "count": 1
       },
       "dividend_per_share": {
         "avg": null,

@@ -48,7 +48,8 @@ def get_companies_by_sector(sector: str) -> dict[str, dict]:
 def cross_reference_news(ticker: str, hours: int = 72) -> list[dict]:
     """
     Find recent news headlines that relate to management plans.
-    Checks if any keywords from management_plans appear in recent headlines.
+    Uses keyword overlap between management plans and recent headlines,
+    with strict filtering to avoid false positives from generic words.
 
     Returns: [{"plan": str, "headline": str, "source": str, "score": float|None}, ...]
     """
@@ -57,27 +58,41 @@ def cross_reference_news(ticker: str, hours: int = 72) -> list[dict]:
         return []
 
     headlines = get_recent_headlines(hours=hours, limit=30)
-    # Also check headlines for related tickers (e.g., sector news)
     matches = []
     seen = set()
 
+    # Words that are too generic to be meaningful matches — they appear
+    # in both financial plans AND unrelated news articles.
+    skip = {
+        "the", "and", "for", "from", "with", "over", "into", "below",
+        "through", "within", "target", "focus", "current", "expected",
+        "years", "year", "growth", "sector", "segment", "key", "reduce",
+        "expand", "invest", "launch", "build", "first", "second", "third",
+        "will", "plan", "plans", "also", "including", "based", "position",
+        "operations", "operation", "terminal", "service", "services",
+        "market", "company", "business", "development", "completion",
+        "achieve", "full", "half", "area", "areas", "open", "opening",
+        "close", "total", "major", "international", "national", "global",
+        "further", "phase", "stage", "level", "part", "project",
+    }
+
     for plan in report["management_plans"]:
-        # Extract meaningful keywords from the plan (3+ char words, skip common ones)
-        skip = {"the", "and", "for", "from", "with", "over", "into", "below",
-                "through", "within", "target", "focus", "current", "expected",
-                "years", "year", "growth", "sector", "segment", "key", "reduce",
-                "expand", "invest", "launch", "build"}
-        words = [w.lower().strip(".,") for w in plan.split() if len(w) >= 4]
+        # Extract keywords: must be 5+ chars and not in skip set
+        words = [w.lower().strip(".,;:()") for w in plan.split() if len(w) >= 5]
         keywords = [w for w in words if w not in skip]
+
+        if len(keywords) < 2:
+            continue
 
         for h in headlines:
             content = (h.get("content") or "").lower()
             if not content:
                 continue
 
-            # Check if any keywords from this plan appear in the headline
+            # Require 3+ keyword matches, with at least one being 7+ chars
             matched_words = [kw for kw in keywords if kw in content]
-            if len(matched_words) >= 2:
+            has_specific = any(len(w) >= 7 for w in matched_words)
+            if len(matched_words) >= 3 and has_specific:
                 key = (plan[:50], content[:50])
                 if key not in seen:
                     seen.add(key)
