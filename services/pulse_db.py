@@ -228,20 +228,39 @@ def get_avg_mentions_30d(ticker: str) -> float:
         conn.close()
 
 
+def _get_earliest_mention_age(ticker: str) -> int:
+    """Return the number of days since the earliest mention for this ticker."""
+    conn = get_db()
+    try:
+        row = _fetchone(conn,
+            "SELECT MIN(created_at) as earliest FROM mentions WHERE ticker = ?",
+            (ticker,),
+        )
+        if not row or not row["earliest"]:
+            return 0
+        earliest = row["earliest"]
+        if isinstance(earliest, str):
+            earliest = datetime.fromisoformat(earliest.replace("Z", "+00:00").replace("+00:00", ""))
+        age = datetime.utcnow() - earliest
+        return age.days
+    finally:
+        conn.close()
+
+
 def get_mention_velocity(ticker: str) -> dict:
     """
     Calculate mention velocity: current 24h count vs 30d daily average.
 
-    Minimum baseline: pump/spike alerts require avg_daily_30d >= 1.0.
-    This prevents false positives during the first few weeks when the
-    30-day baseline is near zero (any mention looks like a 30x spike).
+    Minimum baseline: pump/spike alerts require avg_daily_30d >= 3.0.
+    Also requires at least 14 days of mention history to avoid false
+    positives from freshly deployed scrapers with thin baselines.
 
     Returns: {
         "count_24h": int,
         "avg_daily_30d": float,
         "velocity": float (multiplier),
-        "is_spike": bool (>3x AND baseline >= 1/day),
-        "is_pump_alert": bool (>3x AND baseline >= 1/day AND concentrated)
+        "is_spike": bool (>3x AND baseline >= 3/day AND 14d+ history),
+        "is_pump_alert": bool (>3x AND baseline >= 3/day AND 14d+ history AND concentrated)
     }
     """
     count_24h = get_mention_count(ticker, hours=24)
@@ -251,14 +270,20 @@ def get_mention_velocity(ticker: str) -> dict:
     concentration = get_source_concentration(ticker, hours=24)
 
     # Need a meaningful baseline before flagging spikes/pumps
-    baseline_sufficient = avg_30d >= 1.0
+    baseline_sufficient = avg_30d >= 3.0
+
+    # Need at least 14 days of data before pump alerts are meaningful
+    history_sufficient = _get_earliest_mention_age(ticker) >= 14
+
+    is_spike = velocity >= 3.0 and baseline_sufficient and history_sufficient
+    is_pump = is_spike and concentration.get("max_pct", 0) >= 60
 
     return {
         "count_24h": count_24h,
         "avg_daily_30d": round(avg_30d, 1),
         "velocity": round(velocity, 1),
-        "is_spike": velocity >= 3.0 and baseline_sufficient,
-        "is_pump_alert": velocity >= 3.0 and baseline_sufficient and concentration.get("max_pct", 0) >= 60,
+        "is_spike": is_spike,
+        "is_pump_alert": is_pump,
         "concentration": concentration,
     }
 

@@ -68,21 +68,33 @@ _TICKER_SKIP_UPPERCASE = {
     "DIST", "SPEN", "SINS", "CCS",
 }
 
+# General news sources that publish mostly non-financial content.
+# These sources only match tickers via explicit multi-word company name
+# aliases (from ALIASES dict), NOT via the uppercase word scan.
+# This prevents false positives like "EML", "SLTL" from random headlines.
+_GENERAL_NEWS_SOURCES = {"NewsWire"}
 
-def _extract_tickers(text: str) -> dict[str, list[str]]:
+
+def _extract_tickers(text: str, source_name: str = None) -> dict[str, list[str]]:
     """
     Find all CSE tickers mentioned in text.
     Returns {ticker: [match_method, ...]} where match_method is
     "direct" (ticker/alias match) or "keyword" (keyword map match).
+
+    For general news sources (e.g. NewsWire), skip the uppercase word scan
+    entirely — only match via explicit multi-word company name aliases.
     """
     found: dict[str, list[str]] = {}
+    is_general_source = source_name in _GENERAL_NEWS_SOURCES
 
     # 1. Scan for direct ticker mentions (uppercase 2-5 letter words)
     #    Skip tickers that are common English abbreviations.
-    words = re.findall(r"\b([A-Z]{2,5})\b", text)
-    for word in words:
-        if word in TICKER_TO_CSE and word not in _TICKER_SKIP_UPPERCASE:
-            found.setdefault(word, []).append("direct")
+    #    Skip entirely for general news sources (too many false positives).
+    if not is_general_source:
+        words = re.findall(r"\b([A-Z]{2,5})\b", text)
+        for word in words:
+            if word in TICKER_TO_CSE and word not in _TICKER_SKIP_UPPERCASE:
+                found.setdefault(word, []).append("direct")
 
     # 2. Check for known company name aliases in the text
     #    Only match against the explicit ALIASES dict to avoid false positives.
@@ -93,11 +105,13 @@ def _extract_tickers(text: str) -> dict[str, list[str]]:
             found.setdefault(ticker, []).append("direct")
 
     # 3. Keyword matching via stock_connections
-    keyword_hits = find_stocks_for_keywords(text)
-    for hit in keyword_hits:
-        # Only include if there's a direct company name match (not just macro keywords)
-        if "direct" in hit["connection_types"] and hit["score"] >= 6:
-            found.setdefault(hit["ticker"], []).append("keyword")
+    #    Skip for general news sources — keywords are too broad.
+    if not is_general_source:
+        keyword_hits = find_stocks_for_keywords(text)
+        for hit in keyword_hits:
+            # Only include if there's a direct company name match (not just macro keywords)
+            if "direct" in hit["connection_types"] and hit["score"] >= 6:
+                found.setdefault(hit["ticker"], []).append("keyword")
 
     return found
 
@@ -156,7 +170,7 @@ def _process_feed(feed_config: dict) -> dict:
                     continue
 
                 # Extract tickers
-                tickers = _extract_tickers(full_text)
+                tickers = _extract_tickers(full_text, source_name=name)
 
                 if tickers:
                     # Content to store: headline + first 500 chars of summary

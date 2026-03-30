@@ -204,7 +204,8 @@ def _draw_brand_header(draw: ImageDraw.ImageDraw, y: int, date_str: str) -> int:
 
 
 def _draw_index_card(draw: ImageDraw.ImageDraw, x: int, y: int, w: int,
-                     label: str, value: float, change: float, pct: float) -> None:
+                     label: str, value: float, change: float, pct: float,
+                     market_status: str = "") -> None:
     """Draw a single index card with value and change."""
     h = 90
     _rounded_rect(draw, (x, y, x + w, y + h), BG_SURFACE, radius=10)
@@ -215,18 +216,26 @@ def _draw_index_card(draw: ImageDraw.ImageDraw, x: int, y: int, w: int,
     # Value
     draw.text((x + 16, y + 30), f"{value:,.2f}", fill=TEXT_PRIMARY, font=FONT_INDEX_VALUE)
 
-    # Change pill
-    is_positive = change >= 0
-    color = GREEN if is_positive else RED
-    bg_color = GREEN_DIM if is_positive else RED_DIM
-    sign = "+" if is_positive else ""
-    arrow = "\u25b2" if is_positive else "\u25bc"
-    change_text = f"{arrow} {sign}{change:,.2f} ({sign}{pct:.2f}%)"
-    tw = draw.textlength(change_text, font=FONT_INDEX_CHANGE)
+    # Change pill — show "Pre-market" if change is 0 and market is closed
     pill_x = x + 16
     pill_y = y + 66
-    _rounded_rect(draw, (pill_x, pill_y, pill_x + tw + 16, pill_y + 22), bg_color, radius=6)
-    draw.text((pill_x + 8, pill_y + 1), change_text, fill=color, font=FONT_INDEX_CHANGE)
+    is_pre_market = (change == 0.0 and pct == 0.0
+                     and market_status.lower() not in ("open", "trading"))
+    if is_pre_market:
+        change_text = "Market opens 9:30 AM"
+        tw = draw.textlength(change_text, font=FONT_INDEX_CHANGE)
+        _rounded_rect(draw, (pill_x, pill_y, pill_x + tw + 16, pill_y + 22), BG_ACCENT, radius=6)
+        draw.text((pill_x + 8, pill_y + 1), change_text, fill=TEXT_MUTED, font=FONT_INDEX_CHANGE)
+    else:
+        is_positive = change >= 0
+        color = GREEN if is_positive else RED
+        bg_color = GREEN_DIM if is_positive else RED_DIM
+        sign = "+" if is_positive else ""
+        arrow = "\u25b2" if is_positive else "\u25bc"
+        change_text = f"{arrow} {sign}{change:,.2f} ({sign}{pct:.2f}%)"
+        tw = draw.textlength(change_text, font=FONT_INDEX_CHANGE)
+        _rounded_rect(draw, (pill_x, pill_y, pill_x + tw + 16, pill_y + 22), bg_color, radius=6)
+        draw.text((pill_x + 8, pill_y + 1), change_text, fill=color, font=FONT_INDEX_CHANGE)
 
 
 def _draw_trade_stats(draw: ImageDraw.ImageDraw, y: int, market: dict) -> int:
@@ -462,6 +471,7 @@ def generate_brief_image(hours: int = 24) -> BytesIO | None:
 
     # Market indices
     if has_market:
+        market_status = market.get("status", "")
         cards = []
         if market.get("aspi"):
             a = market["aspi"]
@@ -472,10 +482,10 @@ def generate_brief_image(hours: int = 24) -> BytesIO | None:
 
         if len(cards) == 2:
             card_w = (INNER - 12) // 2
-            _draw_index_card(draw, PAD, y, card_w, *cards[0])
-            _draw_index_card(draw, PAD + card_w + 12, y, card_w, *cards[1])
+            _draw_index_card(draw, PAD, y, card_w, *cards[0], market_status=market_status)
+            _draw_index_card(draw, PAD + card_w + 12, y, card_w, *cards[1], market_status=market_status)
         elif len(cards) == 1:
-            _draw_index_card(draw, PAD, y, INNER, *cards[0])
+            _draw_index_card(draw, PAD, y, INNER, *cards[0], market_status=market_status)
         y += 90 + SECTION_GAP
 
     # Trade stats
@@ -535,14 +545,22 @@ def generate_brief(hours: int = 24) -> str:
     # Market
     brief += "Market Snapshot\n"
     if market:
+        market_status = market.get("status", "")
+        is_closed = market_status.lower() not in ("open", "trading")
         if market.get("aspi"):
             a = market["aspi"]
-            sign = "+" if a["change"] >= 0 else ""
-            brief += f"  ASPI: {a['value']:,.2f} ({sign}{a['change']:,.2f} / {sign}{a['pct']:.2f}%)\n"
+            if a["change"] == 0.0 and a["pct"] == 0.0 and is_closed:
+                brief += f"  ASPI: {a['value']:,.2f} (Pre-market — opens 9:30 AM)\n"
+            else:
+                sign = "+" if a["change"] >= 0 else ""
+                brief += f"  ASPI: {a['value']:,.2f} ({sign}{a['change']:,.2f} / {sign}{a['pct']:.2f}%)\n"
         if market.get("snp"):
             s = market["snp"]
-            sign = "+" if s["change"] >= 0 else ""
-            brief += f"  S&P SL20: {s['value']:,.2f} ({sign}{s['change']:,.2f} / {sign}{s['pct']:.2f}%)\n"
+            if s["change"] == 0.0 and s["pct"] == 0.0 and is_closed:
+                brief += f"  S&P SL20: {s['value']:,.2f} (Pre-market — opens 9:30 AM)\n"
+            else:
+                sign = "+" if s["change"] >= 0 else ""
+                brief += f"  S&P SL20: {s['value']:,.2f} ({sign}{s['change']:,.2f} / {sign}{s['pct']:.2f}%)\n"
         turnover = market.get("turnover", 0)
         if turnover >= 1e9:
             brief += f"  Turnover: LKR {turnover/1e9:.1f}B\n"
